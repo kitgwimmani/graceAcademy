@@ -294,6 +294,75 @@ app.delete('/unit/:id', (req, res) => {
 })
 //##################################################################33
 
+//##################################################################33
+
+// product
+app.get("/product", (req, res) => {
+    const sql = "SELECT * from product";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.get("/getProduct/:id", (req, res) => {
+    const sql = "SELECT * FROM product WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.post('/createProduct', (req, res) => {
+    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`unit`,`quantity`,`expiration`,`expiry_date`,`threshold`,`serial_number`,`isbn`,`barcode`) VALUES (?)";
+    const values = [
+        req.body.name, 
+        req.body.category,
+        req.body.consumable,
+        req.body.traceable,
+        req.body.description,
+        req.body.unit,
+        req.body.quantity,
+        req.body.expiration,
+        req.body.expiry_date,
+        req.body.threshold,
+        req.body.serial_number,
+        req.body.isbn,
+        req.body.barcode
+    ]
+    db.query(sql, [values], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.put('/updateProduct/:id', (req, res) => {
+    const sql = "UPDATE product set `name` = ?, `description` = ? where id = ?";
+    const values = [
+        req.body.name, 
+        req.body.description
+    ]
+    const id = req.params.id;
+    db.query(sql, [...values, id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.delete('/product/:id', (req, res) => {
+    const sql = "DELETE FROM product where id = ?";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//##################################################################33
+
 app.listen(8081, () => {
     console.log("listening")
 })

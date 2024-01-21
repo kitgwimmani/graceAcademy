@@ -19,13 +19,13 @@ function Product() {
 
   }
 
- 
+  const fontSize = '12px';
 
   return (
     <div className='d-flex vh-100 bg-primary justify-content-center align-items-center'>
       <div className='w-60 bg-white rounded p-3'>
           <Link to='/product/createProduct' className='btn btn-success'>Add +</Link>
-          <table className='table'>
+          <table className='table' style={{fontSize}}>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -35,7 +35,7 @@ function Product() {
                   <th>Description</th>
                   <th>Unit</th>
                   <th>Quantity</th>
-                  <th>Expiration</th>
+                  <th>Can Expire</th>
                   <th>Expiration Date</th>
                   <th>Threshold</th>
                   <th>Serial Number</th>
@@ -50,9 +50,20 @@ function Product() {
                   product.map((data, i) => (
                     <tr key={i}>
                       <td>{data.name}</td>
+                      <td>{data.category}</td>
+                      <td>{data.consumable? 'Yes' : 'No'}</td>
+                      <td>{data.traceable? 'Yes' : 'No'}</td>
                       <td>{data.description}</td>
-                      <td><Link to={`updateProduct/${data.id}`} className='btn btn-primary'>Update</Link></td>
-                      <td><button className='btn btn-danger ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
+                      <td>{data.unit}</td>
+                      <td>{data.quantity}</td>
+                      <td>{data.expiration? 'Yes' : 'No'}</td>
+                      <td>{data.expiry_date}</td>
+                      <td>{data.threshold}</td>
+                      <td>{data.serial_number}</td>
+                      <td>{data.isbn}</td>
+                      <td>{data.barcode}</td>
+                      <td><Link to={`updateProduct/${data.id}`} className='btn btn-primary btn-sm'>Update</Link></td>
+                      <td><button className='btn btn-danger btn-sm ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
                     </tr>
                   ))
                   }
