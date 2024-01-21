@@ -341,10 +341,22 @@ app.post('/createProduct', (req, res) => {
 })
 
 app.put('/updateProduct/:id', (req, res) => {
-    const sql = "UPDATE product set `name` = ?, `description` = ? where id = ?";
+    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`unit`= ?,`quantity`= ?,`expiration`= ?,`expiry_date`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`barcode`= ? where id = ?";
     const values = [
         req.body.name, 
-        req.body.description
+        req.body.category, 
+        req.body.consumable, 
+        req.body.traceable, 
+        req.body.description,
+        req.body.unit, 
+        req.body.quantity, 
+        req.body.expiration,
+        req.body.expiry_date,  
+        req.body.threshold, 
+        req.body.serial_number, 
+        req.body.isbn, 
+        req.body.barcode
+
     ]
     const id = req.params.id;
     db.query(sql, [...values, id], (err, data) => {
