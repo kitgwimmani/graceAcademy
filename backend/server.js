@@ -247,6 +247,18 @@ app.get("/unit", (req, res) => {
     })
 })
 
+app.get("/getUnit/:id", (req, res) => {
+    const sql = "SELECT * FROM unit WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
 app.post('/createUnit', (req, res) => {
     const sql = "INSERT INTO unit (`name`,`description`) VALUES (?)";
     const values = [
