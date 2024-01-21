@@ -1,0 +1,20 @@
+/* DarkSidebar.css */
+.dark-sidebar {
+    width: 100%;
+    height: 100vh;
+    background-color: #333; /* Set the background color to a dark color of your choice */
+    color: #fff; /* Set the text color to a light color for better visibility */
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: Add a box shadow for depth */
+    text-align: center;
+  }
+  
+  .dark-sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .dark-sidebar li {
+    margin-bottom: 10px;
+    cursor: pointer;
+  }

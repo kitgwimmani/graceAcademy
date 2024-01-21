@@ -1,0 +1,26 @@
+input hints
+
+there is not item that is both non-consumable and non-traceable as well
+
+monitor reordering on dashboard
+
+missing on products
+- subject
+- publisher
+- school
+- type (teacher, student, 
+- date, name etc of supplier (purchased, container, driver etc)
+
+suppier entity - (date, how the item came, contact information, cost info, exit)
+
+exit of items from inventory (other locations outside), donation, moved etc, units 
+
+create entity called external unit (bakery, garden, etc) - units can give and receive resources (like supplier)
+
+condition of items (damaged, good, outdated etc.)
+
+no scrolling when adding inventory
+
+textbox captalized (American English)
+
+Reorder link
