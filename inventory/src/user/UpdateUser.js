@@ -14,9 +14,14 @@ function UpdateUser() {
         axios.get(`http://localhost:8081/getUser/${id}`)
             .then(res => {
                 const userData = res.data; // Assuming the fetched data has fields: name, email, role
-                setName(userData.name);
-                setEmail(userData.email);
-                setRole(userData.role);
+                console.log(userData[0].name);
+
+                // Check if userData exists and has the expected properties
+                
+                    setName(userData[0].name);
+                    setEmail(userData[0].email);
+                    setRole(userData[0].role);
+               
             })
             .catch(err => console.log(err));
     }, [id]);
@@ -35,7 +40,7 @@ function UpdateUser() {
         <div className='d-flex vh-100 bg-primary justify-content-center align-items-center'>
             <div className='w-50 bg-white rounded p-3'>
                 <form onSubmit={handleSubmit}>
-                    <h2>Update User</h2>
+                    <h2>Update User {name}</h2>
                     <div className='mb-2'>
                         <label htmlFor=''>Name</label>
                         <input

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -7,6 +7,18 @@ function UpdateCustodian() {
     const [email, setEmail] = useState('');
     const {id} = useParams();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get(`http://localhost:8081/getCustodian/${id}`)
+            .then(res => {
+                const userData = res.data; 
+                
+                    setName(userData[0].name);
+                    setEmail(userData[0].email);
+               
+            })
+            .catch(err => console.log(err));
+    }, [id]);
 
     function handleSubmit(event){
         event.preventDefault();
@@ -22,16 +34,22 @@ function UpdateCustodian() {
                 <h2>Update Custodian</h2>
                 <div className='mb-2'>
                     <label htmlFor=''>Custodian Name</label>
-                    <input type='text' placeholder='Enter Custodian Name' className='form-control'
-                        onChange={e => setName(e.target.value)}
+                    <input type='text' 
+                    placeholder='Enter Custodian Name' 
+                    className='form-control'
+                    value={name}
+                    onChange={e => setName(e.target.value)}
                     />
                     
                 </div>
 
                 <div className='mb-2'>
                     <label htmlFor=''>Email</label>
-                    <input type='email' placeholder='Enter Email' className='form-control'
-                        onChange={e => setEmail(e.target.value)}
+                    <input type='email' 
+                    placeholder='Enter Email' 
+                    className='form-control'
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                     />
                 </div>
 

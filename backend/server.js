@@ -22,6 +22,18 @@ app.get("/", (req, res) => {
     })
 })
 
+app.get("/getUser/:id", (req, res) => {
+    const sql = "SELECT * FROM user WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
 app.post('/createUser', (req, res) => {
     const sql = "INSERT INTO user (`name`,`email`,`role`) VALUES (?)";
     const values = [
@@ -69,6 +81,18 @@ app.get("/category", (req, res) => {
     })
 })
 
+app.get("/getCategory/:id", (req, res) => {
+    const sql = "SELECT * FROM category WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
 app.post('/createCategory', (req, res) => {
     const sql = "INSERT INTO category (`name`,`description`) VALUES (?)";
     const values = [
@@ -113,6 +137,19 @@ app.get("/custodian", (req, res) => {
     })
 })
 
+app.get("/getCustodian/:id", (req, res) => {
+    const sql = "SELECT * FROM custodian WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+
 app.post('/createCustodian', (req, res) => {
     const sql = "INSERT INTO custodian (`name`,`email`) VALUES (?)";
     const values = [
@@ -156,6 +193,17 @@ app.get("/location", (req, res) => {
         return res.json(data);
     })
 })
+app.get("/getLocation/:id", (req, res) => {
+    const sql = "SELECT * FROM location WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
 
 app.post('/createLocation', (req, res) => {
     const sql = "INSERT INTO location (`name`) VALUES (?)";

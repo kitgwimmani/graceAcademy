@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -6,6 +6,17 @@ function UpdateLocation() {
     const [name, setName] = useState('');
     const {id} = useParams();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        axios.get(`http://localhost:8081/getLocation/${id}`)
+            .then(res => {
+                const userData = res.data; 
+                
+                    setName(userData[0].name);
+               
+            })
+            .catch(err => console.log(err));
+    }, [id]);
 
     function handleSubmit(event){
         event.preventDefault();
@@ -21,7 +32,10 @@ function UpdateLocation() {
                 <h2>Update Location</h2>
                 <div className='mb-2'>
                     <label htmlFor=''>Location Name</label>
-                    <input type='text' placeholder='Enter Location Name' className='form-control'
+                    <input type='text' 
+                        placeholder='Enter Location Name' 
+                        className='form-control'
+                        value ={name}
                         onChange={e => setName(e.target.value)}
                     />
                     
