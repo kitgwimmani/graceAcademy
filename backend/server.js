@@ -363,6 +363,64 @@ app.delete('/product/:id', (req, res) => {
 })
 //##################################################################33
 
+// supplier supplier supplier supplier
+app.get("/supplier", (req, res) => {
+    const sql = "SELECT * from supplier";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.get("/getSupplier/:id", (req, res) => {
+    const sql = "SELECT * FROM supplier WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.post('/createSupplier', (req, res) => {
+    const sql = "INSERT INTO supplier (`name`,`address`,`phone`) VALUES (?)";
+    const values = [
+        req.body.name, 
+        req.body.address,
+        req.body.phone
+    ]
+    db.query(sql, [values], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.put('/updateSupplier/:id', (req, res) => {
+    const sql = "UPDATE supplier set `name` = ?, `address` = ?, `phone` = ? where id = ?";
+    const values = [
+        req.body.name, 
+        req.body.address, 
+        req.body.phone
+    ]
+    const id = req.params.id;
+    db.query(sql, [...values, id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.delete('/supplier/:id', (req, res) => {
+    const sql = "DELETE FROM supplier where id = ?";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//##################################################################33
+
 app.listen(8081, () => {
     console.log("listening")
 })

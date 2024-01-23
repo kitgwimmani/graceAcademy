@@ -26,6 +26,10 @@ import Product from './Product';
 import CreateProduct from './product/CreateProduct';
 import UpdateProduct from './product/UpdateProduct';
 
+import Supplier from './Supplier';
+import CreateSupplier from './supplier/CreateSupplier';
+import UpdateSupplier from './supplier/UpdateSupplier';
+
 
 
 function App() {
@@ -56,6 +60,10 @@ function App() {
         <Route path='/product' element={<Product />}></Route>
         <Route path='product/createProduct' element={<CreateProduct />}></Route>
         <Route path='product/updateProduct/:id' element={<UpdateProduct />}></Route>
+
+        <Route path='/supplier' element={<Supplier />}></Route>
+        <Route path='supplier/createSupplier' element={<CreateSupplier />}></Route>
+        <Route path='supplier/updateSupplier/:id' element={<UpdateSupplier />}></Route>
       </Routes>
     </BrowserRouter>
       
