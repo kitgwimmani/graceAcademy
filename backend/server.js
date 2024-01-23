@@ -421,6 +421,64 @@ app.delete('/supplier/:id', (req, res) => {
 })
 //##################################################################33
 
+// receiver receiver receiver receiver
+app.get("/receiver", (req, res) => {
+    const sql = "SELECT * from receiver";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.get("/getReceiver/:id", (req, res) => {
+    const sql = "SELECT * FROM receiver WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.post('/createReceiver', (req, res) => {
+    const sql = "INSERT INTO receiver (`name`,`address`,`phone`) VALUES (?)";
+    const values = [
+        req.body.name, 
+        req.body.address,
+        req.body.phone
+    ]
+    db.query(sql, [values], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.put('/updateReceiver/:id', (req, res) => {
+    const sql = "UPDATE receiver set `name` = ?, `address` = ?, `phone` = ? where id = ?";
+    const values = [
+        req.body.name, 
+        req.body.address, 
+        req.body.phone
+    ]
+    const id = req.params.id;
+    db.query(sql, [...values, id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.delete('/receiver/:id', (req, res) => {
+    const sql = "DELETE FROM receiver where id = ?";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//##################################################################33
+
 app.listen(8081, () => {
     console.log("listening")
 })

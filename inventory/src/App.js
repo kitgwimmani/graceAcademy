@@ -30,6 +30,10 @@ import Supplier from './Supplier';
 import CreateSupplier from './supplier/CreateSupplier';
 import UpdateSupplier from './supplier/UpdateSupplier';
 
+import Receiver from './Receiver';
+import CreateReceiver from './receiver/CreateReceiver';
+import UpdateReceiver from './receiver/UpdateReceiver';
+
 
 
 function App() {
@@ -64,6 +68,10 @@ function App() {
         <Route path='/supplier' element={<Supplier />}></Route>
         <Route path='supplier/createSupplier' element={<CreateSupplier />}></Route>
         <Route path='supplier/updateSupplier/:id' element={<UpdateSupplier />}></Route>
+
+        <Route path='/receiver' element={<Receiver />}></Route>
+        <Route path='receiver/createReceiver' element={<CreateReceiver />}></Route>
+        <Route path='receiver/updateReceiver/:id' element={<UpdateReceiver />}></Route>
       </Routes>
     </BrowserRouter>
       
