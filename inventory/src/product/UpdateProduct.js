@@ -33,7 +33,7 @@ function UpdateProduct() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:8081/updateProduct/'+id, { name, category, consumable, traceable, description, expiration, threshold }).then(res => {
+        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold }).then(res => {
             console.log(res);
             navigate('/product');
         }).catch(err => console.log(err));
