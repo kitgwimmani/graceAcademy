@@ -479,6 +479,76 @@ app.delete('/receiver/:id', (req, res) => {
 })
 //##################################################################33
 
+// supply supply supply supply
+app.get("/supply", (req, res) => {
+    const sql = "SELECT * from supply";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.get("/getSupply/:id", (req, res) => {
+    const sql = "SELECT * FROM supply WHERE id = ? LIMIT 1";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.post('/createSupply', (req, res) => {
+    const sql = "INSERT INTO supply (`product`,`supplier`,`unit`,`quantity`,`expiry_date`,`serial_number`,`isbn`,`barcode`,`remark`) VALUES (?)";
+    const values = [
+        req.body.product, 
+        req.body.supplier,
+        req.body.unit,
+        req.body.quantity,
+        req.body.expiry_date,
+        req.body.serial_number,
+        req.body.isbn,
+        req.body.barcode,
+        req.body.remark
+    ]
+    db.query(sql, [values], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.put('/updateSupply/:id', (req, res) => {
+    const sql = "UPDATE supply set `product` = ?, `supplier` = ?, `unit` = ? , `quantity` = ? , `expiry_date` = ? , `serial_number` = ? , `isbn` = ? , `barcode` = ? , `remark` = ? where id = ?";
+    const values = [
+        req.body.product, 
+        req.body.supplier, 
+        req.body.unit,
+        req.body.quantity,
+        req.body.expiry_date,
+        req.body.serial_number,
+        req.body.isbn,
+        req.body.barcode,
+        req.body.remark
+    ]
+    const id = req.params.id;
+    db.query(sql, [...values, id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.delete('/supply/:id', (req, res) => {
+    const sql = "DELETE FROM supply where id = ?";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//##################################################################33
+
 app.listen(8081, () => {
     console.log("listening")
 })

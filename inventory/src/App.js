@@ -34,6 +34,10 @@ import Receiver from './Receiver';
 import CreateReceiver from './receiver/CreateReceiver';
 import UpdateReceiver from './receiver/UpdateReceiver';
 
+import Supply from './Supply';
+import CreateSupply from './supply/CreateSupply';
+import UpdateSupply from './supply/UpdateSupply';
+
 
 
 function App() {
@@ -72,6 +76,10 @@ function App() {
         <Route path='/receiver' element={<Receiver />}></Route>
         <Route path='receiver/createReceiver' element={<CreateReceiver />}></Route>
         <Route path='receiver/updateReceiver/:id' element={<UpdateReceiver />}></Route>
+
+        <Route path='/supply' element={<Supply />}></Route>
+        <Route path='supply/createSupply' element={<CreateSupply />}></Route>
+        <Route path='supply/updateSupply/:id' element={<UpdateSupply />}></Route>
       </Routes>
     </BrowserRouter>
       

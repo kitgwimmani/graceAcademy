@@ -64,7 +64,7 @@ function UpdateProduct() {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                             >
-                                <option value='' disabled>Select Categort</option>
+                                <option value='' disabled>Select Category</option>
                                 <option value='curriculum'>Curriculum </option>
                                 <option value='ittech'>IT/Tech</option>
                             </select>
