@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+import './App.css';
 
 function User() {
   const [user, setUser] = useState([])
@@ -23,7 +24,8 @@ function User() {
  
 
   return (
-    <div className='d-flex vh-100 bg-primary justify-content-center align-items-center'>
+    <div className='main-content'>
+    <div className=' d-flex vh-100 p-0 m-0  justify-content-center align-items-center'>
       <div className='w-60 bg-white rounded p-3'>
           <Link to='/createUser' className='btn btn-success'>Add +</Link>
           <table className='table'>
@@ -56,9 +58,9 @@ function User() {
           </table>
         
       </div>
-
     </div>
-   
+    
+    </div>
   )
 }
 

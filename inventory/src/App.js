@@ -1,6 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
+import './App.css';
+import Sidebar from './components/Sidebar';
+
 
 import User from './User';
 import CreateUser from './user/CreateUser';
@@ -39,12 +42,15 @@ import CreateSupply from './supply/CreateSupply';
 import UpdateSupply from './supply/UpdateSupply';
 
 
-
 function App() {
   return (
-    <div className="App">
+    <div className="app-container">
+    
     <BrowserRouter>
+    <Sidebar/>
+      <div className='main-content'>
       <Routes>
+      
         <Route path='/' element={<User />}></Route>
         <Route path='/createUser' element={<CreateUser />}></Route>
         <Route path='/updateUser/:id' element={<UpdateUser />}></Route>
@@ -81,9 +87,11 @@ function App() {
         <Route path='supply/createSupply' element={<CreateSupply />}></Route>
         <Route path='supply/updateSupply/:id' element={<UpdateSupply />}></Route>
       </Routes>
+      </div>
     </BrowserRouter>
-      
+    
     </div>
+    
   );
 }
 

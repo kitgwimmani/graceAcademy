@@ -22,7 +22,7 @@ function Product() {
   const fontSize = '12px';
 
   return (
-    <div className='d-flex vh-100 bg-primary justify-content-center align-items-center'>
+    <div className='d-flex vh-100  justify-content-center align-items-center'>
       <div className='w-60 bg-white rounded p-3'>
           <Link to='/product/createProduct' className='btn btn-success'>Add +</Link>
           <table className='table' style={{fontSize}}>
