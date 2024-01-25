@@ -41,6 +41,8 @@ import Supply from './Supply';
 import CreateSupply from './supply/CreateSupply';
 import UpdateSupply from './supply/UpdateSupply';
 
+import Dashboard from './Dashboard';
+
 
 function App() {
   return (
@@ -86,6 +88,8 @@ function App() {
         <Route path='/supply' element={<Supply />}></Route>
         <Route path='supply/createSupply' element={<CreateSupply />}></Route>
         <Route path='supply/updateSupply/:id' element={<UpdateSupply />}></Route>
+
+        <Route path='/dashboard' element={<Dashboard />}></Route>
       </Routes>
       </div>
     </BrowserRouter>
