@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,6 +12,12 @@ function CreateProduct() {
     const [expiration, setExpiration] = useState('');
     const [threshold, setThreshold] = useState('');
     const navigate = useNavigate();
+
+    const [allCategory, setAllCategory] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
+      .catch(err => console.log(err));
+  }, [])
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -45,9 +51,12 @@ function CreateProduct() {
                                 value={category}
                                 onChange={(e) => setCategory(e.target.value)}
                             >
-                                <option value='' disabled>Select Categort</option>
-                                <option value='curriculum'>Curriculum </option>
-                                <option value='ittech'>IT/Tech</option>
+                                <option value='' disabled>Select Category</option>
+                                {allCategory.map((allCategory) => (
+                                <option key={allCategory.id} value={allCategory.id}>
+                                    {allCategory.name}
+                                </option>
+                                ))}
                             </select>
                         </div>
                     </div>

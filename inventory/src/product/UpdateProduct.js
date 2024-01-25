@@ -14,6 +14,13 @@ function UpdateProduct() {
     const {id} = useParams();
     const navigate = useNavigate();
 
+    const [allCategory, setAllCategory] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+
     useEffect(() => {
         axios.get(`http://localhost:8081/getProduct/${id}`)
             .then(res => {
@@ -65,8 +72,11 @@ function UpdateProduct() {
                                 onChange={(e) => setCategory(e.target.value)}
                             >
                                 <option value='' disabled>Select Category</option>
-                                <option value='curriculum'>Curriculum </option>
-                                <option value='ittech'>IT/Tech</option>
+                                {allCategory.map((allCategory) => (
+                                <option key={allCategory.id} value={allCategory.id}>
+                                    {allCategory.name}
+                                </option>
+                                ))}
                             </select>
                         </div>
                     </div>

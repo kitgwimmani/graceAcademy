@@ -9,6 +9,25 @@ function Supply() {
     .catch(err => console.log(err));
   }, [])
 
+  const [allProducts, setAllProducts] = useState([]);
+    const [allSupplier, setAllSupplier] = useState([]);
+    const [allUnit, setAllUnit] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:8081/product').then(res => setAllProducts(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/supplier').then(res => setAllSupplier(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/unit').then(res => setAllUnit(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+
   const handleDelete = async(id) => {
     try{
       await axios.delete('http://localhost:8081/supply/'+id)
@@ -45,9 +64,9 @@ function Supply() {
                 {
                   supply.map((data, i) => (
                     <tr key={i}>
-                      <td>{data.product}</td>
-                      <td>{data.supplier}</td>
-                      <td>{data.unit}</td>
+                      <td>{allProducts.find(allProducts => allProducts.id === data.product)?.name || 'Product Not Found'}</td>
+                      <td>{allSupplier.find(allSupplier => allSupplier.id === data.supplier)?.name || 'Supplier Not Found'}</td>
+                      <td>{allUnit.find(allUnit => allUnit.id === data.unit)?.name || 'Unit Not Found'}</td>
                       <td>{data.quantity}</td>
                       <td>{data.expiry_date}</td>
                       <td>{data.serial_number}</td>

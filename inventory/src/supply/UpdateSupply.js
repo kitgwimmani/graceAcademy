@@ -15,6 +15,24 @@ function UpdateSupply() {
     const {id} = useParams();
     const navigate = useNavigate();
 
+    const [allProducts, setAllProducts] = useState([]);
+    const [allSupplier, setAllSupplier] = useState([]);
+    const [allUnit, setAllUnit] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:8081/product').then(res => setAllProducts(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/supplier').then(res => setAllSupplier(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/unit').then(res => setAllUnit(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
     useEffect(() => {
         axios.get(`http://localhost:8081/getSupply/${id}`)
             .then(res => {
@@ -56,8 +74,11 @@ function UpdateSupply() {
                             onChange={(e) => setProduct(e.target.value)}
                         >
                             <option value='' disabled>Select Product</option>
-                            <option value='1'>Books.. </option>
-                            <option value='2'>Table..</option>
+                            {allProducts.map((allProducts) => (
+                                <option key={allProducts.id} value={allProducts.id}>
+                                    {allProducts.name}
+                                </option>
+                                ))}
                         </select>
                     </div>
 
@@ -70,8 +91,11 @@ function UpdateSupply() {
                             onChange={(e) => setSupplier(e.target.value)}
                         >
                             <option value='' disabled>Select Supplier</option>
-                            <option value='1'>GTBank </option>
-                            <option value='2'>Green Gardens</option>
+                            {allSupplier.map((allSupplier) => (
+                                <option key={allSupplier.id} value={allSupplier.id}>
+                                    {allSupplier.name}
+                                </option>
+                                ))}
                         </select>
                     </div>
                 </div>
@@ -85,8 +109,11 @@ function UpdateSupply() {
                             onChange={(e) => setUnit(e.target.value)}
                         >
                             <option value='' disabled>Select Unit</option>
-                            <option value='1'>Packet</option>
-                            <option value='2'>Roll</option>
+                            {allUnit.map((allUnit) => (
+                                <option key={allUnit.id} value={allUnit.id}>
+                                    {allUnit.name}
+                                </option>
+                                ))}
                         </select>
                     </div>
 

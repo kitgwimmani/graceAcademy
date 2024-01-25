@@ -9,6 +9,13 @@ function Product() {
     .catch(err => console.log(err));
   }, [])
 
+  const [allCategory, setAllCategory] = useState([]);
+  useEffect(() => {
+    axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+
   const handleDelete = async(id) => {
     try{
       await axios.delete('http://localhost:8081/product/'+id)
@@ -44,7 +51,7 @@ function Product() {
                   product.map((data, i) => (
                     <tr key={i}>
                       <td>{data.name}</td>
-                      <td>{data.category}</td>
+                      <td>{allCategory.find(allCategory => allCategory.id === data.category)?.name || 'Product Not Found'}</td>
                       <td>{data.consumable? 'Yes' : 'No'}</td>
                       <td>{data.traceable? 'Yes' : 'No'}</td>
                       <td>{data.description}</td>

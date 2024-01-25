@@ -38,12 +38,16 @@ const Sidebar = () => {
               <CDBSidebarMenuItem icon="user">Custodian</CDBSidebarMenuItem>
             </NavLink>
 
+            <NavLink exact to="/product"  activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="table">Product/Item</CDBSidebarMenuItem>
+            </NavLink>
+
             <NavLink exact to="/supplier"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="car">Supplier</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="arrow-right">Supplier</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink exact to="/receiver"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Receiver</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem icon="arrow-left">Receiver</CDBSidebarMenuItem>
             </NavLink>
 
             <NavLink exact to="/supply"  activeClassName="activeClicked">
