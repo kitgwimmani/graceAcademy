@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonGroup } from 'react-bootstrap';
 
 function UpdateCustodian() {
     const [name, setName] = useState('');
@@ -20,6 +21,11 @@ function UpdateCustodian() {
             .catch(err => console.log(err));
     }, [id]);
 
+    const handleGoBack = (event) => {
+        event.preventDefault();
+        navigate(-1);
+    };
+
     function handleSubmit(event){
         event.preventDefault();
         axios.put('http://localhost:8081/updateCustodian/'+id, {name, email}).then(res => {
@@ -38,6 +44,7 @@ function UpdateCustodian() {
                     placeholder='Enter Custodian Name' 
                     className='form-control'
                     value={name}
+                    required
                     onChange={e => setName(e.target.value)}
                     />
                     
@@ -49,12 +56,15 @@ function UpdateCustodian() {
                     placeholder='Enter Email' 
                     className='form-control'
                     value={email}
+                    required
                     onChange={e => setEmail(e.target.value)}
                     />
                 </div>
 
-                
-                <button className='btn btn-success'>Update</button>
+                <ButtonGroup>
+                    <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
+                    <button className='btn btn-success'>Update</button>
+                </ButtonGroup>
             </form>
         </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonGroup } from 'react-bootstrap';
 
 
 function UpdateProduct() {
@@ -11,6 +12,9 @@ function UpdateProduct() {
     const [description, setDescription] = useState('');
     const [expiration, setExpiration] = useState('');
     const [threshold, setThreshold] = useState('');
+    const [serial_number, setSerialNumber] = useState('');
+    const [isbn, setIsbn] = useState('');
+    const [subject, setSubject] = useState('');
     const {id} = useParams();
     const navigate = useNavigate();
 
@@ -33,14 +37,22 @@ function UpdateProduct() {
                     setDescription(userData[0].description);
                     setExpiration(userData[0].expiration);
                     setThreshold(userData[0].threshold);
+                    setSerialNumber(userData[0].serial_number);
+                    setIsbn(userData[0].isbn);
+                    setSubject(userData[0].subject);
                
             })
             .catch(err => console.log(err));
     }, [id]);
 
+    const handleGoBack = (event) => {
+        event.preventDefault();
+        navigate(-1);
+    };
+
     function handleSubmit(event) {
         event.preventDefault();
-        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold }).then(res => {
+        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, subject }).then(res => {
             console.log(res);
             navigate('/product');
         }).catch(err => console.log(err));
@@ -50,25 +62,25 @@ function UpdateProduct() {
             <div className='w-50 bg-white rounded p-3'>
                 <form onSubmit={handleSubmit} >
                     <h2>Add Item to Inventory</h2>
-                    <div className='col-md-12'>
-                        <div className='mb-2'>
+                    <div className='row'>
+                        <div className='mb-2 col-6'>
                             <label htmlFor=''>Item Name</label>
                             <input type='text' 
-                                placeholder='Enter Item Name' className='form-control'
+                                placeholder='Enter Item Name' 
+                                required
+                                className='form-control'
                                 value={name}
                                 onChange={e => setName(e.target.value)}
                             />
 
                         </div>
-                    </div>
-
-                    <div className='col-md-12'>
-                        <div className='mb-2'>
+                        <div className='mb-2 col-6'>
                             <label htmlFor='category'>Category</label>
                             <select
                                 id='category'
                                 className='form-control'
                                 value={category}
+                                required
                                 onChange={(e) => setCategory(e.target.value)}
                             >
                                 <option value='' disabled>Select Category</option>
@@ -81,8 +93,10 @@ function UpdateProduct() {
                         </div>
                     </div>
 
-                    <div className='col-md-12'>
+                    
 
+                    <div className='row'>
+                        <div className='col-6'>
                         <div className='mb-2'>
                             <label>
                                 <input type='checkbox' className='mr-2' 
@@ -90,20 +104,17 @@ function UpdateProduct() {
                                 onChange={() => setConsumable(!consumable)} />
                                 Consumable
                             </label>
-                        </div></div>
-                    <div className='col-md-12'>
-                        <div className='mb-2'>
+                            </div>
+                            <div className='mb-2'>
                             <label>
                                 <input type='checkbox' className='mr-2' 
                                 checked={traceable}
                                 onChange={() => setTraceable(!traceable)} />
                                 Traceable
                             </label>
+                            </div>
                         </div>
-                    </div>
-
-                    <div className='col-md-12'>
-                        <div className='mb-2'>
+                        <div className='mb-2 col-6'>
                             <label htmlFor=''>Description</label>
                             <textarea
                                 placeholder='Enter Description'
@@ -114,8 +125,9 @@ function UpdateProduct() {
                         </div>
                     </div>
 
-                    <div className='col-md-12'>
-                        <div className='mb-2'>
+
+                    <div className='row'>
+                        <div className='mb-2 col-6'>
                             <label>
                                 <br></br>
                                 <input type='checkbox' className='mr-2'
@@ -124,10 +136,7 @@ function UpdateProduct() {
                                 Can Expire
                             </label>
                         </div>
-                    </div>
-
-                    <div className='col-md-12'>
-                        <div className='mb-2'>
+                        <div className='mb-2 col-6'>
                             <label htmlFor=''>Threshold</label>
                             <input type='number' placeholder='Enter Threshold' 
                                 className='form-control'
@@ -136,7 +145,43 @@ function UpdateProduct() {
                             />
                         </div>
                     </div>
-                    <button className='btn btn-success'>Update</button>
+
+                    <div className='row'>
+                        <div className='mb-2 col-6'>
+                            <label htmlFor=''>Serial Number</label>
+                            <input type='text' 
+                                placeholder='Enter Serial Number' 
+                                value={serial_number}
+                                className='form-control'
+                                onChange={e => setSerialNumber(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-2 col-6'>
+                        <label htmlFor=''>ISBN</label>
+                        <input type='text' placeholder='Enter ISBN' 
+                            value={isbn}
+                            className='form-control'
+                            onChange={e => setIsbn(e.target.value)}
+                        />
+                    </div>
+                    </div>
+                    <div className='row'>
+                    <div className='mb-2 col-6'>
+                            <label htmlFor=''>Subject</label>
+                            <input type='text' 
+                                placeholder='Enter Subject' 
+                                value={subject}
+                                className='form-control'
+                                onChange={e => setSubject(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+
+                    <ButtonGroup>
+                        <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
+                        <button className='btn btn-success'>Update</button>
+                    </ButtonGroup>
                 </form>
             </div>
         </div>

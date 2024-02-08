@@ -42,6 +42,9 @@ function Product() {
                   <th>Description</th>
                   <th>Can Expire</th>
                   <th>Threshold</th>
+                  <th>Serial Number</th>
+                  <th>ISBN</th>
+                  <th>Subject</th>
                   <th>Action</th>
                   <th>Action</th>
                 </tr>
@@ -51,12 +54,15 @@ function Product() {
                   product.map((data, i) => (
                     <tr key={i}>
                       <td>{data.name}</td>
-                      <td>{allCategory.find(allCategory => allCategory.id === data.category)?.name || 'Product Not Found'}</td>
+                      <td>{allCategory.find(allCategory => allCategory.id === data.category)?.name || 'Item Not Found'}</td>
                       <td>{data.consumable? 'Yes' : 'No'}</td>
                       <td>{data.traceable? 'Yes' : 'No'}</td>
                       <td>{data.description}</td>
                       <td>{data.expiration? 'Yes' : 'No'}</td>
                       <td>{data.threshold}</td>
+                      <td>{data.serial_number}</td>
+                      <td>{data.isbn}</td>
+                      <td>{data.subject}</td>
                       <td><Link to={`updateProduct/${data.id}`} className='btn btn-primary btn-sm'>Update</Link></td>
                       <td><button className='btn btn-danger btn-sm ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
                     </tr>

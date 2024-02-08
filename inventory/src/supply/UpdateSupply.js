@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ButtonGroup } from 'react-bootstrap';
 
 function UpdateSupply() {
     const [product, setProduct] = useState('');
@@ -12,6 +13,7 @@ function UpdateSupply() {
     const [isbn, setIsbn] = useState('');
     const [barcode, setBarcode] = useState('');
     const [remark, setRemark] = useState('');
+    const [supply_date, setSupplyDate] = useState('');
     const {id} = useParams();
     const navigate = useNavigate();
 
@@ -47,14 +49,19 @@ function UpdateSupply() {
                     setIsbn(userData[0].isbn);
                     setBarcode(userData[0].barcode);
                     setRemark(userData[0].remark);
+                    setSupplyDate(userData[0].supply_date);
                
             })
             .catch(err => console.log(err));
     }, [id]);
 
+    const handleGoBack = (event) => {
+        event.preventDefault();
+        navigate(-1);
+    };
     function handleSubmit(event){
         event.preventDefault();
-        axios.put('http://localhost:8081/updateSupply/'+id, {product, supplier, unit, quantity, expiry_date,serial_number,isbn,barcode,remark}).then(res => {
+        axios.put('http://localhost:8081/updateSupply/'+id, {product, supplier, unit, quantity, expiry_date,serial_number,isbn,barcode,remark,supply_date}).then(res => {
             console.log(res);
             navigate('/supply');
         }).catch(err => console.log(err));
@@ -63,7 +70,7 @@ function UpdateSupply() {
     <div className='d-flex vh-100  justify-content-center align-items-center'>
         <div className='w-50 bg-white rounded p-3'>
             <form onSubmit={handleSubmit}>
-                <h2>Update Supply</h2>
+                <h2>Edit Supply Event</h2>
                 <div className='row'>
                     <div className='mb-2 col-6'>
                         <label htmlFor='product'>Product</label>
@@ -71,6 +78,7 @@ function UpdateSupply() {
                             id='product'
                             className='form-control'
                             value={product}
+                            required
                             onChange={(e) => setProduct(e.target.value)}
                         >
                             <option value='' disabled>Select Product</option>
@@ -88,6 +96,7 @@ function UpdateSupply() {
                             id='supplier'
                             className='form-control'
                             value={supplier}
+                            required
                             onChange={(e) => setSupplier(e.target.value)}
                         >
                             <option value='' disabled>Select Supplier</option>
@@ -106,6 +115,7 @@ function UpdateSupply() {
                             id='unit'
                             className='form-control'
                             value={unit}
+                            required
                             onChange={(e) => setUnit(e.target.value)}
                         >
                             <option value='' disabled>Select Unit</option>
@@ -121,6 +131,7 @@ function UpdateSupply() {
                         <label htmlFor=''>Quantity</label>
                         <input type='number' placeholder='Enter Quantity' 
                             value={quantity}
+                            required
                             className='form-control'
                             onChange={e => setQuantity(e.target.value)}
                         />
@@ -165,18 +176,32 @@ function UpdateSupply() {
                     </div>
                 </div>
 
-                    <div className='mb-2'>
-                    <label htmlFor=''>Remark</label>
-                    <textarea
-                        placeholder='Enter Remark'
-                        className='form-control'
-                        value={remark}
-                        onChange={e => setRemark(e.target.value)}
-                    />
-                </div>
+                <div className='row'>
+                        <div className='mb-2 col-6'>
+                            <label htmlFor=''>Remark</label>
+                            <textarea
+                                placeholder='Enter Remark'
+                                value={remark}
+                                className='form-control'
+                                onChange={e => setRemark(e.target.value)}
+                            />
+                        </div>
 
-                
-                <button className='btn btn-success'>Update</button>
+                        <div className='mb-2 col-6'>
+                            <label htmlFor=''>Supply Date</label>
+                            <input type='date' 
+                                placeholder='Enter Supply Date' 
+                                value={supply_date}
+                                className='form-control'
+                                onChange={e => setSupplyDate(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                <ButtonGroup>
+                    <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
+                    <button className='btn btn-success'>Update</button>
+                </ButtonGroup>
             </form>
         </div>
     </div>

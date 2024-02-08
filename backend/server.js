@@ -318,7 +318,7 @@ app.get("/getProduct/:id", (req, res) => {
 });
 
 app.post('/createProduct', (req, res) => {
-    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`) VALUES (?)";
+    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`subject`) VALUES (?)";
     const values = [
         req.body.name, 
         req.body.category,
@@ -326,7 +326,10 @@ app.post('/createProduct', (req, res) => {
         req.body.traceable,
         req.body.description,
         req.body.expiration,
-        req.body.threshold
+        req.body.threshold,
+        req.body.serial_number,
+        req.body.isbn,
+        req.body.subject
     ]
     db.query(sql, [values], (err, data) => {
         if(err) return res.json("Error");
@@ -335,7 +338,7 @@ app.post('/createProduct', (req, res) => {
 })
 
 app.put('/updateProduct/:id', (req, res) => {
-    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ? where id = ?";
+    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`subject`= ? where id = ?";
     const values = [
         req.body.name, 
         req.body.category, 
@@ -343,7 +346,10 @@ app.put('/updateProduct/:id', (req, res) => {
         req.body.traceable, 
         req.body.description,
         req.body.expiration,  
-        req.body.threshold
+        req.body.threshold,
+        req.body.serial_number,
+        req.body.isbn,
+        req.body.subject
 
     ]
     const id = req.params.id;
@@ -501,7 +507,7 @@ app.get("/getSupply/:id", (req, res) => {
 });
 
 app.post('/createSupply', (req, res) => {
-    const sql = "INSERT INTO supply (`product`,`supplier`,`unit`,`quantity`,`expiry_date`,`serial_number`,`isbn`,`barcode`,`remark`) VALUES (?)";
+    const sql = "INSERT INTO supply (`product`,`supplier`,`unit`,`quantity`,`expiry_date`,`serial_number`,`isbn`,`barcode`,`remark`, `supply_date`) VALUES (?)";
     const values = [
         req.body.product, 
         req.body.supplier,
@@ -511,7 +517,8 @@ app.post('/createSupply', (req, res) => {
         req.body.serial_number,
         req.body.isbn,
         req.body.barcode,
-        req.body.remark
+        req.body.remark,
+        req.body.supply_date
     ]
     db.query(sql, [values], (err, data) => {
         if(err) return res.json("Error");
@@ -520,7 +527,7 @@ app.post('/createSupply', (req, res) => {
 })
 
 app.put('/updateSupply/:id', (req, res) => {
-    const sql = "UPDATE supply set `product` = ?, `supplier` = ?, `unit` = ? , `quantity` = ? , `expiry_date` = ? , `serial_number` = ? , `isbn` = ? , `barcode` = ? , `remark` = ? where id = ?";
+    const sql = "UPDATE supply set `product` = ?, `supplier` = ?, `unit` = ? , `quantity` = ? , `expiry_date` = ? , `serial_number` = ? , `isbn` = ? , `barcode` = ? , `remark` = ? , `supply_date` = ? where id = ?";
     const values = [
         req.body.product, 
         req.body.supplier, 
@@ -530,7 +537,8 @@ app.put('/updateSupply/:id', (req, res) => {
         req.body.serial_number,
         req.body.isbn,
         req.body.barcode,
-        req.body.remark
+        req.body.remark,
+        req.body.supply_date
     ]
     const id = req.params.id;
     db.query(sql, [...values, id], (err, data) => {
