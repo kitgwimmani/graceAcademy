@@ -43,6 +43,8 @@ import UpdateSupply from './supply/UpdateSupply';
 
 import Dashboard from './Dashboard';
 
+import Inventory from './report/Inventory';
+
 
 function App() {
   return (
@@ -90,6 +92,8 @@ function App() {
         <Route path='supply/updateSupply/:id' element={<UpdateSupply />}></Route>
 
         <Route path='/dashboard' element={<Dashboard />}></Route>
+
+        <Route path='/inventory' element={<Inventory />}></Route>
       </Routes>
       </div>
     </BrowserRouter>

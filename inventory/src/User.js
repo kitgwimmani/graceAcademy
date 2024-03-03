@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './App.css';
 
 function User() {
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState([]);
   useEffect(()=>{
     axios.get('http://localhost:8081/').then(res => setUser(res.data))
     .catch(err => console.log(err));
@@ -21,7 +21,6 @@ function User() {
 
   }
 
- 
 
   return (
     <div className='main-content'>
@@ -48,7 +47,12 @@ function User() {
                       <td>{data.role}</td>
                       <td><Link to={`updateUser/${data.id}`} className='btn btn-primary'>Update</Link></td>
                       <td><button className='btn btn-danger ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
-                      <td><button className='btn btn-secondary' >{data.status? 'Active' : 'Inactive'}</button></td>
+                      <td><button 
+                        className='btn btn-secondary' 
+                        
+                        >
+                        {data.status? 'Active' : 'Inactive'}
+                      </button></td>
                     </tr>
                   ))
                   }
