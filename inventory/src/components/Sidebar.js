@@ -27,12 +27,11 @@ const Sidebar = () => {
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }} className='sidebar'>
       <CDBSidebar textColor="#fff" backgroundColor="#355">
-        <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
-          <a href="/" className="text-decoration-none" style={{ color: 'inherit' }}>
-            GHAA Inventory
-          </a>
+      <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>} className="text-center" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#355' }}>
+          <NavLink exact to="/" className="text-decoration-none" style={{ color: 'inherit' }}>
+            <h5 style={{ margin: 0 }}>GHAA Inventory</h5>
+          </NavLink>
         </CDBSidebarHeader>
-
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
             <SidebarMenuItemWithTooltip to="/dashboard" icon="columns" tooltipText="Dashboard">

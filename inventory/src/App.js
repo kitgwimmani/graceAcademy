@@ -51,7 +51,9 @@ function App() {
     <div className="app-container">
     
     <BrowserRouter>
+    <div className="sidebar">
     <Sidebar/>
+    </div>
       <div className='main-content'>
       <Routes>
       

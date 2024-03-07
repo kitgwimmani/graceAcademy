@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Form, Container, InputGroup, Table } from 'react-bootstrap';
+import { Form, Container, InputGroup, Table, Pagination  } from 'react-bootstrap';
 
 function Supply() {
   const [supply, setSupply] = useState([])
@@ -40,7 +40,28 @@ function Supply() {
 
   }
 
+  const PageSize = 5;
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const filteredSupply = supply.filter((data) => {
+    const searchLower = search.toLowerCase();
+    return (
+      searchLower === '' ||
+      Object.values(data).some(
+        (value) => value && value.toString().toLowerCase().includes(searchLower)
+      )
+    );
+  });
+
+  const indexOfLastItem = currentPage * PageSize;
+  const indexOfFirstItem = indexOfLastItem - PageSize;
+  const currentItems = filteredSupply.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(filteredSupply.length / PageSize);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <Container fluid>
@@ -50,9 +71,10 @@ function Supply() {
               </InputGroup>
 
             </Form>
-          <Link to='/supply/createSupply' className='btn btn-success'>Add New Stock +</Link>
-          
-          <Table striped bordered hover style={{ fontSize: '12px' }}>
+          <Link to='/supply/createSupply' className='btn btn-success'>Not Found? Add +</Link>
+          <div>
+          <Table striped bordered hover style={{ fontSize: '12px', marginBottom: '20px' }}>
+         
               <thead>
                 <tr>
                   <th>Date</th>
@@ -72,17 +94,7 @@ function Supply() {
               </thead>
               <tbody>
                 {
-                  supply.filter((data) => {
-                    const searchLower = search.toLowerCase();
-                    //specific   return search.toLowerCase()=== ''? data : data.item.toLowerCase().includes(search)
-                    return (
-                      searchLower === '' ||
-                      Object.values(data).some(
-                        (value) =>
-                          value && value.toString().toLowerCase().includes(searchLower)
-                      )
-                    );
-                  }).map((data, i) => (
+                  currentItems.map((data, i) => (
                     <tr key={i}>
                       <td>{data.supply_date}</td>
                       <td>{allProducts.find(allProducts => allProducts.id === data.product)?.name || 'Product Not Found'}</td>
@@ -95,16 +107,36 @@ function Supply() {
                       <td>{data.barcode}</td>
                       <td>{data.remark}</td>
                       <td><Link to={`updateSupply/${data.id}`} className='btn btn-primary btn-sm'>Edit</Link></td>
-                      <td><Link to={`./createSupply/${data.id}`} className='btn btn-success btn-sm'>Add</Link></td>
+                      <td><Link to={`./createSupply/${data.id}`} className='btn btn-success btn-sm'>+Stock</Link></td>
                       <td><button className='btn btn-danger ms-2 btn-sm' onClick={ e => handleDelete(data.id)}>Delete</button></td>
                     </tr>
                   ))
                   }
 
               </tbody>
-
+              
           </Table>
-        
+          
+          <Pagination>
+        <Pagination.Prev
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        />
+        {[...Array(totalPages).keys()].map((number) => (
+          <Pagination.Item
+            key={number + 1}
+            active={number + 1 === currentPage}
+            onClick={() => handlePageChange(number + 1)}
+          >
+            {number + 1}
+          </Pagination.Item>
+        ))}
+        <Pagination.Next
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        />
+      </Pagination>
+      </div>
           </Container>
   )
 }
