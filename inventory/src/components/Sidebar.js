@@ -8,6 +8,20 @@ import {
   CDBSidebarMenuItem,
 } from 'cdbreact';
 import { NavLink } from 'react-router-dom';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+
+const SidebarMenuItemWithTooltip = ({ to, icon, children, tooltipText }) => (
+  <OverlayTrigger
+    key="bottom"
+    placement="right"
+    overlay={<Tooltip id={`tooltip-${to}`}>{tooltipText}</Tooltip>}
+  >
+    <NavLink exact to={to} activeClassName="activeClicked">
+      <CDBSidebarMenuItem icon={icon}>{children}</CDBSidebarMenuItem>
+    </NavLink>
+  </OverlayTrigger>
+);
 
 const Sidebar = () => {
   return (
@@ -21,60 +35,57 @@ const Sidebar = () => {
 
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
-            <NavLink exact to="/dashboard" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Manage Users</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/location" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="city">Locations</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/unit" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="chart-line">Unit</CDBSidebarMenuItem>
-            </NavLink>
+            <SidebarMenuItemWithTooltip to="/dashboard" icon="columns" tooltipText="Dashboard">
+              Dashboard
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/" icon="user" tooltipText="Manage Users">
+              Manage Users
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/location" icon="landmark" tooltipText="Locations">
+              Locations
+            </SidebarMenuItemWithTooltip>
 
-            <NavLink exact to="/custodian"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Custodian</CDBSidebarMenuItem>
-            </NavLink>
+            <SidebarMenuItemWithTooltip to="/unit" icon="calculator" tooltipText="Units">
+              Units
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/custodian" icon="handshake" tooltipText="Custodian">
+              Custodian
+            </SidebarMenuItemWithTooltip>
 
-            <NavLink exact to="/category"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Category</CDBSidebarMenuItem>
-            </NavLink>
 
-            <NavLink exact to="/product"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Item</CDBSidebarMenuItem>
-            </NavLink>
+            <SidebarMenuItemWithTooltip to="/category" icon="clipboard-list" tooltipText="Category">
+              Category
 
-            <NavLink exact to="/supplier"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="arrow-right">Supplier</CDBSidebarMenuItem>
-            </NavLink>
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/product" icon="shopping-bag" tooltipText="Product">
+              Product
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/supplier" icon="box-open" tooltipText="Supplier">
+              Supplier
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/receiver" icon="user-clock" tooltipText="Receiver">
+              Receiver
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/supply" icon="warehouse" tooltipText="Inventory">
+              Inventory
+            </SidebarMenuItemWithTooltip>
+            <SidebarMenuItemWithTooltip to="/inventory" icon="table" tooltipText="Report">
+              Report
+            </SidebarMenuItemWithTooltip>
 
-            <NavLink exact to="/receiver"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="arrow-left">Receiver</CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink exact to="/supply"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Inventory</CDBSidebarMenuItem>
-            </NavLink>
-
-            <NavLink exact to="/inventory"  activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Reports</CDBSidebarMenuItem>
-            </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
         <CDBSidebarFooter style={{ textAlign: 'center' }}>
           <div
             style={{
-              padding: '20px 5px',
+              padding: '10px 2px',
             }}
           >
-           
+            {/* ... Footer content */}
           </div>
         </CDBSidebarFooter>
       </CDBSidebar>
-      
     </div>
   );
 };

@@ -58,60 +58,7 @@ function Dashboard() {
   return (
     <Container>
       <h3 className='m-4'>Dashboard</h3>
-      <Row className='m-4'>
-        <Col sm={12} md={4}>
-          <DashboardCard
-            title="Users"
-            count={user.length}
-            page="/"
-          />
-        </Col>
-
-        <Col sm={12} md={4}>
-          <DashboardCard
-            title="Custodians"
-            count={custodian.length}
-            page="/custodian"
-          />
-        </Col>
-
-        <Col sm={12} md={4}>
-          <DashboardCard
-            title="Locations"
-            count={location.length}
-            page="/location"
-          />
-        </Col>
-      </Row>
-
-
-
-      <Row className='m-4'>
-        <Col sm={12} md={4}>
-          <DashboardCard
-            title="Products/Items"
-            count={product.length}
-            page="/product"
-          />
-        </Col>
-
-        <Col sm={12} md={4}>
-          <DashboardCard
-            title="Suppliers"
-            count={supplier.length}
-            page="/supplier"
-          />
-        </Col>
-
-        <Col sm={12} md={4}>
-          <DashboardCard
-            title="Deliveries"
-            count={receiver.length}
-            page="/receiver"
-          />
-        </Col>
-      </Row>
-
+      
       <h3 className='m-4'>Quick Links & Notifications</h3>
 
       <Row className='m-4'>

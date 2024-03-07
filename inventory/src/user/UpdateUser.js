@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
 
+import Select from 'react-select';
+
 function UpdateUser() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -42,7 +44,16 @@ function UpdateUser() {
             })
             .catch(err => console.log(err));
     }
+     ////for searcheable role
+     const roleOptions = [
+        { value: 'Admin', label: 'Admin' },
+        { value: 'User', label: 'User' },
+      ];
 
+    const handleRoleChange = (selectedOption) => {
+        setRole(selectedOption ? selectedOption.value : '');
+    };
+    //##############################
     return (
         <div className='d-flex vh-100  justify-content-center align-items-center'>
             <div className='w-50 bg-white rounded p-3'>
@@ -74,17 +85,11 @@ function UpdateUser() {
 
                     <div className='mb-2'>
                         <label htmlFor='role'>Role</label>
-                        <select
-                            id='role'
-                            className='form-control'
-                            value={role}
-                            required
-                            onChange={e => setRole(e.target.value)}
-                        >
-                            <option value='' disabled>Select Role</option>
-                            <option value='admin'>admin</option>
-                            <option value='user'>user</option>
-                        </select>
+                        <Select
+                            options={roleOptions}
+                            value={roleOptions.find((option) => option.value === role)}
+                            onChange={handleRoleChange}
+                        />
                     </div>
                     <ButtonGroup>
                         <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>

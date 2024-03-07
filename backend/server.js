@@ -11,7 +11,15 @@ const db = mysql.createConnection({
     user: "root",
     password: "",
     database: "grace_academy_db"
-})
+}) 
+
+/*const db = mysql.createConnection({
+    host: "https://cloudsync.com.ng",
+    user: "cloudsyn_kayceemani",
+    password: "",
+    database: "cloudsyn_grace_academy_db"
+}) */
+
 
 // user user user user user user
 app.get("/", (req, res) => {
@@ -74,7 +82,7 @@ app.delete('/user/:id', (req, res) => {
 
 // category category category category
 app.get("/category", (req, res) => {
-    const sql = "SELECT * from category";
+    const sql = "SELECT * from category ORDER BY name ASC";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);
@@ -240,7 +248,7 @@ app.delete('/location/:id', (req, res) => {
 
 // unit unit unit 
 app.get("/unit", (req, res) => {
-    const sql = "SELECT * from unit";
+    const sql = "SELECT * from unit ORDER BY name ASC";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);
@@ -298,7 +306,7 @@ app.delete('/unit/:id', (req, res) => {
 
 // product
 app.get("/product", (req, res) => {
-    const sql = "SELECT * from product";
+    const sql = "SELECT * from product ORDER BY name ASC";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);
@@ -318,7 +326,7 @@ app.get("/getProduct/:id", (req, res) => {
 });
 
 app.post('/createProduct', (req, res) => {
-    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`subject`) VALUES (?)";
+    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`subject`, `pub_brand`) VALUES (?)";
     const values = [
         req.body.name, 
         req.body.category,
@@ -329,7 +337,8 @@ app.post('/createProduct', (req, res) => {
         req.body.threshold,
         req.body.serial_number,
         req.body.isbn,
-        req.body.subject
+        req.body.subject,
+        req.body.pub_brand
     ]
     db.query(sql, [values], (err, data) => {
         if(err) return res.json("Error");
@@ -338,7 +347,7 @@ app.post('/createProduct', (req, res) => {
 })
 
 app.put('/updateProduct/:id', (req, res) => {
-    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`subject`= ? where id = ?";
+    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`subject`= ?,`pub_brand`= ? where id = ?";
     const values = [
         req.body.name, 
         req.body.category, 
@@ -349,7 +358,8 @@ app.put('/updateProduct/:id', (req, res) => {
         req.body.threshold,
         req.body.serial_number,
         req.body.isbn,
-        req.body.subject
+        req.body.subject,
+        req.body.pub_brand
 
     ]
     const id = req.params.id;
@@ -371,7 +381,7 @@ app.delete('/product/:id', (req, res) => {
 
 // supplier supplier supplier supplier
 app.get("/supplier", (req, res) => {
-    const sql = "SELECT * from supplier";
+    const sql = "SELECT * from supplier ORDER BY name ASC";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);
@@ -429,7 +439,7 @@ app.delete('/supplier/:id', (req, res) => {
 
 // receiver receiver receiver receiver
 app.get("/receiver", (req, res) => {
-    const sql = "SELECT * from receiver";
+    const sql = "SELECT * from receiver ORDER BY name ASC";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);
@@ -556,6 +566,15 @@ app.delete('/supply/:id', (req, res) => {
     })
 })
 //##################################################################33
+
+//############## INVENTORY REPORTS ########### INVENTORY REPORTS ############# INVENTORY REPORTS ######### REPORTS
+app.get("/inventory", (req, res) => {
+    const sql = "SELECT * from inventory ORDER BY item ASC";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
 
 app.listen(8081, () => {
     console.log("listening")

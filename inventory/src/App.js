@@ -89,6 +89,7 @@ function App() {
 
         <Route path='/supply' element={<Supply />}></Route>
         <Route path='supply/createSupply' element={<CreateSupply />}></Route>
+        <Route path='supply/createSupply/:id' element={<CreateSupply />}></Route>
         <Route path='supply/updateSupply/:id' element={<UpdateSupply />}></Route>
 
         <Route path='/dashboard' element={<Dashboard />}></Route>

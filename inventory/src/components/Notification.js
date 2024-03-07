@@ -10,11 +10,11 @@ const Notification = (props) => {
   };
   return (
     <Card>
-    <Card.Link as={Link} to={page} style={linkStyle} class="btn btn-light">
+    <Card.Link as={Link} to={page} style={linkStyle} class="btn btn-light d-flex justify-content-between align-items-center">
     
         {title} 
         {count>0 ? (
-           <span class="badge bg-danger"> {count}</span>
+           <span class="badge bg-danger ml-auto"> {count}</span>
         ): (
           <span class="badge"></span>
         )}

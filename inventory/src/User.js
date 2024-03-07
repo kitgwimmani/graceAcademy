@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import {  Dropdown } from 'react-bootstrap';
 
 import './App.css';
 
 function User() {
   const [user, setUser] = useState([]);
-  useEffect(()=>{
+  useEffect(() => {
     axios.get('http://localhost:8081/').then(res => setUser(res.data))
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
   }, [])
 
-  const handleDelete = async(id) => {
-    try{
-      await axios.delete('http://localhost:8081/user/'+id)
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete('http://localhost:8081/user/' + id)
       window.location.reload()
-    }catch(err) {
+    } catch (err) {
       console.log(err)
     }
 
@@ -24,46 +25,45 @@ function User() {
 
   return (
     <div className='main-content'>
-    <div className=' d-flex vh-100 p-0 m-0  justify-content-center align-items-center'>
-      <div className='w-60 bg-white rounded p-3'>
+      <div className=' d-flex vh-100 p-0 m-0  justify-content-center align-items-center'>
+        <div className='w-60 bg-white rounded p-3'>
           <Link to='/createUser' className='btn btn-success'>Add +</Link>
           <table className='table'>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Action</th>
-                  <th>Action</th>
-                  <th>Manage Roles</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  user.map((data, i) => (
-                    <tr key={i}>
-                      <td>{data.name}</td>
-                      <td>{data.email}</td>
-                      <td>{data.role}</td>
-                      <td><Link to={`updateUser/${data.id}`} className='btn btn-primary'>Update</Link></td>
-                      <td><button className='btn btn-danger ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
-                      <td><button 
-                        className='btn btn-secondary' 
-                        
-                        >
-                        {data.status? 'Active' : 'Inactive'}
-                      </button></td>
-                    </tr>
-                  ))
-                  }
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                user.map((data, i) => (
+                  <tr key={i}>
+                    <td>{data.name}</td>
+                    <td>{data.email}</td>
+                    <td>{data.role}</td>
+                    <td> <Dropdown>
+                      <Link Link to={`updateUser/${data.id}`} className='btn btn-primary'>Update</Link>
+                      <Dropdown.Toggle split variant="danger" id="dropdown-split-basic" />
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item href="#">{data.status ? 'Active' : 'Inactive'}</Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown></td>
+                  </tr>
+                ))
+              }
 
-              </tbody>
+            </tbody>
 
           </table>
-        
+
+        </div>
       </div>
-    </div>
-    
+
     </div>
   )
 }

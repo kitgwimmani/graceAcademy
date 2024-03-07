@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
 
+import Select from 'react-select';
 
 function UpdateProduct() {
     const [name, setName] = useState('');
@@ -15,10 +16,11 @@ function UpdateProduct() {
     const [serial_number, setSerialNumber] = useState('');
     const [isbn, setIsbn] = useState('');
     const [subject, setSubject] = useState('');
+    const [pub_brand, setPubBrand] = useState('');
     const {id} = useParams();
     const navigate = useNavigate();
 
-    const [allCategory, setAllCategory] = useState([]);
+    const [allCategories, setAllCategory] = useState([]);
   useEffect(() => {
     axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
       .catch(err => console.log(err));
@@ -40,6 +42,7 @@ function UpdateProduct() {
                     setSerialNumber(userData[0].serial_number);
                     setIsbn(userData[0].isbn);
                     setSubject(userData[0].subject);
+                    setSubject(userData[0].pub_brand);
                
             })
             .catch(err => console.log(err));
@@ -52,11 +55,21 @@ function UpdateProduct() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, subject }).then(res => {
+        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, subject, pub_brand }).then(res => {
             console.log(res);
             navigate('/product');
         }).catch(err => console.log(err));
     }
+     ////for searcheable category
+     const categoryOptions = allCategories.map((category) => ({
+        value: category.id,
+        label: category.name,
+    }));
+
+    const handleCategoryChange = (selectedOption) => {
+        setCategory(selectedOption ? selectedOption.value : '');
+    };
+    //##############################
     return (
         <div className='d-flex vh-100  justify-content-center align-items-center'>
             <div className='w-50 bg-white rounded p-3'>
@@ -76,20 +89,11 @@ function UpdateProduct() {
                         </div>
                         <div className='mb-2 col-6'>
                             <label htmlFor='category'>Category</label>
-                            <select
-                                id='category'
-                                className='form-control'
-                                value={category}
-                                required
-                                onChange={(e) => setCategory(e.target.value)}
-                            >
-                                <option value='' disabled>Select Category</option>
-                                {allCategory.map((allCategory) => (
-                                <option key={allCategory.id} value={allCategory.id}>
-                                    {allCategory.name}
-                                </option>
-                                ))}
-                            </select>
+                            <Select
+                                        options={categoryOptions}
+                                        value={categoryOptions.find((option) => option.value === category)}
+                                        onChange={handleCategoryChange}
+                                    />
                         </div>
                     </div>
 
@@ -173,6 +177,15 @@ function UpdateProduct() {
                                 value={subject}
                                 className='form-control'
                                 onChange={e => setSubject(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-2 col-6'>
+                            <label htmlFor=''>Publisher/Brand</label>
+                            <input type='text' 
+                                placeholder='Enter Publisher/Brand' 
+                                value={pub_brand}
+                                className='form-control'
+                                onChange={e => setPubBrand(e.target.value)}
                             />
                         </div>
                     </div>

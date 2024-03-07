@@ -45,6 +45,7 @@ function Product() {
                   <th>Serial Number</th>
                   <th>ISBN</th>
                   <th>Subject</th>
+                  <th>Publisher/Brand</th>
                   <th>Action</th>
                   <th>Action</th>
                 </tr>
@@ -63,6 +64,7 @@ function Product() {
                       <td>{data.serial_number}</td>
                       <td>{data.isbn}</td>
                       <td>{data.subject}</td>
+                      <td>{data.pub_brand}</td>
                       <td><Link to={`updateProduct/${data.id}`} className='btn btn-primary btn-sm'>Update</Link></td>
                       <td><button className='btn btn-danger btn-sm ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
                     </tr>
