@@ -81,8 +81,8 @@ const handleAddCategory = (event) => {
                                     />
                                 </div>
                                 <div className='mb-2 col-3'>
-                                <label>If none</label>
-                                <button className='btn btn-success' onClick={handleAddCategory}>new</button>
+                                <label> </label>
+                                <button className='btn btn-success' onClick={handleAddCategory}>+</button>
                                 </div>
                             
                             

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Form, Container, InputGroup, Table, Pagination  } from 'react-bootstrap';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
 function Supply() {
   const [supply, setSupply] = useState([])
@@ -32,12 +33,19 @@ function Supply() {
 
   const handleDelete = async(id) => {
     try{
+      if (confirmDelete()){
       await axios.delete('http://localhost:8081/supply/'+id)
       window.location.reload()
+      }
     }catch(err) {
       console.log(err)
     }
 
+  }
+
+  const confirmDelete = () => {
+    const isConfirmed = window.confirm('Are you sure you want to delete?');
+    return isConfirmed
   }
 
   const PageSize = 5;
@@ -71,7 +79,7 @@ function Supply() {
               </InputGroup>
 
             </Form>
-          <Link to='/supply/createSupply' className='btn btn-success'>Not Found? Add +</Link>
+          
           <div>
           <Table striped bordered hover style={{ fontSize: '12px', marginBottom: '20px' }}>
          
@@ -89,7 +97,6 @@ function Supply() {
                   <th>Remark</th>
                   <th>Action</th>
                   <th>Action</th>
-                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -97,6 +104,9 @@ function Supply() {
                   currentItems.map((data, i) => (
                     <tr key={i}>
                       <td>{data.supply_date}</td>
+
+
+          
                       <td>{allProducts.find(allProducts => allProducts.id === data.product)?.name || 'Product Not Found'}</td>
                       <td>{allSupplier.find(allSupplier => allSupplier.id === data.supplier)?.name || 'Supplier Not Found'}</td>
                       <td>{allUnit.find(allUnit => allUnit.id === data.unit)?.name || 'Unit Not Found'}</td>
@@ -106,9 +116,19 @@ function Supply() {
                       <td>{data.isbn}</td>
                       <td>{data.barcode}</td>
                       <td>{data.remark}</td>
-                      <td><Link to={`updateSupply/${data.id}`} className='btn btn-primary btn-sm'>Edit</Link></td>
                       <td><Link to={`./createSupply/${data.id}`} className='btn btn-success btn-sm'>+Stock</Link></td>
-                      <td><button className='btn btn-danger ms-2 btn-sm' onClick={ e => handleDelete(data.id)}>Delete</button></td>
+                      <td>
+                      <ButtonGroup>
+                      <Link to={`updateSupply/${data.id}`} className='btn btn-light'>Edit</Link>
+                      <Dropdown >
+                        <Dropdown.Toggle split variant="light" id="dropdown-split-basic" />
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
+                         
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </ButtonGroup>
+                      </td>
                     </tr>
                   ))
                   }
@@ -137,6 +157,7 @@ function Supply() {
         />
       </Pagination>
       </div>
+      <Link to='/product/createProduct' className='btn btn-success'>Add New Item</Link>
           </Container>
   )
 }

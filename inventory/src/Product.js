@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
 function Product() {
   const [product, setProduct] = useState([])
@@ -18,12 +19,18 @@ function Product() {
 
   const handleDelete = async(id) => {
     try{
+      if (confirmDelete()){
       await axios.delete('http://localhost:8081/product/'+id)
       window.location.reload()
+      }
     }catch(err) {
       console.log(err)
     }
 
+  }
+  const confirmDelete = () => {
+    const isConfirmed = window.confirm('Are you sure you want to delete?');
+    return isConfirmed
   }
 
   const fontSize = '12px';
@@ -47,7 +54,6 @@ function Product() {
                   <th>Subject</th>
                   <th>Publisher/Brand</th>
                   <th>Action</th>
-                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -65,8 +71,18 @@ function Product() {
                       <td>{data.isbn}</td>
                       <td>{data.subject}</td>
                       <td>{data.pub_brand}</td>
-                      <td><Link to={`updateProduct/${data.id}`} className='btn btn-primary btn-sm'>Update</Link></td>
-                      <td><button className='btn btn-danger btn-sm ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
+                      <td>
+                      <ButtonGroup>
+                      <Link to={`updateProduct/${data.id}`} className='btn btn-light'>Update</Link>
+                      <Dropdown >
+                        <Dropdown.Toggle split variant="light" id="dropdown-split-basic" />
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
+                         
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </ButtonGroup>
+                      </td>
                     </tr>
                   ))
                   }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import {  Dropdown } from 'react-bootstrap';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
 import './App.css';
 
@@ -14,13 +14,21 @@ function User() {
 
   const handleDelete = async (id) => {
     try {
+      if (confirmDelete()){
       await axios.delete('http://localhost:8081/user/' + id)
       window.location.reload()
+    }
     } catch (err) {
       console.log(err)
     }
 
   }
+
+  const confirmDelete = () => {
+    const isConfirmed = window.confirm('Are you sure you want to delete?');
+    return isConfirmed
+  }
+  
 
 
   return (
@@ -44,15 +52,17 @@ function User() {
                     <td>{data.name}</td>
                     <td>{data.email}</td>
                     <td>{data.role}</td>
-                    <td> <Dropdown>
-                      <Link Link to={`updateUser/${data.id}`} className='btn btn-primary'>Update</Link>
-                      <Dropdown.Toggle split variant="danger" id="dropdown-split-basic" />
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item href="#">{data.status ? 'Active' : 'Inactive'}</Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown></td>
+                    <td> <ButtonGroup>
+                      <Link to={`updateUser/${data.id}`} className='btn btn-light'>Update</Link>
+                      <Dropdown >
+                        <Dropdown.Toggle split variant="light" id="dropdown-split-basic" />
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
+                          <Dropdown.Divider />
+                          <Dropdown.Item href="#">{data.status ? 'Activate' : 'Deactivate'}</Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </ButtonGroup></td>
                   </tr>
                 ))
               }

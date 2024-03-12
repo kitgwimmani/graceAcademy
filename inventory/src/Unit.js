@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
 function Unit() {
   const [unit, setUnit] = useState([])
@@ -11,12 +12,19 @@ function Unit() {
 
   const handleDelete = async(id) => {
     try{
+      if (confirmDelete()){
       await axios.delete('http://localhost:8081/unit/'+id)
       window.location.reload()
+      }
     }catch(err) {
       console.log(err)
     }
 
+  }
+
+  const confirmDelete = () => {
+    const isConfirmed = window.confirm('Are you sure you want to delete?');
+    return isConfirmed
   }
 
  
@@ -31,7 +39,6 @@ function Unit() {
                   <th>Name</th>
                   <th>Description</th>
                   <th>Action</th>
-                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -40,8 +47,18 @@ function Unit() {
                     <tr key={i}>
                       <td>{data.name}</td>
                       <td>{data.description}</td>
-                      <td><Link to={`updateUnit/${data.id}`} className='btn btn-primary'>Update</Link></td>
-                      <td><button className='btn btn-danger ms-2' onClick={ e => handleDelete(data.id)}>Delete</button></td>
+                      <td>
+                      <ButtonGroup>
+                      <Link to={`updateUnit/${data.id}`} className='btn btn-light'>Update</Link>
+                      <Dropdown >
+                        <Dropdown.Toggle split variant="light" id="dropdown-split-basic" />
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
+                         
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </ButtonGroup>
+                      </td>
                     </tr>
                   ))
                   }
