@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
-
+import '../App.css';
 function UpdateSupplier() {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -74,8 +74,8 @@ function UpdateSupplier() {
                 </div>
 
                 <ButtonGroup>
-                    <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                    <button className='btn btn-success'>Update</button>
+                    <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                    <button className='btn success'>Update</button>
                 </ButtonGroup>
             </form>
         </div>

@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {  ButtonGroup } from 'react-bootstrap';
+import Barcode from 'react-barcode';
+//import BarcodeReader from 'react-barcode-reader';
 
 import Select from 'react-select';
+import '../App.css';
 
 function CreateProduct() {
     const [name, setName] = useState('');
@@ -15,6 +18,7 @@ function CreateProduct() {
     const [threshold, setThreshold] = useState('');
     const [serial_number, setSerialNumber] = useState('');
     const [isbn, setIsbn] = useState('');
+    const [barcode, setBarcode] = useState('');
     const [subject, setSubject] = useState('');
     const [pub_brand, setPubBrand] = useState('');
     const navigate = useNavigate();
@@ -30,6 +34,10 @@ function CreateProduct() {
     navigate(-1);
 };
 
+const handleGetBarcode = (event) => {
+    alert('get your device ready')
+};
+
 const handleAddCategory = (event) => {
     event.preventDefault();
     navigate('/category/createCategory');
@@ -37,7 +45,7 @@ const handleAddCategory = (event) => {
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:8081/createProduct', { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, subject, pub_brand }).then(res => {
+        axios.post('http://localhost:8081/createProduct', { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand }).then(res => {
             console.log(res);
             navigate(-1);
         }).catch(err => console.log(err));
@@ -82,7 +90,7 @@ const handleAddCategory = (event) => {
                                 </div>
                                 <div className='mb-2 col-3'>
                                 <label> </label>
-                                <button className='btn btn-success' onClick={handleAddCategory}>+</button>
+                                <button className='btn success' onClick={handleAddCategory}>+</button>
                                 </div>
                             
                             
@@ -98,14 +106,14 @@ const handleAddCategory = (event) => {
                             <div className='mb-2'>
                                 <label>
                                     <input type='checkbox' className='mr-2' onChange={() => setConsumable(!consumable)} />
-                                    Consumable
+                                    {'  '}Consumable
                                 </label>
                             </div>
                     
                             <div className='mb-2'>
                                 <label>
                                     <input type='checkbox' className='mr-2' onChange={() => setTraceable(!traceable)} />
-                                    Traceable
+                                    {'  '}Traceable
                                 </label>
                             </div>
                         </div>
@@ -128,7 +136,7 @@ const handleAddCategory = (event) => {
                             <label>
                                 <br></br>
                                 <input type='checkbox' className='mr-2' onChange={() => setExpiration(!expiration)} />
-                                Can Expire
+                                {'  '}Can Expire
                             </label>
                         </div>
                         <div className='mb-2 col-6'>
@@ -180,10 +188,26 @@ const handleAddCategory = (event) => {
                         </div>
                     </div>
                     </div>
+                    <div className='row'>
+                    <div className='mb-2 col-6'>
                     <ButtonGroup>
-                        <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn btn-success'>Submit</button>
+                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                        <button className='btn success'>Submit</button>
                     </ButtonGroup>
+                          
+                        </div>
+
+                        <div className='mb-2 col-6'>
+                        <label htmlFor=''>Barcode</label>
+                            <Barcode value='1234567' />
+                            
+                            <button className='btn btn-warning btn-sm' onClick={handleGetBarcode}>
+                            Scan Barcode
+                            </button>
+                        </div>
+                    </div>
+                    
+                    
                 </form>
             </div>
         </div>

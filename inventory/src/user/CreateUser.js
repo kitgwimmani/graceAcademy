@@ -69,8 +69,8 @@ function CreateUser() {
                         />
                     </div>
                     <ButtonGroup>
-                        <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn btn-success'>Submit</button>
+                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                        <button className='btn success'>Submit</button>
                     </ButtonGroup>
                 </form>
             </div>

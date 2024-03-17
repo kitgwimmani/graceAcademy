@@ -326,7 +326,7 @@ app.get("/getProduct/:id", (req, res) => {
 });
 
 app.post('/createProduct', (req, res) => {
-    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`subject`, `pub_brand`) VALUES (?)";
+    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`barcode`,`subject`, `pub_brand`) VALUES (?)";
     const values = [
         req.body.name, 
         req.body.category,
@@ -337,6 +337,7 @@ app.post('/createProduct', (req, res) => {
         req.body.threshold,
         req.body.serial_number,
         req.body.isbn,
+        red.body.barcode,
         req.body.subject,
         req.body.pub_brand
     ]
@@ -347,7 +348,7 @@ app.post('/createProduct', (req, res) => {
 })
 
 app.put('/updateProduct/:id', (req, res) => {
-    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`subject`= ?,`pub_brand`= ? where id = ?";
+    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`barcode`= ?,`subject`= ?,`pub_brand`= ? where id = ?";
     const values = [
         req.body.name, 
         req.body.category, 
@@ -358,6 +359,7 @@ app.put('/updateProduct/:id', (req, res) => {
         req.body.threshold,
         req.body.serial_number,
         req.body.isbn,
+        req.body.barcode,
         req.body.subject,
         req.body.pub_brand
 

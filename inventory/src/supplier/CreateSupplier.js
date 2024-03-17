@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
+import '../App.css';
 
 function CreateSupplier() {
     const [name, setName] = useState('');
@@ -58,8 +59,8 @@ function CreateSupplier() {
                 </div>
 
                 <ButtonGroup>
-                    <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                    <button className='btn btn-success'>Submit</button>
+                    <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                    <button className='btn success'>Submit</button>
                 </ButtonGroup>
             </form>
         </div>

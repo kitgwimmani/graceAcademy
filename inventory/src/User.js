@@ -35,7 +35,7 @@ function User() {
     <div className='main-content'>
       <div className=' d-flex vh-100 p-0 m-0  justify-content-center align-items-center'>
         <div className='w-60 bg-white rounded p-3'>
-          <Link to='/createUser' className='btn btn-success'>Add +</Link>
+          <Link to='/createUser' className='btn success'>Add +</Link>
           <table className='table'>
             <thead>
               <tr>

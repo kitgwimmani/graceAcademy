@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
 
+import './App.css';
+
 function Supplier() {
   const [supplier, setSupplier] = useState([])
   useEffect(()=>{
@@ -30,7 +32,7 @@ function Supplier() {
   return (
     <div className='d-flex vh-100  justify-content-center align-items-center'>
       <div className='w-60 bg-white rounded p-3'>
-          <Link to='/supplier/createSupplier' className='btn btn-success'>Add +</Link>
+          <Link to='/supplier/createSupplier' className='btn success'>Add +</Link>
           <table className='table'>
               <thead>
                 <tr>

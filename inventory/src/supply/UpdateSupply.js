@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
 import Select from 'react-select';
-
+import '../App.css';
 function UpdateSupply() {
     const [product, setProduct] = useState('');
     const [supplier, setSupplier] = useState('');
@@ -205,8 +205,8 @@ function UpdateSupply() {
                     </div>
 
                     <ButtonGroup>
-                        <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn btn-success'>Update</button>
+                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                        <button className='btn success'>Update</button>
                     </ButtonGroup>
                 </form>
             </div>

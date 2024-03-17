@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
-
+import './App.css';
 function Unit() {
   const [unit, setUnit] = useState([])
   useEffect(()=>{
@@ -32,7 +32,7 @@ function Unit() {
   return (
     <div className='d-flex vh-100  justify-content-center align-items-center'>
       <div className='w-60 bg-white rounded p-3'>
-          <Link to='/unit/createUnit' className='btn btn-success'>Add +</Link>
+          <Link to='/unit/createUnit' className='btn success'>Add +</Link>
           <table className='table'>
               <thead>
                 <tr>

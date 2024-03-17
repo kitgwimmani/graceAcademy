@@ -26,8 +26,8 @@ const SidebarMenuItemWithTooltip = ({ to, icon, children, tooltipText }) => (
 const Sidebar = () => {
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial' }} className='sidebar'>
-      <CDBSidebar textColor="#fff" backgroundColor="#355">
-      <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>} className="text-center" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#355' }}>
+      <CDBSidebar textColor="#fff" backgroundColor="#53958f">
+      <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>} className="text-center" style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#53958f' }}>
           <NavLink exact to="/" className="text-decoration-none" style={{ color: 'inherit' }}>
             <h5 style={{ margin: 0 }}>GHAA Inventory</h5>
           </NavLink>
@@ -56,8 +56,8 @@ const Sidebar = () => {
               Category
 
             </SidebarMenuItemWithTooltip>
-            <SidebarMenuItemWithTooltip to="/product" icon="shopping-bag" tooltipText="Product">
-              Product
+            <SidebarMenuItemWithTooltip to="/product" icon="shopping-bag" tooltipText="Item">
+              Item
             </SidebarMenuItemWithTooltip>
             <SidebarMenuItemWithTooltip to="/supplier" icon="box-open" tooltipText="Supplier">
               Supplier

@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
+import Barcode from 'react-barcode';
+
 
 import Select from 'react-select';
+import '../App.css';
 
 function CreateSupply() {
     const [product, setProduct] = useState('');
@@ -19,22 +22,21 @@ function CreateSupply() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [allProducts, setAllProducts] = useState([]);
+    const [current_product, setCurrentProduct] = useState([]);
     const [allSuppliers, setAllSupplier] = useState([]);
     const [allUnits, setAllUnit] = useState([]);
-    const [current_product_id, setCurrentProduct] = useState('');
 
     
 
     useEffect(() => {
-        axios.get('http://localhost:8081/product').then(res => setAllProducts(res.data))
+        axios.get('http://localhost:8081/product').then(res => setProduct(res.data))
             .catch(err => console.log(err));
     }, [])
 
     useEffect(() => {
-        axios.get(`http://localhost:8081/getSupply/${id}`).then(res => {
+        axios.get(`http://localhost:8081/getProduct/${id}`).then(res => {
             const userData = res.data;
-            setCurrentProduct(userData[0].product);
+            setCurrentProduct(userData[0]);
 
         })
         .catch(err => console.log(err));
@@ -78,20 +80,7 @@ function CreateSupply() {
             navigate(-1);
         }).catch(err => console.log(err));
     }
-    ////for searcheable product
-    const productOptions = allProducts.map((product) => ({
-        value: product.id,
-        label: product.name + " ("+ product.description + ")",
-    }));
-    
-    
-    const handleProductChange = (selectedOption) => {
-        setProduct(selectedOption ? selectedOption.value : current_product_id);
-    };
-    
-    const defaultProduct = productOptions.find((product) => product.value === current_product_id);
    
-//alert(current_product_id)
 
    
     //##############################
@@ -124,22 +113,24 @@ function CreateSupply() {
         <div className='d-flex vh-100  justify-content-center align-items-center'>
             <div className='w-75 bg-white rounded p-3'>
                 <form onSubmit={handleSubmit}>
-                    <h2>Add Supply</h2>
+                    <h2>Add Stock</h2>
                     <div className='row'>
                         <div className='mb-2 col-6'>
                             <div className='row'>
                                 <div className='col-9'>
-                                    <label htmlFor='product'>Item</label>
-                                    <Select
-                                        options={productOptions}
-                                        value={defaultProduct}
-                                        onChange={handleProductChange}
-                                    />
+                                <label htmlFor=''>Item</label>
+                            <input type='text' placeholder='Enter Item' 
+                            className='form-control prefill'
+                                value={current_product.name}
+                                readOnly
+                                onChange={e => setIsbn(e.target.value)}
+                            />
+                                    
                                 </div>
 
                                 <div className='col-3'>
                                     <label>If none</label>
-                                    <button className='btn btn-success' onClick={handleAddProduct}>new</button>
+                                    <button className='btn success' onClick={handleAddProduct}>new</button>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +148,7 @@ function CreateSupply() {
                                 </div>
                                 <div className='col-3'>
                                     <label>If none</label>
-                                    <button className='btn btn-success' onClick={handleAddSupplier}>new</button>
+                                    <button className='btn success' onClick={handleAddSupplier}>new</button>
                                 </div>
                             </div>
 
@@ -177,7 +168,7 @@ function CreateSupply() {
                                 </div>
                                 <div className='col-3'>
                                     <label>If none</label>
-                                    <button className='btn btn-success' onClick={handleAddUnit}>new</button>
+                                    <button className='btn success' onClick={handleAddUnit}>new</button>
                                 </div>
                             </div>
 
@@ -207,8 +198,10 @@ function CreateSupply() {
                         <div className='mb-2 col-6'>
                             <label htmlFor=''>Serial Number</label>
                             <input type='text'
-                                placeholder='Enter Serial Number'
-                                className='form-control'
+                                placeholder=''
+                                className='form-control prefill'
+                                value={current_product.serial_number}
+                                readOnly
                                 onChange={e => setSerialNumber(e.target.value)}
                             />
                         </div>
@@ -217,16 +210,17 @@ function CreateSupply() {
                     <div className='row'>
                         <div className='mb-2 col-6'>
                             <label htmlFor=''>ISBN</label>
-                            <input type='text' placeholder='Enter ISBN' className='form-control'
+                            <input type='text' placeholder='' 
+                                className='form-control prefill'
+                                value={current_product.isbn}
+                                readOnly
                                 onChange={e => setIsbn(e.target.value)}
                             />
                         </div>
 
                         <div className='mb-2 col-6'>
                             <label htmlFor=''>Barcode</label>
-                            <input type='text' placeholder='Enter Barcode' className='form-control'
-                                onChange={e => setBarcode(e.target.value)}
-                            />
+                            <Barcode value={current_product.barcode} />
                         </div>
                     </div>
                     <div className='row'>
@@ -251,8 +245,8 @@ function CreateSupply() {
                     </div>
 
                     <ButtonGroup>
-                        <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn btn-success'>Submit</button>
+                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                        <button className='btn success'>Submit</button>
                     </ButtonGroup>
                 </form>
             </div>

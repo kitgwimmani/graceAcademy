@@ -92,8 +92,8 @@ function UpdateUser() {
                         />
                     </div>
                     <ButtonGroup>
-                        <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn btn-success'>Update</button>
+                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                        <button className='btn success'>Update</button>
                     </ButtonGroup>
                 </form>
             </div>

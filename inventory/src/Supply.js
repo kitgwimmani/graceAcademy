@@ -1,43 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Form, Container, InputGroup, Table, Pagination  } from 'react-bootstrap';
+import { Form, Container, InputGroup, Table, Pagination } from 'react-bootstrap';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
+import './App.css';
 
 function Supply() {
-  const [supply, setSupply] = useState([])
   const [search, setSearch] = useState('');
-  useEffect(()=>{
-    axios.get('http://localhost:8081/supply').then(res => setSupply(res.data))
-    .catch(err => console.log(err));
-  }, [])
 
-  const [allProducts, setAllProducts] = useState([]);
-    const [allSupplier, setAllSupplier] = useState([]);
-    const [allUnit, setAllUnit] = useState([]);
+  const [product, setProduct] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:8081/product').then(res => setAllProducts(res.data))
+    axios.get('http://localhost:8081/product').then(res => setProduct(res.data))
       .catch(err => console.log(err));
   }, [])
 
+  const [allCategory, setAllCategory] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:8081/supplier').then(res => setAllSupplier(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/unit').then(res => setAllUnit(res.data))
+    axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
       .catch(err => console.log(err));
   }, [])
 
 
-  const handleDelete = async(id) => {
-    try{
-      if (confirmDelete()){
-      await axios.delete('http://localhost:8081/supply/'+id)
-      window.location.reload()
+  const handleDelete = async (id) => {
+    try {
+      if (confirmDelete()) {
+        await axios.delete('http://localhost:8081/supply/' + id)
+        window.location.reload()
       }
-    }catch(err) {
+    } catch (err) {
       console.log(err)
     }
 
@@ -51,7 +41,7 @@ function Supply() {
   const PageSize = 5;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredSupply = supply.filter((data) => {
+  const filteredProduct = product.filter((data) => {
     const searchLower = search.toLowerCase();
     return (
       searchLower === '' ||
@@ -63,9 +53,9 @@ function Supply() {
 
   const indexOfLastItem = currentPage * PageSize;
   const indexOfFirstItem = indexOfLastItem - PageSize;
-  const currentItems = filteredSupply.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredProduct.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(filteredSupply.length / PageSize);
+  const totalPages = Math.ceil(filteredProduct.length / PageSize);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -74,92 +64,86 @@ function Supply() {
   return (
     <Container fluid>
       <Form>
-              <InputGroup className='my-3'>
-                <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search Inventory' />
-              </InputGroup>
+        <InputGroup className='my-3'>
+          <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search Item' />
+        </InputGroup>
 
-            </Form>
-          
-          <div>
-          <Table striped bordered hover style={{ fontSize: '12px', marginBottom: '20px' }}>
-         
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Product</th>
-                  <th>Supplier</th>
-                  <th>unit</th>
-                  <th>quantity</th>
-                  <th>Expiration Date</th>
-                  <th>Serial Number</th>
-                  <th>ISBN</th>
-                  <th>Barcode</th>
-                  <th>Remark</th>
-                  <th>Action</th>
-                  <th>Action</th>
+      </Form>
+
+      <div>
+        <Table striped bordered hover style={{ fontSize: '12px', marginBottom: '20px' }}>
+
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Consumable</th>
+              <th>Traceable</th>
+              <th>Description</th>
+              <th>Can Expire</th>
+              <th>Threshold</th>
+              <th>Serial Number</th>
+              <th>ISBN</th>
+              <th>Subject</th>
+              <th>Publisher/Brand</th>
+              <th>Action</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              product.map((data, i) => (
+                <tr key={i}>
+                  <td>{data.name}</td>
+                  <td>{allCategory.find(allCategory => allCategory.id === data.category)?.name || 'Item Not Found'}</td>
+                  <td>{data.consumable ? 'Yes' : 'No'}</td>
+                  <td>{data.traceable ? 'Yes' : 'No'}</td>
+                  <td>{data.description}</td>
+                  <td>{data.expiration ? 'Yes' : 'No'}</td>
+                  <td>{data.threshold}</td>
+                  <td>{data.serial_number}</td>
+                  <td>{data.isbn}</td>
+                  <td>{data.subject}</td>
+                  <td>{data.pub_brand}</td>
+                  
+                  <td>
+                    <td><Link to={`./createSupply/${data.id}`} className='btn success btn-sm'>+Stock</Link></td>
+                  </td>
+                  <td>
+                    <td><Link to={`./updateSupply/${data.id}`} className='btn secondary btn-sm'>Manage</Link></td>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {
-                  currentItems.map((data, i) => (
-                    <tr key={i}>
-                      <td>{data.supply_date}</td>
+              ))
+            }
 
+          </tbody>
 
-          
-                      <td>{allProducts.find(allProducts => allProducts.id === data.product)?.name || 'Product Not Found'}</td>
-                      <td>{allSupplier.find(allSupplier => allSupplier.id === data.supplier)?.name || 'Supplier Not Found'}</td>
-                      <td>{allUnit.find(allUnit => allUnit.id === data.unit)?.name || 'Unit Not Found'}</td>
-                      <td>{data.quantity}</td>
-                      <td>{data.expiry_date}</td>
-                      <td>{data.serial_number}</td>
-                      <td>{data.isbn}</td>
-                      <td>{data.barcode}</td>
-                      <td>{data.remark}</td>
-                      <td><Link to={`./createSupply/${data.id}`} className='btn btn-success btn-sm'>+Stock</Link></td>
-                      <td>
-                      <ButtonGroup>
-                      <Link to={`updateSupply/${data.id}`} className='btn btn-light'>Edit</Link>
-                      <Dropdown >
-                        <Dropdown.Toggle split variant="light" id="dropdown-split-basic" />
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
-                         
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </ButtonGroup>
-                      </td>
-                    </tr>
-                  ))
-                  }
+        </Table>
 
-              </tbody>
-              
-          </Table>
-          
-          <Pagination>
-        <Pagination.Prev
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        />
-        {[...Array(totalPages).keys()].map((number) => (
-          <Pagination.Item
-            key={number + 1}
-            active={number + 1 === currentPage}
-            onClick={() => handlePageChange(number + 1)}
-          >
-            {number + 1}
-          </Pagination.Item>
-        ))}
-        <Pagination.Next
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        />
-      </Pagination>
+        <Pagination>
+          <Pagination.Prev
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+          {[...Array(totalPages).keys()].map((number) => (
+            <Pagination.Item
+              key={number + 1}
+              active={number + 1 === currentPage}
+              onClick={() => handlePageChange(number + 1)}
+            >
+              {number + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
       </div>
-      <Link to='/product/createProduct' className='btn btn-success'>Add New Item</Link>
-          </Container>
+      <Link to='/product/createProduct' className='btn success'>Add New Item</Link>
+    </Container>
   )
 }
 
 export default Supply
+

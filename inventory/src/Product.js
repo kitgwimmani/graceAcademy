@@ -38,7 +38,7 @@ function Product() {
   return (
     <div className='d-flex vh-100  justify-content-center align-items-center'>
       <div className='w-60 bg-white rounded p-3'>
-          <Link to='/product/createProduct' className='btn btn-success'>Add +</Link>
+          <Link to='/product/createProduct' className='btn success'>Add +</Link>
           <table className='table' style={{fontSize}}>
               <thead>
                 <tr>
@@ -51,6 +51,7 @@ function Product() {
                   <th>Threshold</th>
                   <th>Serial Number</th>
                   <th>ISBN</th>
+                  <th>Barcode</th>
                   <th>Subject</th>
                   <th>Publisher/Brand</th>
                   <th>Action</th>
@@ -69,6 +70,7 @@ function Product() {
                       <td>{data.threshold}</td>
                       <td>{data.serial_number}</td>
                       <td>{data.isbn}</td>
+                      <td>{data.barcode}</td>
                       <td>{data.subject}</td>
                       <td>{data.pub_brand}</td>
                       <td>

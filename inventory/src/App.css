@@ -14,6 +14,18 @@
     background-color: #f1f1f1;
   }
   
+  .prefill{
+    background-color: rgb(234, 255, 248);
+  }
+
+  .success{
+    background-color: #96dddc !important;
+    color: #ffffff;
+  }
+  .secondary{
+    background-color: #53958f !important;
+    color: #ffffff;
+  }
   
   /* Add any other styling as needed */
   

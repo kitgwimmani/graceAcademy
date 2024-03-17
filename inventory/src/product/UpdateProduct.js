@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
 
 import Select from 'react-select';
+import '../App.css';
 
 function UpdateProduct() {
     const [name, setName] = useState('');
@@ -15,6 +16,7 @@ function UpdateProduct() {
     const [threshold, setThreshold] = useState('');
     const [serial_number, setSerialNumber] = useState('');
     const [isbn, setIsbn] = useState('');
+    const [barcode, setBarcode] = useState('');
     const [subject, setSubject] = useState('');
     const [pub_brand, setPubBrand] = useState('');
     const {id} = useParams();
@@ -41,6 +43,7 @@ function UpdateProduct() {
                     setThreshold(userData[0].threshold);
                     setSerialNumber(userData[0].serial_number);
                     setIsbn(userData[0].isbn);
+                    setBarcode(userData[0].barcode);
                     setSubject(userData[0].subject);
                     setSubject(userData[0].pub_brand);
                
@@ -55,7 +58,7 @@ function UpdateProduct() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, subject, pub_brand }).then(res => {
+        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand }).then(res => {
             console.log(res);
             navigate('/product');
         }).catch(err => console.log(err));
@@ -190,10 +193,23 @@ function UpdateProduct() {
                         </div>
                     </div>
 
+                    <div className='row'>
+                    <div className='mb-2 col-6'>
+                            <label htmlFor=''>Barcode</label>
+                            <input type='text' 
+                                placeholder='Enter Barcode' 
+                                value={barcode}
+                                className='form-control'
+                                onChange={e => setBarcode(e.target.value)}
+                            />
+                        </div>
+                        
+                    </div>
+
 
                     <ButtonGroup>
-                        <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn btn-success'>Update</button>
+                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                        <button className='btn success'>Update</button>
                     </ButtonGroup>
                 </form>
             </div>

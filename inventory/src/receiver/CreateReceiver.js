@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ButtonGroup } from 'react-bootstrap';
 
+import '../App.css';
+
 function CreateReceiver() {
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
@@ -55,8 +57,8 @@ function CreateReceiver() {
                 </div>
 
                 <ButtonGroup>
-                    <button className='btn btn-primary' onClick={handleGoBack}>Go Back</button>
-                    <button className='btn btn-success'>Submit</button>
+                    <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                    <button className='btn success'>Submit</button>
                 </ButtonGroup>
             </form>
         </div>

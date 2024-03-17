@@ -8,10 +8,37 @@ import '../App.css';
 function Inventory() {
   const [inventory, setInventory] = useState([]);
   const [search, setSearch] = useState('');
+
+  const [sortBy, setSortBy] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
   useEffect(() => {
     axios.get('http://localhost:8081/inventory/').then(res => setInventory(res.data))
       .catch(err => console.log(err));
   }, [])
+
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(column);
+      setSortDirection('asc');
+    }
+  };
+
+  const sortedInventory = [...inventory].sort((a, b) => {
+    if (sortBy) {
+      const valA = String(a[sortBy]).toLowerCase();
+      const valB = String(b[sortBy]).toLowerCase();
+      if (valA < valB) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (valA > valB) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    }
+    return 0;
+  });
 
 
   return (
@@ -27,24 +54,24 @@ function Inventory() {
             </Form>
             <Table striped bordered hover style={{ fontSize: '12px' }}>
               <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Item</th>
-                  <th>Category</th>
-                  <th>Supplier</th>
-                  <th>Unit</th>
-                  <th>Quantity</th>
-                  <th>Expiration Date</th>
-                  <th>ISBN</th>
-                  <th>Serial Number</th>
-                  <th>Barcode</th>
-                  <th>Remark</th>
-                </tr>
+              <tr>
+          <th onClick={() => handleSort('date')} >Date</th>
+          <th onClick={() => handleSort('item')}>Item</th>
+          <th onClick={() => handleSort('category')}>Category</th>
+          <th onClick={() => handleSort('supplier')}>Supplier</th>
+          <th onClick={() => handleSort('unit')}>Unit</th>
+          <th onClick={() => handleSort('quantity')}>Quantity</th>
+          <th onClick={() => handleSort('expiration_date')}>Expiration Date</th>
+          <th onClick={() => handleSort('isbn')}>ISBN</th>
+          <th onClick={() => handleSort('serial_number')}>Serial Number</th>
+          <th onClick={() => handleSort('barcode')}>Barcode</th>
+          <th onClick={() => handleSort('remark')}>Remark</th>
+        </tr>
               </thead>
               <tbody>
               
                 {
-                  inventory.filter((data) => {
+                  sortedInventory.filter((data) => {
                     const searchLower = search.toLowerCase();
                     //specific   return search.toLowerCase()=== ''? data : data.item.toLowerCase().includes(search)
                     return (

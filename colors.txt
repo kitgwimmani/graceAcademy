@@ -1,0 +1,5 @@
+Dark Teal: #53958f
+Light Teal: #96dddc
+Black: #000000
+White: FFFFFF
+Charcoal: 565656
