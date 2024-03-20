@@ -117,7 +117,7 @@ function CreateSupply() {
                     <div className='row'>
                         <div className='mb-2 col-6'>
                             <div className='row'>
-                                <div className='col-9'>
+                                <div className='col-10'>
                                 <label htmlFor=''>Item</label>
                             <input type='text' placeholder='Enter Item' 
                             className='form-control prefill'
@@ -128,16 +128,16 @@ function CreateSupply() {
                                     
                                 </div>
 
-                                <div className='col-3'>
-                                    <label>If none</label>
-                                    <button className='btn success' onClick={handleAddProduct}>new</button>
+                                <div className='col-2'>
+                                <br></br>
+                                    <button className='btn success' onClick={handleAddProduct}>+</button>
                                 </div>
                             </div>
                         </div>
 
                         <div className='mb-2 col-6'>
                             <div className='row'>
-                                <div className='col-9'>
+                                <div className='col-10'>
                                     <label htmlFor='supplier'>Supplier</label>
                                     <Select
                                         options={supplierOptions}
@@ -146,9 +146,9 @@ function CreateSupply() {
                                     />
                                         
                                 </div>
-                                <div className='col-3'>
-                                    <label>If none</label>
-                                    <button className='btn success' onClick={handleAddSupplier}>new</button>
+                                <div className='col-2'>
+                                    <br></br>
+                                    <button className='btn success' onClick={handleAddSupplier}>+</button>
                                 </div>
                             </div>
 
@@ -158,7 +158,7 @@ function CreateSupply() {
                     <div className='row'>
                         <div className='mb-2 col-6'>
                             <div className='row'>
-                                <div className='col-9'>
+                                <div className='col-10'>
                                     <label htmlFor='unit'>Unit</label>
                                     <Select
                                         options={unitOptions}
@@ -166,9 +166,9 @@ function CreateSupply() {
                                         onChange={handleUnitChange}
                                     />
                                 </div>
-                                <div className='col-3'>
-                                    <label>If none</label>
-                                    <button className='btn success' onClick={handleAddUnit}>new</button>
+                                <div className='col-2'>
+                                <br></br>
+                                    <button className='btn success' onClick={handleAddUnit}>+</button>
                                 </div>
                             </div>
 

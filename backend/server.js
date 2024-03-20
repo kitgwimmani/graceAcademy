@@ -530,8 +530,40 @@ app.get("/getProductSupplied/:id", (req, res) => {
     });
 });
 
+//### Inventory moveItem
+
+app.post('/moveItem', (req, res) => {
+    const sql = "INSERT INTO inventory (`product_id`,`location_id`,`custodian_id`,`date_moved`,`date_expected`,`unit_id`,`quantity`) VALUES (?)";
+    const values = [
+        req.body.product, 
+        req.body.location, 
+        req.body.custodian, 
+        req.body.date_moved, 
+        req.body.date_expected, 
+        req.body.unit_id,
+        req.body.quantity
+    ]
+    db.query(sql, [values], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+
 app.get("/getProductUnitSums/:id", (req, res) => {
-    const sql = "SELECT unit, sum(quantity) quantity FROM inventory WHERE product_id = ?  GROUP BY (unit)";
+    const sql = "SELECT id, unit, sum(quantity) quantity FROM inventory WHERE product_id = ?  GROUP BY (unit)";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.get("/getProductUnits/:id", (req, res) => {
+    const sql = "SELECT id, unit FROM inventory WHERE product_id = ?";
     const id = req.params.id;
     db.query(sql, [id], (err, data) => {
         if (err) {

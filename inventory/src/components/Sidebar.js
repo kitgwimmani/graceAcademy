@@ -11,6 +11,7 @@ import { NavLink } from 'react-router-dom';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 
+
 const SidebarMenuItemWithTooltip = ({ to, icon, children, tooltipText }) => (
   <OverlayTrigger
     key="bottom"
@@ -33,22 +34,24 @@ const Sidebar = () => {
           </NavLink>
         </CDBSidebarHeader>
         <CDBSidebarContent className="sidebar-content">
-          <CDBSidebarMenu>
+          <CDBSidebarMenu style={{ marginTop: '-10px' }}>
             <SidebarMenuItemWithTooltip to="/dashboard" icon="columns" tooltipText="Dashboard">
               Dashboard
             </SidebarMenuItemWithTooltip>
             <SidebarMenuItemWithTooltip to="/" icon="user" tooltipText="Manage Users">
               Manage Users
             </SidebarMenuItemWithTooltip>
+            
             <SidebarMenuItemWithTooltip to="/location" icon="landmark" tooltipText="Locations">
               Locations
             </SidebarMenuItemWithTooltip>
 
-            <SidebarMenuItemWithTooltip to="/unit" icon="calculator" tooltipText="Units">
-              Units
-            </SidebarMenuItemWithTooltip>
             <SidebarMenuItemWithTooltip to="/custodian" icon="handshake" tooltipText="Custodian">
               Custodian
+            </SidebarMenuItemWithTooltip>
+
+            <SidebarMenuItemWithTooltip to="/unit" icon="calculator" tooltipText="Units">
+              Units
             </SidebarMenuItemWithTooltip>
 
 
