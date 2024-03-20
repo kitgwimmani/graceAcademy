@@ -110,7 +110,7 @@ function Supply() {
                     <td><Link to={`./createSupply/${data.id}`} className='btn success btn-sm'>+Stock</Link></td>
                   </td>
                   <td>
-                    <td><Link to={`./updateSupply/${data.id}`} className='btn secondary btn-sm'>Manage</Link></td>
+                    <td><Link to={`./manageSupply/${data.id}`} className='btn secondary btn-sm'>Manage</Link></td>
                   </td>
                 </tr>
               ))

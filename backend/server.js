@@ -518,6 +518,42 @@ app.get("/getSupply/:id", (req, res) => {
     });
 });
 
+app.get("/getProductSupplied/:id", (req, res) => {
+    const sql = "SELECT * FROM inventory WHERE product_id = ? ";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.get("/getProductUnitSums/:id", (req, res) => {
+    const sql = "SELECT unit, sum(quantity) quantity FROM inventory WHERE product_id = ?  GROUP BY (unit)";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
+app.get("/getProductCustodians/:id", (req, res) => {
+    const sql = "SELECT product_id, custodian_id, quantity, date_moved, date_expected, c.name as cname FROM transfer, custodian c WHERE product_id = ? and c.id = transfer.custodian_id";
+    const id = req.params.id;
+    db.query(sql, [id], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal Server Error" });
+        }
+        return res.json(data);
+    });
+});
+
 app.post('/createSupply', (req, res) => {
     const sql = "INSERT INTO supply (`product`,`supplier`,`unit`,`quantity`,`expiry_date`,`serial_number`,`isbn`,`barcode`,`remark`, `supply_date`) VALUES (?)";
     const values = [

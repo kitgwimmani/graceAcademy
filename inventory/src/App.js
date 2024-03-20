@@ -40,6 +40,7 @@ import UpdateReceiver from './receiver/UpdateReceiver';
 import Supply from './Supply';
 import CreateSupply from './supply/CreateSupply';
 import UpdateSupply from './supply/UpdateSupply';
+import ManageSupply from './supply/ManageSupply';
 
 import Dashboard from './Dashboard';
 
@@ -93,6 +94,7 @@ function App() {
         <Route path='supply/createSupply' element={<CreateSupply />}></Route>
         <Route path='supply/createSupply/:id' element={<CreateSupply />}></Route>
         <Route path='supply/updateSupply/:id' element={<UpdateSupply />}></Route>
+        <Route path='supply/manageSupply/:id' element={<ManageSupply />}></Route>
 
         <Route path='/dashboard' element={<Dashboard />}></Route>
 
