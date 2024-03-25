@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { Button, ButtonGroup, Table, Modal } from 'react-bootstrap';
 import Select from 'react-select';
 import '../App.css';
@@ -165,12 +165,16 @@ function ManageSupply() {
                         <tbody>
                             {
                                 allProducts.map((data, i) => (
+                                    
                                     <tr key={i}>
                                         <td>{data.date}</td>
+                                        <Link to={`../supply/creatSupply`} className=''>
                                         <td>{data.supplier}</td>
+                                        </Link>
                                         <td>{data.unit}</td>
                                         <td>{data.quantity}</td>
                                         <td>{data.expiry_date}</td>
+                                        
                                     </tr>
                                 ))
 
@@ -232,6 +236,7 @@ function ManageSupply() {
                         <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
                         <button className='btn success' onClick={handleGoBack}>Report Damage</button>
                         <button className='btn btn-light' type="button" onClick={handleShow}>Move Item</button>
+                        <button className='btn secondary' onClick={handleGoBack}>Exit Item</button>
                         
                     </ButtonGroup>
              
@@ -260,15 +265,7 @@ function ManageSupply() {
                             />
 
                         </div>
-                        <div className='col-12'>
-                            <label htmlFor='unit'>Unit</label>
-                            <Select
-                                options={unitOptions}
-                                value={unitOptions.find((option) => option.value === unit)}
-                                onChange={handleUnitChange}
-                                required
-                            />
-                        </div>
+                       
 
                         <div className='col-12'>
                             <label htmlFor=''>Date Moved</label>
@@ -284,9 +281,18 @@ function ManageSupply() {
                             <label htmlFor=''>Date Expected</label>
                             <input type='date'
                                 placeholder='Enter Expected'
-                                value={currentDate}
                                 className='form-control'
                                 onChange={e => setDateExpected(e.target.value)}
+                            />
+                        </div>
+
+                        <div className='col-12'>
+                            <label htmlFor='unit'>Unit</label>
+                            <Select
+                                options={unitOptions}
+                                value={unitOptions.find((option) => option.value === unit)}
+                                onChange={handleUnitChange}
+                                required
                             />
                         </div>
 

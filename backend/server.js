@@ -646,6 +646,26 @@ app.get("/inventory", (req, res) => {
     })
 })
 
+//### STOCK LEVELS ################################/
+app.get("/stock_level", (req, res) => {
+    const sql = "SELECT * from stock_level where above<1";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//##########################
+
+//### EXPIRATION STATUS ################################/
+app.get("/expiration_status", (req, res) => {
+    const sql = "SELECT * from expiration_status";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//##########################
+
 app.listen(8081, () => {
     console.log("listening")
 })

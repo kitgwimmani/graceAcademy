@@ -1,50 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
-import DashboardCard from './components/DashboardCard';
 import Notification from './components/Notification';
 import { Container, Row, Col } from 'react-bootstrap';
 
 function Dashboard() {
-  const [user, setUser] = useState([])
-  const [custodian, setCustodian] = useState([])
-  const [location, setLocation] = useState([])
-  const [product, setProduct] = useState([])
-  const [supplier, setSupplier] = useState([])
-  const [receiver, setReceiver] = useState([])
-
+  
   const [inventory, setInventory] = useState([])
   const [supply, setSupply] = useState([])
+  const [stockLevel, setStockLevel] = useState([])
+  const [expiration, setExpiration] = useState([])
+
   const today = new Date().toISOString().split('T')[0];
-  useEffect(() => {
-    axios.get('http://localhost:8081/').then(res => setUser(res.data))
-      .catch(err => console.log(err));
-  }, [])
+  
 
-  useEffect(() => {
-    axios.get('http://localhost:8081/custodian').then(res => setCustodian(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/location').then(res => setLocation(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/product').then(res => setProduct(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/supplier').then(res => setSupplier(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/receiver').then(res => setReceiver(res.data))
-      .catch(err => console.log(err));
-  }, [])
 
   useEffect(() => {
     axios.get('http://localhost:8081/inventory').then(res => setInventory(res.data))
@@ -55,22 +24,50 @@ function Dashboard() {
     axios.get('http://localhost:8081/supply').then(res => setSupply(res.data))
       .catch(err => console.log(err));
   }, [])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/stock_level').then(res => setStockLevel(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
+  useEffect(() => {
+    axios.get('http://localhost:8081/expiration_status').then(res => setExpiration(res.data))
+      .catch(err => console.log(err));
+  }, [])
+
   return (
     <Container>
       <h3 className='m-4'>Dashboard</h3>
       
-      <h3 className='m-4'>Quick Links & Notifications</h3>
+      
 
       <Row className='m-4'>
-        <Col sm={6} md={2}>
+      
+        <Col sm={12} md={4}>
+        <h5 className='m-4'>Quick Links & Notifications</h5>
           <Notification
-            title="Report"
+            title="New Inventory"
             count={inventory.filter(inventory => inventory.date === today).length}
             page="/inventory"
           />
-        </Col>
+          <br></br>
+          <Notification
+            title="Items below threshold"
+            count={stockLevel.length}
+            page="/inventory"
+          />
 
-        <Col sm={6} md={2}>
+          <br></br>
+          <Notification
+            title="Items expiration Status"
+            count={expiration.length}
+            page="/inventory"
+          />
+        </Col>
+        
+
+        <Col sm={12} md={8}>
+        <h5 className='m-4'>Actions</h5>
           <Notification
             title="Supplies"
             count={supply.filter(supply => supply.supply_date === today).length}
@@ -78,41 +75,7 @@ function Dashboard() {
           />
         </Col>
 
-        <Col sm={6} md={2}>
-          <Notification
-            title="Deliveries"
-            count={0}
-            page="/receiver"
-          />
-        </Col>
-
-        
-        <Col sm={6} md={2}>
-          <Notification
-            title="Users"
-            count={1}
-            page="/"
-          />
-        </Col>
-
-        
-        <Col sm={6} md={2}>
-          <Notification
-            title="Custodians"
-            count={receiver.length}
-            page="/custodian"
-          />
-        </Col>
-
-        
-        <Col sm={6} md={2}>
-          <Notification
-            title="Inventory"
-            count={inventory.filter(inventory => inventory.date === today).length}
-            page="/supply"
-          />
-        </Col>
-      </Row>
+       </Row>
 
     </Container>
 
