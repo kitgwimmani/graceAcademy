@@ -45,6 +45,8 @@ import ManageSupply from './supply/ManageSupply';
 import Dashboard from './Dashboard';
 
 import Inventory from './report/Inventory';
+import Expiration from './report/Expiration';
+import Threshold from './report/Threshold';
 
 
 function App() {
@@ -99,6 +101,8 @@ function App() {
         <Route path='/dashboard' element={<Dashboard />}></Route>
 
         <Route path='/inventory' element={<Inventory />}></Route>
+        <Route path='/threshold' element={<Threshold />}></Route>
+        <Route path='/expiration' element={<Expiration />}></Route>
       </Routes>
       </div>
     </BrowserRouter>

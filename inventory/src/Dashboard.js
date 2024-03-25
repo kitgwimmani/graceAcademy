@@ -54,14 +54,26 @@ function Dashboard() {
           <Notification
             title="Items below threshold"
             count={stockLevel.length}
-            page="/inventory"
+            page="/threshold"
           />
 
           <br></br>
           <Notification
             title="Items expiration Status"
             count={expiration.length}
-            page="/inventory"
+            page="/expiration"
+          />
+
+          <br></br>
+          <Notification
+            title="Move Item"
+            page="/supply"
+          />
+
+          <br></br>
+          <Notification
+            title="Change Custodian/Location"
+            page="/supply"
           />
         </Col>
         
