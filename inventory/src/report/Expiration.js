@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { Form, Container, InputGroup, Table, Button } from 'react-bootstrap';
 import '../App.css';
 //import '../Table.css';
@@ -44,7 +44,7 @@ function Expiration() {
   return (
     <div className='main-content'>
       <Container>
-          <Link to='/dashboard' className='btn btn-secondary'>Dashboard</Link>
+          <h5>Expired Items</h5>
           
             <Form>
               <InputGroup className='my-3'>

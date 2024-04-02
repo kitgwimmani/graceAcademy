@@ -575,7 +575,7 @@ app.get("/getProductUnits/:id", (req, res) => {
 });
 
 app.get("/getProductCustodians/:id", (req, res) => {
-    const sql = "SELECT product_id, custodian_id, quantity, date_moved, date_expected, c.name as cname FROM transfer, custodian c WHERE product_id = ? and c.id = transfer.custodian_id";
+    const sql = "SELECT product_id, custodian_id, location_id, quantity, date_moved, date_expected, c.name as cname, l.name as lname, u.name as tunit FROM transfer, custodian c, location l, unit u WHERE product_id = ? and c.id = transfer.custodian_id and l.id = transfer.location_id and u.id = transfer.unit_id";
     const id = req.params.id;
     db.query(sql, [id], (err, data) => {
         if (err) {
@@ -637,6 +637,16 @@ app.delete('/supply/:id', (req, res) => {
 })
 //##################################################################33
 
+//####################### DAMAGE TYPE ############################
+app.get("/damage_category", (req, res) => {
+    const sql = "SELECT * from damage_category";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//######################################################
+
 //############## INVENTORY REPORTS ########### INVENTORY REPORTS ############# INVENTORY REPORTS ######### REPORTS
 app.get("/inventory", (req, res) => {
     const sql = "SELECT * from inventory ORDER BY item ASC";
@@ -659,6 +669,16 @@ app.get("/stock_level", (req, res) => {
 //### EXPIRATION STATUS ################################/
 app.get("/expiration_status", (req, res) => {
     const sql = "SELECT * from expiration_status";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//##########################
+
+//### PAST RETURN DATE ################################/
+app.get("/post_date", (req, res) => {
+    const sql = "SELECT * FROM transfer where date_expected < CURRENT_DATE";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);

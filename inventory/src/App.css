@@ -1,16 +1,15 @@
 .app-container {
     display: flex;
-    height: 100vh; /* Full height of the viewport */
+    /* Full height of the viewport */
   }
   
   .sidebar {
-    width: 280px; /* Adjust the width as needed */
+    flex: 0 0 auto; /* Adjust the width as needed */
     background-color: #f1f1f1; /* Set a background color for the sidebar */
   }
   
   .main-content {
     flex-grow: 1; /* Allow the main content to grow and fill the remaining space */
-    padding: 0px; /* Add some padding to the main content */
     background-color: #f1f1f1;
   }
   

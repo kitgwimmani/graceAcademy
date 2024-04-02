@@ -32,7 +32,7 @@ function Category() {
       <div className='w-60 bg-white rounded p-3'>
       
       
-          <Link to='/category/createCategory' className='btn btn-success'>Add +</Link>
+          <Link to='/category/createCategory' className='btn success'>Add +</Link>
           
           <table className='table'>
               <thead>

@@ -1,90 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios';
+import React from 'react'
+//import axios from 'axios';
 
-import Notification from './components/Notification';
+//import Notification from './components/Notification';
 import { Container, Row, Col } from 'react-bootstrap';
+
+import { FaFileAlt, FaBell, FaBars, FaLock, FaUser, FaArrowRight  } from 'react-icons/fa';
+import IconMenu from './components/IconMenu';
 
 function Dashboard() {
   
-  const [inventory, setInventory] = useState([])
-  const [supply, setSupply] = useState([])
-  const [stockLevel, setStockLevel] = useState([])
-  const [expiration, setExpiration] = useState([])
-
-  const today = new Date().toISOString().split('T')[0];
-  
-
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/inventory').then(res => setInventory(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/supply').then(res => setSupply(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/stock_level').then(res => setStockLevel(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  useEffect(() => {
-    axios.get('http://localhost:8081/expiration_status').then(res => setExpiration(res.data))
-      .catch(err => console.log(err));
-  }, [])
-
+ 
   return (
     <Container>
-      <h3 className='m-4'>Dashboard</h3>
+      <h3 className='mt-4'>Dashboard</h3>
+
+      <Row >
       
-      
-
-      <Row className='m-4'>
-      
-        <Col sm={12} md={4}>
-        <h5 className='m-4'>Quick Links & Notifications</h5>
-          <Notification
-            title="New Inventory"
-            count={inventory.filter(inventory => inventory.date === today).length}
-            page="/inventory"
-          />
-          <br></br>
-          <Notification
-            title="Items below threshold"
-            count={stockLevel.length}
-            page="/threshold"
-          />
-
-          <br></br>
-          <Notification
-            title="Items expiration Status"
-            count={expiration.length}
-            page="/expiration"
-          />
-
-          <br></br>
-          <Notification
-            title="Move Item"
-            page="/supply"
-          />
-
-          <br></br>
-          <Notification
-            title="Change Custodian/Location"
-            page="/supply"
-          />
-        </Col>
+        <Col >
         
-
-        <Col sm={12} md={8}>
-        <h5 className='m-4'>Actions</h5>
-          <Notification
-            title="Supplies"
-            count={supply.filter(supply => supply.supply_date === today).length}
-            page="/supply"
-          />
+        <Row>
+        <Col sm={12} md={2}><IconMenu icon={FaFileAlt} title="Reports" page="/inventory" /></Col>
+        <Col sm={12} md={2}><IconMenu icon={FaBell} title="Notifications" page="/notifications" /></Col>
+        <Col sm={12} md={2}><IconMenu icon={FaBars} title="Reorder" page="/supply" /></Col>
+        <Col sm={12} md={2}><IconMenu icon={FaLock} title="Access" page="/" /></Col>
+        <Col sm={12} md={2}><IconMenu icon={FaArrowRight} title="Move Items" page="/supply" /></Col>
+        <Col sm={12} md={2}><IconMenu icon={FaUser} title="Change Cus" page="/supply" /></Col>
+        </Row>
+        
+        
         </Col>
 
        </Row>

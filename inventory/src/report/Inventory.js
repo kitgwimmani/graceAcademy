@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { Form, Container, InputGroup, Table } from 'react-bootstrap';
 import '../App.css';
 //import '../Table.css';
@@ -44,7 +44,7 @@ function Inventory() {
   return (
     <div className='main-content'>
       <Container>
-          <Link to='/dashboard' className='btn btn-secondary'>Dashboard</Link>
+          <h5 className='mt-4'>Stock Report</h5>
           
             <Form>
               <InputGroup className='my-3'>
@@ -52,7 +52,7 @@ function Inventory() {
               </InputGroup>
 
             </Form>
-            <Table striped bordered hover style={{ fontSize: '12px' }}>
+            <Table  bordered  style={{ fontSize: '12px' }}>
               <thead>
               <tr>
           <th onClick={() => handleSort('date')} >Date</th>

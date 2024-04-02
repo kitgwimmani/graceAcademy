@@ -19,7 +19,7 @@ const SidebarMenuItemWithTooltip = ({ to, icon, children, tooltipText }) => (
     overlay={<Tooltip id={`tooltip-${to}`}>{tooltipText}</Tooltip>}
   >
     <NavLink exact to={to} activeClassName="activeClicked">
-      <CDBSidebarMenuItem icon={icon}>{children}</CDBSidebarMenuItem>
+      <CDBSidebarMenuItem icon={icon} style={{ margin: '2px 0' }}>{children}</CDBSidebarMenuItem>
     </NavLink>
   </OverlayTrigger>
 );
@@ -35,9 +35,10 @@ const Sidebar = () => {
         </CDBSidebarHeader>
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu style={{ marginTop: '-10px' }}>
-            <SidebarMenuItemWithTooltip to="/dashboard" icon="columns" tooltipText="Dashboard">
+            <SidebarMenuItemWithTooltip  to="/dashboard" icon="columns" tooltipText="Dashboard" >
               Dashboard
             </SidebarMenuItemWithTooltip>
+            
             <SidebarMenuItemWithTooltip to="/" icon="user" tooltipText="Manage Users">
               Manage Users
             </SidebarMenuItemWithTooltip>
