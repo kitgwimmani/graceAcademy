@@ -668,7 +668,7 @@ app.get("/stock_level", (req, res) => {
 
 //### EXPIRATION STATUS ################################/
 app.get("/expiration_status", (req, res) => {
-    const sql = "SELECT * from expiration_status";
+    const sql = "SELECT * from expiration_status WHERE TRIM(expiry_date) != ''";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);

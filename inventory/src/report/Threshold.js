@@ -44,7 +44,7 @@ function Threshold() {
   return (
     <div className='main-content'>
       <Container>
-          <h5>Low stock levels</h5>
+          <h5 className='mt-4'>Low stock levels</h5>
           
             <Form>
               <InputGroup className='my-3'>
