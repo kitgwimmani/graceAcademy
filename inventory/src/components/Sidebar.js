@@ -35,11 +35,11 @@ const Sidebar = () => {
         </CDBSidebarHeader>
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu style={{ marginTop: '-10px' }}>
-            <SidebarMenuItemWithTooltip  to="/dashboard" icon="columns" tooltipText="Dashboard" >
+            <SidebarMenuItemWithTooltip  to="/" icon="columns" tooltipText="Dashboard" >
               Dashboard
             </SidebarMenuItemWithTooltip>
             
-            <SidebarMenuItemWithTooltip to="/" icon="user" tooltipText="Manage Users">
+            <SidebarMenuItemWithTooltip to="/user" icon="user" tooltipText="Manage Users">
               Manage Users
             </SidebarMenuItemWithTooltip>
             

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import {  ButtonGroup } from 'react-bootstrap';
 import Barcode from 'react-barcode';
-//import BarcodeReader from 'react-barcode-reader';
+import BarcodeScanner from '../components/BarcodeScanner';
 
 import Select from 'react-select';
 import '../App.css';
@@ -24,6 +24,8 @@ function CreateProduct() {
     const navigate = useNavigate();
 
     const [allCategories, setAllCategory] = useState([]);
+
+    
   useEffect(() => {
     axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
       .catch(err => console.log(err));
@@ -89,7 +91,7 @@ const handleAddCategory = (event) => {
                                     />
                                 </div>
                                 <div className='mb-2 col-3'>
-                                <label> </label>
+                                <label></label>
                                 <button className='btn success' onClick={handleAddCategory}>+</button>
                                 </div>
                             
@@ -201,16 +203,18 @@ const handleAddCategory = (event) => {
                         <label htmlFor=''>Barcode</label>
                             <Barcode value='1234567' />
                             
-                            <button className='btn btn-warning btn-sm' onClick={handleGetBarcode}>
-                            Scan Barcode
-                            </button>
                         </div>
+                        
+
+                        
                     </div>
                     
                     
                 </form>
             </div>
+            <BarcodeScanner/>
         </div>
+        
     )
 }
 

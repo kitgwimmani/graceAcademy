@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
-
+import { Form, Container, InputGroup, Table } from 'react-bootstrap';
 import './App.css';
 
 function Receiver() {
-  const [receiver, setReceiver] = useState([])
+  const [receiver, setReceiver] = useState([]);
+  const [search, setSearch] = useState('');
   useEffect(()=>{
     axios.get('http://localhost:8081/receiver').then(res => setReceiver(res.data))
     .catch(err => console.log(err));
@@ -30,10 +31,18 @@ function Receiver() {
  
 
   return (
-    <div className='d-flex vh-100  justify-content-center align-items-center'>
-      <div className='w-60 bg-white rounded p-3'>
+    <div className='main-content'>
+    <Container>
+   <h5 className='mt-4'>Receivers List</h5>
           <Link to='/receiver/createReceiver' className='btn success'>Add +</Link>
-          <table className='table'>
+          <Form>
+              <InputGroup className='my-3' style={{ width: '78.6%'}}>
+                <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search Unit' />
+              </InputGroup>
+
+            </Form>
+            <div style={{ width: '80%', height: '400px', overflow: 'auto' }}>
+          <Table  striped bordered   style={{ fontSize: '14px'}}>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -44,7 +53,17 @@ function Receiver() {
               </thead>
               <tbody>
                 {
-                  receiver.map((data, i) => (
+                  receiver.filter((data) => {
+                    const searchLower = search.toLowerCase();
+                    //specific   return search.toLowerCase()=== ''? data : data.item.toLowerCase().includes(search)
+                    return (
+                      searchLower === '' ||
+                      Object.values(data).some(
+                        (value) =>
+                          value && value.toString().toLowerCase().includes(searchLower)
+                      )
+                    );
+                  }).map((data, i) => (
                     <tr key={i}>
                       <td>{data.name}</td>
                       <td>{data.address}</td>
@@ -67,9 +86,10 @@ function Receiver() {
 
               </tbody>
 
-          </table>
+          </Table>
+          </div>
         
-      </div>
+      </Container>
 
     </div>
   )

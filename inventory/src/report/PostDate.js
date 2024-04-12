@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 //import { Link } from 'react-router-dom';
-import { Form, Container, InputGroup, Table, Button } from 'react-bootstrap';
+import { Form, Container, InputGroup, Table , Button} from 'react-bootstrap';
 import '../App.css';
 //import '../Table.css';
 
-function Expiration() {
-  const [expiration, setExpiration] = useState([]);
+function PostDate() {
+  const [post_date, setPostDate] = useState([])
   const [search, setSearch] = useState('');
 
   const [sortBy, setSortBy] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
   useEffect(() => {
-    axios.get('http://localhost:8081/expiration_status/').then(res => setExpiration(res.data))
+    axios.get('http://localhost:8081/post_date/').then(res => setPostDate(res.data))
       .catch(err => console.log(err));
   }, [])
 
@@ -25,7 +25,7 @@ function Expiration() {
     }
   };
 
-  const sortedInventory = [...expiration].sort((a, b) => {
+  const sortedInventory = [...post_date].sort((a, b) => {
     if (sortBy) {
       const valA = String(a[sortBy]).toLowerCase();
       const valB = String(b[sortBy]).toLowerCase();
@@ -44,11 +44,11 @@ function Expiration() {
   return (
     <div className='main-content'>
       <Container>
-          <h5 className='mt-4'>Expired Items</h5>
+          <h5 className='mt-4'>Low stock levels</h5>
           
             <Form>
               <InputGroup className='my-3'>
-                <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search Inventory' />
+                <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search Items' />
               </InputGroup>
 
             </Form>
@@ -56,10 +56,10 @@ function Expiration() {
               <thead>
               <tr>
           <th onClick={() => handleSort('product')}>Item</th>
-          <th onClick={() => handleSort('unit')}>Unit</th>
-          <th onClick={() => handleSort('quantity')}>Quantity</th>
-          <th onClick={() => handleSort('expiration_date')}>Expiration Date</th>
-          <th onClick={() => handleSort('Details')}>Remark</th>
+          <th onClick={() => handleSort('custodian')}>Custodian</th>
+          <th onClick={() => handleSort('location')}>Location</th>
+          <th onClick={() => handleSort('date_Expected')}>Date Expected</th>
+          <th>action</th>
         </tr>
               </thead>
               <tbody>
@@ -77,12 +77,11 @@ function Expiration() {
                     );
                   }).map((data, i) => (
                     <tr key={i}>
-                      <td>{data.product}</td>
-                      <td>{data.unit}</td>
-                      <td>{data.quantity}</td>
-                      <td>{new Date(data.expiry_date).toLocaleDateString()}</td>
+                      <td>{data.product_id}</td>
+                      <td>{data.custodian_id}</td>
+                      <td>{data.location_id}</td>
+                      <td>{new Date(data.date_expected).toLocaleDateString()}</td>
                       <td> <Button className='btn btn-sm btn-secondary'>View Details</Button> </td>
-                      
                     </tr>
                   ))
                 }
@@ -97,4 +96,4 @@ function Expiration() {
   )
 }
 
-export default Expiration
+export default PostDate

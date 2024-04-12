@@ -208,7 +208,7 @@ function ManageSupply() {
                             allProducts.map((data, i) => (
 
                                 <tr key={i}>
-                                    <td>{data.date}</td>
+                                    <td>{new Date(data.date).toLocaleDateString()}</td>
 
                                     <td>
                                         <Link to={`../supply/creatSupply`} style={{ textDecoration: 'none', color: 'inherit' }} className=''>
@@ -218,7 +218,7 @@ function ManageSupply() {
 
                                     <td>{data.unit}</td>
                                     <td>{data.quantity}</td>
-                                    <td>{data.expiry_date}</td>
+                                    <td>{data.expiry_date ? new Date(data.expiry_date).toLocaleDateString() : ''}</td>
 
                                 </tr>
                             ))

@@ -686,6 +686,17 @@ app.get("/post_date", (req, res) => {
 })
 //##########################
 
+//####################3 REPORTS REPORTS REPORTS ##############################
+app.get("/supply_report", (req, res) => {
+    const sql = "SELECT * from supply_report";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//###########################################3333
+
+
 app.listen(8081, () => {
     console.log("listening")
 })

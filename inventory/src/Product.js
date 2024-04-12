@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Dropdown, ButtonGroup } from 'react-bootstrap';
+import { Form, Container, InputGroup, Table } from 'react-bootstrap';
 
 function Product() {
-  const [product, setProduct] = useState([])
+  const [product, setProduct] = useState([]);
+  const [search, setSearch] = useState('');
   useEffect(()=>{
     axios.get('http://localhost:8081/product').then(res => setProduct(res.data))
     .catch(err => console.log(err));
@@ -33,13 +35,21 @@ function Product() {
     return isConfirmed
   }
 
-  const fontSize = '12px';
+ 
 
   return (
-    <div className='d-flex vh-100  justify-content-center align-items-center'>
-      <div className='w-60 bg-white rounded p-3'>
+    <div className='main-content'>
+       <Container>
+      <h5 className='mt-4'>Items List</h5>
           <Link to='/product/createProduct' className='btn success'>Add +</Link>
-          <table className='table' style={{fontSize}}>
+          <Form>
+              <InputGroup className='my-3' style={{ }}>
+                <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search Product' />
+              </InputGroup>
+
+            </Form>
+            <div style={{  height: '400px', overflow: 'auto' }}>
+          <Table  striped bordered   style={{ fontSize: '12px'}}>
               <thead>
                 <tr>
                   <th>Name</th>
@@ -59,7 +69,17 @@ function Product() {
               </thead>
               <tbody>
                 {
-                  product.map((data, i) => (
+                  product.filter((data) => {
+                    const searchLower = search.toLowerCase();
+                    //specific   return search.toLowerCase()=== ''? data : data.item.toLowerCase().includes(search)
+                    return (
+                      searchLower === '' ||
+                      Object.values(data).some(
+                        (value) =>
+                          value && value.toString().toLowerCase().includes(searchLower)
+                      )
+                    );
+                  }).map((data, i) => (
                     <tr key={i}>
                       <td>{data.name}</td>
                       <td>{allCategory.find(allCategory => allCategory.id === data.category)?.name || 'Item Not Found'}</td>
@@ -75,9 +95,9 @@ function Product() {
                       <td>{data.pub_brand}</td>
                       <td>
                       <ButtonGroup>
-                      <Link to={`updateProduct/${data.id}`} className='btn btn-light'>Update</Link>
+                      <Link to={`updateProduct/${data.id}`} className='btn btn-light btn-sm'>Update</Link>
                       <Dropdown >
-                        <Dropdown.Toggle split variant="light" id="dropdown-split-basic" />
+                        <Dropdown.Toggle split variant="light" className='btn-sm' id="dropdown-split-basic" />
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={e => handleDelete(data.id)}>Delete</Dropdown.Item>
                          
@@ -91,11 +111,10 @@ function Product() {
 
               </tbody>
 
-          </table>
-        
+          </Table>
+          </div>
+        </Container>
       </div>
-
-    </div>
   )
 }
 

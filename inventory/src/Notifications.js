@@ -82,7 +82,7 @@ function Notifications() {
           <Notification
             title="Items due to return"
             count={post_date.length}
-            page="/supply"
+            page="/post_date"
           />
 
           <br></br>

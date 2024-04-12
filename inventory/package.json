@@ -9,6 +9,7 @@
     "axios": "^1.6.5",
     "bootstrap": "^5.3.2",
     "cdbreact": "^1.5.18",
+    "quagga": "^0.12.1",
     "react": "^18.2.0",
     "react-barcode": "^1.5.0",
     "react-barcode-reader": "^0.0.2",

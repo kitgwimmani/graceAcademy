@@ -48,7 +48,7 @@ function Dashboard() {
         
         <Row>
         <Col sm={12} md={2}><IconMenu icon={FaFileAlt} title="Reports" page="/inventory" /></Col>
-        <Col sm={12} md={2}><IconMenu icon={FaBell} title="Notifications" page="/notifications" count={inventory.length+stockLevel.length}/></Col>
+        <Col sm={12} md={2}><IconMenu icon={FaBell} title="Notifications" page="/notifications" count={expiration.length+stockLevel.length+post_date.length}/></Col>
         <Col sm={12} md={2}><IconMenu icon={FaBars} title="Reorder" page="/supply" /></Col>
         <Col sm={12} md={2}><IconMenu icon={FaLock} title="Access" page="/" /></Col>
         <Col sm={12} md={2}><IconMenu icon={FaArrowRight} title="Move Items" page="/supply" /></Col>

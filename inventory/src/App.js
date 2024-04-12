@@ -48,6 +48,8 @@ import Inventory from './report/Inventory';
 import Expiration from './report/Expiration';
 import Threshold from './report/Threshold';
 import Notifications from './Notifications';
+import PostDate from './report/PostDate';
+import SupplyReport from './report/SupplyReport';
 
 
 function App() {
@@ -61,7 +63,7 @@ function App() {
       <div className='main-content'>
       <Routes>
       
-        <Route path='/' element={<User />}></Route>
+        <Route path='/user' element={<User />}></Route>
         <Route path='/createUser' element={<CreateUser />}></Route>
         <Route path='/updateUser/:id' element={<UpdateUser />}></Route>
 
@@ -99,12 +101,14 @@ function App() {
         <Route path='supply/updateSupply/:id' element={<UpdateSupply />}></Route>
         <Route path='supply/manageSupply/:id' element={<ManageSupply />}></Route>
 
-        <Route path='/dashboard' element={<Dashboard />}></Route>
+        <Route path='/' element={<Dashboard />}></Route>
 
         <Route path='/inventory' element={<Inventory />}></Route>
         <Route path='/threshold' element={<Threshold />}></Route>
         <Route path='/expiration' element={<Expiration />}></Route>
+        <Route path='/post_date' element={<PostDate />}></Route>
         <Route path='/notifications' element={<Notifications />}></Route>
+        <Route path='/supply_report' element={<SupplyReport />}></Route>
       </Routes>
       </div>
     </BrowserRouter>

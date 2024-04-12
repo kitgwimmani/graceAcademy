@@ -42,7 +42,7 @@ function CreateCustodian() {
                         <label htmlFor=''>Email</label>
                         <input type='email' 
                             placeholder='Enter Email' 
-                            required
+                            
                             className='form-control'
                             onChange={e => setEmail(e.target.value)}
                         />

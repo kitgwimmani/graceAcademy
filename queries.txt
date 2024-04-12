@@ -1,0 +1,5 @@
+#supply Report
+create view supply_report as SELECT supply.id, p.name item, s.name supplier, u.name unit, supply.quantity, supply.serial_number, supply.isbn, supply.barcode, supply.remark, supply.supply_date
+from product p, supply, supplier s, unit u
+where supply.product = p.id and supply.supplier = s.id and supply.unit = u.id
+
