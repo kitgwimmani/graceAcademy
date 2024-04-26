@@ -3,3 +3,6 @@ create view supply_report as SELECT supply.id, p.name item, s.name supplier, u.n
 from product p, supply, supplier s, unit u
 where supply.product = p.id and supply.supplier = s.id and supply.unit = u.id
 
+create view transfer_report as SELECT transfer.id, p.name product, p.serial_number, p.isbn, p.barcode, cat.name category, l.name location, c.name custodian, transfer.date_moved, transfer.date_expected, u.name unit, transfer.quantity quantity
+from product p, location l, transfer, custodian c, unit u, category cat
+where p.id = transfer.product_id and l.id = transfer.location_id and c.id = transfer.custodian_id and u.id = transfer.user_id and cat.id = p.category

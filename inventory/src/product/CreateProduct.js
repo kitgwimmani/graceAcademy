@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import {  ButtonGroup } from 'react-bootstrap';
+import { ButtonGroup, Container } from 'react-bootstrap';
 import Barcode from 'react-barcode';
 import BarcodeScanner from '../components/BarcodeScanner';
 
@@ -21,39 +21,40 @@ function CreateProduct() {
     const [barcode, setBarcode] = useState('');
     const [subject, setSubject] = useState('');
     const [pub_brand, setPubBrand] = useState('');
+    const [url, setUrl] = useState('');
     const navigate = useNavigate();
 
     const [allCategories, setAllCategory] = useState([]);
 
-    
-  useEffect(() => {
-    axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
-      .catch(err => console.log(err));
-  }, [])
 
-  const handleGoBack = (event) => {
-    event.preventDefault();
-    navigate(-1);
-};
+    useEffect(() => {
+        axios.get('http://localhost:8081/category').then(res => setAllCategory(res.data))
+            .catch(err => console.log(err));
+    }, [])
 
-const handleGetBarcode = (event) => {
-    alert('get your device ready')
-};
+    const handleGoBack = (event) => {
+        event.preventDefault();
+        navigate(-1);
+    };
 
-const handleAddCategory = (event) => {
-    event.preventDefault();
-    navigate('/category/createCategory');
-};
+    const handleGetBarcode = (event) => {
+        alert('get your device ready')
+    };
+
+    const handleAddCategory = (event) => {
+        event.preventDefault();
+        navigate('/category/createCategory');
+    };
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:8081/createProduct', { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand }).then(res => {
+        axios.post('http://localhost:8081/createProduct', { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand, url }).then(res => {
             console.log(res);
             navigate(-1);
         }).catch(err => console.log(err));
     }
-     ////for searcheable category
-     const categoryOptions = allCategories.map((category) => ({
+    ////for searcheable category
+    const categoryOptions = allCategories.map((category) => ({
         value: category.id,
         label: category.name,
     }));
@@ -63,45 +64,45 @@ const handleAddCategory = (event) => {
     };
     //##############################
     return (
-        <div className='d-flex vh-100  justify-content-center align-items-center'>
-            <div className='w-70 bg-white rounded p-3'>
+        <div className='main-content'>
+            <Container>
                 <form onSubmit={handleSubmit} >
                     <h2>Add Item to Inventory</h2>
 
                     <div className='row'>
                         <div className='mb-2 col-6'>
                             <label htmlFor=''>Item Name</label>
-                            <input type='text' 
+                            <input type='text'
                                 placeholder='Enter Item Name'
-                                required 
+                                required
                                 className='form-control'
                                 onChange={e => setName(e.target.value)}
                             />
 
                         </div>
                         <div className='mb-2 col-6'>
-                        <div className='row'>
-                            <div className='mb-2 col-9'>
-                            
-                                <label htmlFor='category'>Category</label>
-                                <Select
+                            <div className='row'>
+                                <div className='mb-2 col-10'>
+
+                                    <label htmlFor='category'>Category</label>
+                                    <Select
                                         options={categoryOptions}
                                         value={categoryOptions.find((option) => option.value === category)}
                                         onChange={handleCategoryChange}
                                     />
                                 </div>
-                                <div className='mb-2 col-3'>
-                                <label></label>
-                                <button className='btn success' onClick={handleAddCategory}>+</button>
+                                <div className='mb-2 col-2'>
+                                    <br></br>
+                                    <button className='btn success' onClick={handleAddCategory}>+</button>
                                 </div>
-                            
-                            
+
+
+                            </div>
                         </div>
-                        </div>
-                        
+
                     </div>
 
-                    
+
                     <div className='row'>
                         <div className='col-6'>
 
@@ -111,11 +112,17 @@ const handleAddCategory = (event) => {
                                     {'  '}Consumable
                                 </label>
                             </div>
-                    
+
                             <div className='mb-2'>
                                 <label>
                                     <input type='checkbox' className='mr-2' onChange={() => setTraceable(!traceable)} />
                                     {'  '}Traceable
+                                </label>
+                            </div>
+                            <div className='mb-2'>
+                                <label>
+                                    <input type='checkbox' className='mr-2' onChange={() => setExpiration(!expiration)} />
+                                    {'  '}Can Expire
                                 </label>
                             </div>
                         </div>
@@ -131,90 +138,97 @@ const handleAddCategory = (event) => {
                         </div>
                     </div>
 
-                    
+
 
                     <div className='row'>
-                        <div className='mb-2 col-6'>
-                            <label>
-                                <br></br>
-                                <input type='checkbox' className='mr-2' onChange={() => setExpiration(!expiration)} />
-                                {'  '}Can Expire
-                            </label>
-                        </div>
+
                         <div className='mb-2 col-6'>
                             <label htmlFor=''>Threshold</label>
                             <input type='number' placeholder='Enter Threshold' className='form-control'
                                 onChange={e => setThreshold(e.target.value)}
                             />
                         </div>
-                    </div>
 
-                    <div className='row'>
                         <div className='mb-2 col-6'>
                             <label htmlFor=''>Serial Number</label>
-                            <input type='text' 
-                                placeholder='Enter Serial Number' 
+                            <input type='text'
+                                placeholder='Enter Serial Number'
                                 value={serial_number}
                                 className='form-control'
                                 onChange={e => setSerialNumber(e.target.value)}
                             />
                         </div>
-                        <div className='mb-2 col-6'>
-                        <label htmlFor=''>ISBN</label>
-                        <input type='text' placeholder='Enter ISBN' 
-                            value={isbn}
-                            className='form-control'
-                            onChange={e => setIsbn(e.target.value)}
-                        />
                     </div>
-
                     <div className='row'>
-                    <div className='mb-2 col-6'>
+                        <div className='mb-2 col-6'>
+                            <label htmlFor=''>ISBN</label>
+                            <input type='text' placeholder='Enter ISBN'
+                                value={isbn}
+                                className='form-control'
+                                onChange={e => setIsbn(e.target.value)}
+                            />
+                        </div>
+                        <div className='mb-2 col-6'>
                             <label htmlFor=''>Subject</label>
-                            <input type='text' 
-                                placeholder='Enter Subject' 
+                            <input type='text'
+                                placeholder='Enter Subject'
                                 value={subject}
                                 className='form-control'
                                 onChange={e => setSubject(e.target.value)}
                             />
                         </div>
-
+                    </div>
+                    <div className='row'>
                         <div className='mb-2 col-6'>
                             <label htmlFor=''>Publisher/Brand</label>
-                            <input type='text' 
-                                placeholder='Enter Publisher or Brand' 
+                            <input type='text'
+                                placeholder='Enter Publisher or Brand'
                                 value={pub_brand}
                                 className='form-control'
                                 onChange={e => setPubBrand(e.target.value)}
                             />
+                            <label htmlFor=''>Reorder URL</label>
+                            <input type='text'
+                                placeholder='Enter Reorder URL'
+                                value={url}
+                                className='form-control'
+                                onChange={e => setUrl(e.target.value)}
+                            />
                         </div>
-                    </div>
+
+                        <div className='mb-2 col-3' style={{ height: '50px' }}>
+                            <Barcode value='1234567'/>
+                        </div>
+
+                        <div className='mb-2 col-3'>
+                        <input type='text'
+                                placeholder='Enter Barcode'
+                                value={barcode}
+                                className='form-control'
+                                onChange={e => setBarcode(e.target.value)}
+                            />
+                            <br></br>
+                            <BarcodeScanner />
+                        </div>
+
                     </div>
                     <div className='row'>
-                    <div className='mb-2 col-6'>
-                    <ButtonGroup>
-                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn success'>Submit</button>
-                    </ButtonGroup>
-                          
-                        </div>
 
                         <div className='mb-2 col-6'>
-                        <label htmlFor=''>Barcode</label>
-                            <Barcode value='1234567' />
-                            
-                        </div>
-                        
+                            <ButtonGroup>
+                                <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                                <button className='btn success'>Submit</button>
+                            </ButtonGroup>
 
-                        
+                        </div>
                     </div>
-                    
-                    
+
+
+
                 </form>
-            </div>
-            <BarcodeScanner/>
+            </Container>
         </div>
-        
+
     )
 }
 

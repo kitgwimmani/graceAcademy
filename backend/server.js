@@ -326,7 +326,7 @@ app.get("/getProduct/:id", (req, res) => {
 });
 
 app.post('/createProduct', (req, res) => {
-    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`barcode`,`subject`, `pub_brand`) VALUES (?)";
+    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`barcode`,`subject`, `pub_brand`, `url`) VALUES (?)";
     const values = [
         req.body.name, 
         req.body.category,
@@ -337,9 +337,10 @@ app.post('/createProduct', (req, res) => {
         req.body.threshold,
         req.body.serial_number,
         req.body.isbn,
-        red.body.barcode,
+        req.body.barcode,
         req.body.subject,
-        req.body.pub_brand
+        req.body.pub_brand,
+        req.body.url
     ]
     db.query(sql, [values], (err, data) => {
         if(err) return res.json("Error");
@@ -348,7 +349,7 @@ app.post('/createProduct', (req, res) => {
 })
 
 app.put('/updateProduct/:id', (req, res) => {
-    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`barcode`= ?,`subject`= ?,`pub_brand`= ? where id = ?";
+    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`barcode`= ?,`subject`= ?,`pub_brand`= ?, `url`= ? where id = ?";
     const values = [
         req.body.name, 
         req.body.category, 
@@ -361,7 +362,8 @@ app.put('/updateProduct/:id', (req, res) => {
         req.body.isbn,
         req.body.barcode,
         req.body.subject,
-        req.body.pub_brand
+        req.body.pub_brand,
+        req.body.url
 
     ]
     const id = req.params.id;
@@ -658,7 +660,7 @@ app.get("/inventory", (req, res) => {
 
 //### STOCK LEVELS ################################/
 app.get("/stock_level", (req, res) => {
-    const sql = "SELECT * from stock_level where above<1";
+    const sql = "SELECT * from stock_level where above<5";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);
@@ -689,6 +691,14 @@ app.get("/post_date", (req, res) => {
 //####################3 REPORTS REPORTS REPORTS ##############################
 app.get("/supply_report", (req, res) => {
     const sql = "SELECT * from supply_report";
+    db.query(sql, (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+
+app.get("/transfer_report", (req, res) => {
+    const sql = "SELECT * from transfer_report";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);

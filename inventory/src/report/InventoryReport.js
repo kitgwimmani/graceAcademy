@@ -1,33 +1,24 @@
-import React, { useEffect, useState, useRef  } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 //import { Link } from 'react-router-dom';
-import { jsPDF } from 'jspdf';
-import html2canvas from 'html2canvas';
-
 import { Form, Container, InputGroup, Table } from 'react-bootstrap';
 import Select from 'react-select';
-import Printout from '../components/Printout';
 import '../App.css';
 //import '../Table.css';
 
-function SupplyReport() {
+function InventoryReport() {
   const [report, setReport] = useState([]);
   const [search, setSearch] = useState('');
 
   const [sortBy, setSortBy] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
-const [showPrintable, setShowPrintable] = useState(false);
-const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-
-  const tableRef = useRef(null);
 
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = () => {
-    axios.get(`http://localhost:8081/supply_report`)
+    axios.get(`http://localhost:8081/inventory`)
       .then(res => setReport(res.data))
       .catch(err => console.log(err));
   };
@@ -63,6 +54,7 @@ const [startDate, setStartDate] = useState('');
     { value: 'this_month', label: 'This Month' },
     { value: 'last_year', label: 'Last Year' },
     { value: 'this_year', label: 'This Year' },
+    { value: 'custom', label: 'Custom' },
     // Add more options as needed
   ];
 
@@ -110,8 +102,6 @@ const [startDate, setStartDate] = useState('');
         return;
     }
 
-    setStartDate(startDate.toISOString().slice(0, 10));
-    setEndDate(endDate.toISOString().slice(0, 10));
     // Update the value of the input field with the start date and end date
   const formattedStartDate = startDate.toISOString().slice(0, 10);
   document.getElementById('startDate').value = formattedStartDate;
@@ -121,8 +111,8 @@ const [startDate, setStartDate] = useState('');
     
     // Filter the report based on the selected date range
     const filteredReport = report.filter(item => {
-      const supplyDate = new Date(item.supply_date);
-      return supplyDate >= startDate && supplyDate <= endDate;
+      const moveDate = new Date(item.date_moved);
+      return moveDate >= startDate && moveDate <= endDate;
     });
   
     // Update the report state with the filtered data
@@ -134,112 +124,18 @@ const [startDate, setStartDate] = useState('');
     const endDate = new Date(document.getElementById('endDate').value);
   
     const filteredReport = report.filter(item => {
-      const supplyDate = new Date(item.supply_date);
-      return supplyDate >= startDate && supplyDate <= endDate;
+      const moveDate = new Date(item.date_moved);
+      return moveDate >= startDate && moveDate <= endDate;
     });
   
     setReport(filteredReport);
   }
-  function formatDate(date) {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is zero-based
-  const year = date.getFullYear();
-  return `${day}/${month}/${year}`;
-}
-  //document.getElementById('printable').style.display = 'none'
-  function handlePrint (){
-    const nonPrintableContent = document.getElementById('non-printable-content');
-    if (nonPrintableContent) {
-      nonPrintableContent.style.display = 'none';
-      const nonPrint = document.getElementById('non-print');
-      if (nonPrint) nonPrint.style.display = 'none';
-      const printableContent = document.getElementById('printable');
-      if (printableContent) printableContent.style.display = 'block';
-    }
-    // Print the page
-    window.print();
-
-    // Show the non-printable content again after printing is done
-    if (nonPrintableContent) {
-      nonPrintableContent.style.display = 'block';
-      document.getElementById('non-print').style.display = 'block'
-      document.getElementById('printable').style.display = 'none'
-    }
-  };
-
-  //download pdf
-  const downloadPDF = () => {
-    const input = tableRef.current;
-
-    html2canvas(input)
-      .then((canvas) => {
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
-        pdf.save('table.pdf');
-      });
-  };
-
-  function createCSV() {
-    const header = ["Supply Date", "Item", "Supplier", "Unit", "Quantity", "Serial Number", "ISBN", "Barcode", "Remark"];
-    const csvRows = [];
-    
-    // Add header row
-    csvRows.push(header.join(','));
   
-    // Add data rows
-    sortedInventory.filter((data) => {
-      const searchLower = search.toLowerCase();
-      //specific   return search.toLowerCase()=== ''? data : data.item.toLowerCase().includes(search)
-      return (
-        searchLower === '' ||
-        Object.values(data).some(
-          (value) =>
-            value && value.toString().toLowerCase().includes(searchLower)
-        )
-      );
-    }).forEach(data => {
-      const rowData = [
-        data.supply_date,
-        data.item,
-        data.supplier,
-        data.unit,
-        data.quantity,
-        data.serial_number,
-        data.isbn,
-        data.barcode,
-        data.remark
-      ];
-      csvRows.push(rowData.join(','));
-    });
-  
-    // Combine rows into a single CSV string
-    const csvString = csvRows.join('\n');
-  
-    // Create a Blob object containing the CSV data
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-  
-    // Create a temporary URL for the Blob
-    const url = URL.createObjectURL(blob);
-  
-    // Create a temporary anchor element to trigger the download
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', 'table.csv');
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
-  
-    // Click the anchor element to trigger the download
-    link.click();
-  
-    // Remove the temporary anchor element
-    document.body.removeChild(link);
-  }
 
   return (
-    <div className='main-content' id='printable-content'>
+    <div className='main-content'>
       <Container>
-      <div id="non-print">
-        <h5 className='mt-4'>Delivery Report</h5>
+        <h5 className='mt-4'>Location Report</h5>
         <div className='row'>
           <div className='mb-2 col-3'>
 
@@ -253,7 +149,7 @@ const [startDate, setStartDate] = useState('');
 
           </div>
 
-          <div className='mb-2 col-2'>
+          <div className='mb-2 col-3'>
             <label htmlFor=''>From:</label>
             <input type='date'
               className='form-control'
@@ -263,7 +159,7 @@ const [startDate, setStartDate] = useState('');
             />
           </div>
 
-          <div className='mb-2 col-2'>
+          <div className='mb-2 col-3'>
             <label htmlFor=''>To:</label>
             <input type='date'
               className='form-control'
@@ -272,7 +168,7 @@ const [startDate, setStartDate] = useState('');
               onClick={() => handleMenuOpen()}
             />
           </div>
-          <div className='mb-2 col-2'>
+          <div className='mb-2 col-3'>
           <label htmlFor=''>Filter Report</label>
           <Form>
           <InputGroup >
@@ -281,38 +177,22 @@ const [startDate, setStartDate] = useState('');
 
         </Form>
           </div>
-          <div className='mb-2 col-1'>
-          <br></br>
-          <button className='btn  success' onClick={handlePrint}>
-              Print
-          </button>
-        </div>
-        <div className='mb-2 col-1'>
-          <br></br>
-          <button className='btn  btn-dark' onClick={downloadPDF}>
-              PDF
-          </button>
-        </div>
-        <div className='mb-2 col-1'>
-          <br></br>
-          <button className='btn  btn-light' onClick={createCSV}>
-              CSV
-          </button>
-        </div>
         </div>
         
-        <Table striped bordered hover style={{ fontSize: '12px' }} ref={tableRef}>
+        <Table striped bordered hover style={{ fontSize: '12px' }}>
           <thead>
             <tr>
-            <th onClick={() => handleSort('supply_date')}>Supply Date</th>
-              <th onClick={() => handleSort('item')} >Item</th>
+            <th onClick={() => handleSort('date')}>Date</th>
+            <th onClick={() => handleSort('item')}>Item</th>
+              <th onClick={() => handleSort('category')}>Category</th>
               <th onClick={() => handleSort('supplier')}>Supplier</th>
               <th onClick={() => handleSort('unit')}>Unit</th>
               <th onClick={() => handleSort('quantity')}>Quantity</th>
-              <th onClick={() => handleSort('serial_number')}>Serial Number</th>
+              <th onClick={() => handleSort('expiry_date')}>Expiration Date</th>
               <th onClick={() => handleSort('isbn')}>ISBN</th>
+              <th onClick={() => handleSort('serial_number')}>Serial Number</th>
               <th onClick={() => handleSort('barcode')}>Barcode</th>
-              <th onClick={() => handleSort('remark')}>Remark</th>
+              <th onClick={() => handleSort('Remark')}>Remark</th>
             </tr>
           </thead>
           <tbody>
@@ -330,13 +210,15 @@ const [startDate, setStartDate] = useState('');
                 );
               }).map((data, i) => (
                 <tr key={i}>
-                <td>{data.supply_date}</td>
+                <td>{data.date}</td>
                   <td>{data.item}</td>
+                  <td>{data.category}</td>
                   <td>{data.supplier}</td>
                   <td>{data.unit}</td>
                   <td>{data.quantity}</td>
-                  <td>{data.serial_number}</td>
+                  <td>{data.expiry_date}</td>
                   <td>{data.isbn}</td>
+                  <td>{data.serial_number}</td>
                   <td>{data.barcode}</td>
                   <td>{data.remark}</td>
                 </tr>
@@ -346,31 +228,11 @@ const [startDate, setStartDate] = useState('');
           </tbody>
 
         </Table>
-
-        </div>
-        <div  id='printable' style={{ margin: '0', padding: '0', display: 'none' }}>
-        <Printout 
-        //title = {'Delivery Report From ' + document.getElementById('startDate').value + ' To '+ document.getElementById('endDate').value}
-        title={`Delivery Report From ${startDate} To ${endDate}`}
-        report={sortedInventory.filter((data) => {
-                const searchLower = search.toLowerCase();
-                //specific   return search.toLowerCase()=== ''? data : data.item.toLowerCase().includes(search)
-                return (
-                  searchLower === '' ||
-                  Object.values(data).some(
-                    (value) =>
-                      value && value.toString().toLowerCase().includes(searchLower)
-                  )
-                );
-              })}
-         /> 
-         </div>
       </Container>
     </div>
 
 
   )
-  
 }
 
-export default SupplyReport
+export default InventoryReport

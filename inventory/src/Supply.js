@@ -7,7 +7,8 @@ import './App.css';
 
 function Supply() {
   const [search, setSearch] = useState('');
-
+  const [sortBy, setSortBy] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
   const [product, setProduct] = useState([]);
   useEffect(() => {
     axios.get('http://localhost:8081/product').then(res => setProduct(res.data))
@@ -38,61 +39,79 @@ function Supply() {
     return isConfirmed
   }
 
-  const PageSize = 5;
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const filteredProduct = product.filter((data) => {
-    const searchLower = search.toLowerCase();
-    return (
-      searchLower === '' ||
-      Object.values(data).some(
-        (value) => value && value.toString().toLowerCase().includes(searchLower)
-      )
-    );
-  });
-
-  const indexOfLastItem = currentPage * PageSize;
-  const indexOfFirstItem = indexOfLastItem - PageSize;
-  const currentItems = filteredProduct.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredProduct.length / PageSize);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handleSort = (column) => {
+    if (sortBy === column) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(column);
+      setSortDirection('asc');
+    }
   };
 
+  const sortedProduct = [...product].sort((a, b) => {
+    if (sortBy) {
+      const valA = String(a[sortBy]).toLowerCase();
+      const valB = String(b[sortBy]).toLowerCase();
+      if (valA < valB) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (valA > valB) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    }
+    return 0;
+  });
+
+  
   return (
-    <Container fluid>
+    <div className='main-content'>
+    <Container>
+    <div className='row'>
+    <div className='col-10'>
       <Form>
         <InputGroup className='my-3'>
           <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search Item' />
         </InputGroup>
-
       </Form>
-
-      <div>
-        <Table striped bordered hover style={{ fontSize: '12px', marginBottom: '20px' }}>
+      </div>
+      <div className='my-3 col-2'>
+      <Link to='/product/createProduct' className='btn success'>Add New Item</Link>
+      </div>
+    </div>
+    <div style={{ width: '100%', height: '500px', overflow: 'auto' }}>
+        <Table striped bordered hover style={{ fontSize: '12px' }}>
 
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Consumable</th>
-              <th>Traceable</th>
-              <th>Description</th>
-              <th>Can Expire</th>
-              <th>Threshold</th>
-              <th>Serial Number</th>
-              <th>ISBN</th>
-              <th>Subject</th>
-              <th>Publisher/Brand</th>
+              <th onClick={() => handleSort('name')}>Name</th>
+              <th onClick={() => handleSort('category')}>Category</th>
+              <th onClick={() => handleSort('consumable')}>Consumable</th>
+              <th onClick={() => handleSort('traceable')}>Traceable</th>
+              <th onClick={() => handleSort('description')}>Description</th>
+              <th onClick={() => handleSort('expiration')}>Can Expire</th>
+              <th onClick={() => handleSort('threshold')}>Threshold</th>
+              <th onClick={() => handleSort('serial_number')}>Serial Number</th>
+              <th onClick={() => handleSort('isbn')}>ISBN</th>
+              <th onClick={() => handleSort('subject')}>Subject</th>
+              <th onClick={() => handleSort('pub_brand')}>Publisher/Brand</th>
               <th>Action</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             {
-              product.map((data, i) => (
+              sortedProduct.filter((data) => {
+                const searchLower = search.toLowerCase();
+                //specific   return search.toLowerCase()=== ''? data : data.item.toLowerCase().includes(search)
+                return (
+                  searchLower === '' ||
+                  Object.values(data).some(
+                    (value) =>
+                      value && value.toString().toLowerCase().includes(searchLower)
+                  )
+                );
+              }).map((data, i) => (
                 <tr key={i}>
                   <td>{data.name}</td>
                   <td>{allCategory.find(allCategory => allCategory.id === data.category)?.name || 'Item Not Found'}</td>
@@ -120,28 +139,11 @@ function Supply() {
 
         </Table>
 
-        <Pagination>
-          <Pagination.Prev
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          />
-          {[...Array(totalPages).keys()].map((number) => (
-            <Pagination.Item
-              key={number + 1}
-              active={number + 1 === currentPage}
-              onClick={() => handlePageChange(number + 1)}
-            >
-              {number + 1}
-            </Pagination.Item>
-          ))}
-          <Pagination.Next
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
+      
       </div>
-      <Link to='/product/createProduct' className='btn success'>Add New Item</Link>
+      
     </Container>
+    </div>
   )
 }
 

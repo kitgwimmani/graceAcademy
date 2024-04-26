@@ -39,12 +39,12 @@ function User() {
       <h5 className='mt-4'>User List</h5>
       <Link to='/createUser' className='btn success'>Add +</Link>
             <Form>
-              <InputGroup className='my-3' style={{ width: '80%'}}>
+              <InputGroup className='my-3' style={{ width: '100%'}}>
                 <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search User' />
               </InputGroup>
 
             </Form>
-            <div style={{ width: '80%', height: '400px', overflow: 'auto' }}>
+            <div style={{ width: '100%', height: '400px', overflow: 'auto' }}>
           <Table striped bordered  style={{ fontSize: '14px'}}>
             <thead>
               <tr>

@@ -48,11 +48,11 @@ function Dashboard() {
         
         <Row>
         <Col sm={12} md={2}><IconMenuDark icon={FaTruck} title="Delivery" page="/supply_report" /></Col>
-        <Col sm={12} md={2}><IconMenuDark icon={FaMapMarkedAlt} title="Locations" page="/notifications" /></Col>
-        <Col sm={12} md={2}><IconMenuDark icon={FaUserTie} title="Custodian" page="/supply" /></Col>
-        <Col sm={12} md={2}><IconMenuDark icon={FaSyncAlt} title="Reorder" page="/" /></Col>
+        <Col sm={12} md={2}><IconMenuDark icon={FaMapMarkedAlt} title="Locations" page="/location_report" /></Col>
+        <Col sm={12} md={2}><IconMenuDark icon={FaUserTie} title="Custodian" page="/custodian_report" /></Col>
+        <Col sm={12} md={2}><IconMenuDark icon={FaSyncAlt} title="Reorder" page="/reorder_report" /></Col>
         <Col sm={12} md={2}><IconMenuDark icon={FaExclamationTriangle} title="Damage" page="/supply" /></Col>
-        <Col sm={12} md={2}><IconMenuDark icon={FaWarehouse} title="Storeroom" page="/supply" /></Col>
+        <Col sm={12} md={2}><IconMenuDark icon={FaWarehouse} title="Storeroom" page="/inventory_report" /></Col>
         </Row>
         <br></br>
         <Row>

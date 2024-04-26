@@ -50,14 +50,17 @@ import Threshold from './report/Threshold';
 import Notifications from './Notifications';
 import PostDate from './report/PostDate';
 import SupplyReport from './report/SupplyReport';
-
+import LocationReport from './report/LocationReport';
+import CustodianReport from './report/CustodianReport';
+import ReorderReport from './report/ReorderReport';
+import InventoryReport from './report/InventoryReport';
 
 function App() {
   return (
     <div className="app-container">
     
     <BrowserRouter>
-    <div className="sidebar">
+    <div className="sidebar" id="non-printable-content">
     <Sidebar/>
     </div>
       <div className='main-content'>
@@ -109,6 +112,10 @@ function App() {
         <Route path='/post_date' element={<PostDate />}></Route>
         <Route path='/notifications' element={<Notifications />}></Route>
         <Route path='/supply_report' element={<SupplyReport />}></Route>
+        <Route path='/location_report' element={<LocationReport />}></Route>
+        <Route path='/custodian_report' element={<CustodianReport />}></Route>
+        <Route path='/reorder_report' element={<ReorderReport />}></Route>
+        <Route path='/inventory_report' element={<InventoryReport />}></Route>
       </Routes>
       </div>
     </BrowserRouter>

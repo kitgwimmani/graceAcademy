@@ -59,7 +59,7 @@ function Threshold() {
           <th onClick={() => handleSort('quantity')}>Quantity</th>
           <th onClick={() => handleSort('threashold')}>Threshold</th>
           <th onClick={() => handleSort('above')}>Quantity Below</th>
-          <th onClick={() => handleSort('remark')}>action</th>
+          <th onClick={() => handleSort('reorder_url')}>Reorder URL</th>
         </tr>
               </thead>
               <tbody>
@@ -81,7 +81,7 @@ function Threshold() {
                       <td>{data.quantity}</td>
                       <td>{data.threshold}</td>
                       <td>{data.above}</td>
-                      <td> <Button className='btn btn-sm btn-secondary'>View Details</Button> </td>
+                      <td><a href={data.reorder_url}>{data.reorder_url}</a> </td>
                     </tr>
                   ))
                 }
