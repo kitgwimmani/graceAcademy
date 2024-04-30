@@ -9,9 +9,11 @@ import '../App.css';
 function LocationReport() {
   const [report, setReport] = useState([]);
   const [search, setSearch] = useState('');
-
+  const [location, setLocation] = useState('');
   const [sortBy, setSortBy] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
+
+  const [allLocations, setAllLocations] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -22,6 +24,10 @@ function LocationReport() {
       .then(res => setReport(res.data))
       .catch(err => console.log(err));
   };
+  useEffect(() => {
+    axios.get('http://localhost:8081/location').then(res => setAllLocations(res.data))
+        .catch(err => console.log(err));
+}, [])
   const handleSort = (column) => {
     if (sortBy === column) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -30,6 +36,18 @@ function LocationReport() {
       setSortDirection('asc');
     }
   };
+
+   ////for searcheable location
+   const locationOptions = allLocations.map((location) => ({
+    value: location.id,
+    label: location.name,
+}));
+
+const handleLocationChange = (selectedOption) => {
+    setLocation(selectedOption ? selectedOption.value : '');
+    setSearch(selectedOption.label)
+};
+//##############################
 
   const sortedInventory = [...report].sort((a, b) => {
     if (sortBy) {
@@ -136,6 +154,15 @@ function LocationReport() {
       <Container>
         <h5 className='mt-4'>Location Report</h5>
         <div className='row'>
+        <div className='col-3'>
+            <label htmlFor='location'>Location</label>
+            <Select
+              options={locationOptions}
+              value={locationOptions.find((option) => option.value === location)}
+              onChange={handleLocationChange}
+            />
+
+          </div>
           <div className='mb-2 col-3'>
 
             <label htmlFor='filter'>Report Period</label>
@@ -148,7 +175,7 @@ function LocationReport() {
 
           </div>
 
-          <div className='mb-2 col-3'>
+          <div className='mb-2 col-2'>
             <label htmlFor=''>From:</label>
             <input type='date'
               className='form-control'
@@ -158,7 +185,7 @@ function LocationReport() {
             />
           </div>
 
-          <div className='mb-2 col-3'>
+          <div className='mb-2 col-2'>
             <label htmlFor=''>To:</label>
             <input type='date'
               className='form-control'
@@ -167,7 +194,7 @@ function LocationReport() {
               onClick={() => handleMenuOpen()}
             />
           </div>
-          <div className='mb-2 col-3'>
+          <div className='mb-2 col-2'>
           <label htmlFor=''>Filter Report</label>
           <Form>
           <InputGroup >

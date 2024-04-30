@@ -117,6 +117,8 @@ function ReorderReport() {
           <thead>
             <tr>
             <th onClick={() => handleSort('name')}>Item</th>
+            <th onClick={() => handleSort('serial_number')}>Serial Number</th>
+            <th onClick={() => handleSort('isbn')}>ISBN</th>
             <th onClick={() => handleSort('threshold')}>Threshold</th>
             <th onClick={() => handleSort('quantity')}>Quantity Left</th>
             <th onClick={() => handleSort('reorder_url')}>Reorder URL</th>
@@ -138,6 +140,8 @@ function ReorderReport() {
               }).map((data, i) => (
                 <tr key={i}>
                 <td>{data.name}</td>
+                <td>{data.serial_number}</td>
+                <td>{data.isbn}</td>
                 <td>{data.threshold}</td>
                   <td>{data.quantity}</td>
                   <td><a href={data.reorder_url}>{data.reorder_url}</a></td>

@@ -77,7 +77,7 @@ function CreateSupply() {
         event.preventDefault();
         axios.post('http://localhost:8081/createSupply', { product, supplier, unit, quantity, expiry_date, serial_number, isbn, barcode, remark, supply_date }).then(res => {
             console.log(res);
-            navigate(-1);
+            //navigate('/report/inventory');
         }).catch(err => console.log(err));
     }
    
@@ -216,24 +216,13 @@ function CreateSupply() {
                                 readOnly
                                 onChange={e => setIsbn(e.target.value)}
                             />
-                        </div>
-
-                        <div className='mb-2 col-6'>
-                            <label htmlFor=''>Barcode</label>
-                            <Barcode value={current_product.barcode} />
-                        </div>
-                    </div>
-                    <div className='row'>
-                        <div className='mb-2 col-6'>
+                            
                             <label htmlFor=''>Remark</label>
                             <textarea
                                 placeholder='Enter Remark'
                                 className='form-control'
                                 onChange={e => setRemark(e.target.value)}
                             />
-                        </div>
-
-                        <div className='mb-2 col-6'>
                             <label htmlFor=''>Supply Date</label>
                             <input type='date'
                                 placeholder='Enter Supply Date'
@@ -242,7 +231,18 @@ function CreateSupply() {
                                 onChange={e => setSupplyDate(e.target.value)}
                             />
                         </div>
+
+                        <div className='mb-2 col-6'>
+                            <label htmlFor=''>Barcode</label>
+                            <Barcode value={current_product.barcode} />
+                            <input type='text' placeholder='' 
+                                className='form-control'
+                                value={current_product.barcode}
+                                onChange={e => setBarcode(e.target.value)}
+                            />
+                        </div>
                     </div>
+                    
 
                     <ButtonGroup>
                         <button className='btn secondary' onClick={handleGoBack}>Go Back</button>

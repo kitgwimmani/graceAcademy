@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams, Link } from 'react-router-dom';
-import { Button, ButtonGroup, Table, Modal } from 'react-bootstrap';
+import { Button, ButtonGroup, Table, Modal, Container } from 'react-bootstrap';
 import Select from 'react-select';
 import '../App.css';
 function ManageSupply() {
@@ -13,8 +13,10 @@ function ManageSupply() {
     const [quantity, setQuantity] = useState('');
     const [damage, setDamage] = useState('');
     const [remark, setRemark] = useState('');
+    const [reorder, setReorderStatus] = useState('');
+    
 
-
+    const [allProductsReorder, setAllProductsReorder] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
     const [unitSums, setUnitSums] = useState([]);
     const [allProductCustodians, setProductCustodians] = useState([]);
@@ -46,6 +48,17 @@ function ManageSupply() {
                 setAllProducts(res.data);
                 const userData = res.data;
                 setProduct(userData[0].item);
+
+            })
+            .catch(err => console.log(err));
+    }, [])
+
+    useEffect(() => {
+        axios.get(`http://localhost:8081/getProduct/${id}`)
+            .then(res => {
+                setAllProductsReorder(res.data);
+                const userData = res.data;
+                setReorderStatus(userData[0].reorder_status)
             })
             .catch(err => console.log(err));
     }, [])
@@ -95,9 +108,9 @@ function ManageSupply() {
     };
     function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:8081/moveItem', { location, custodian, unit, dateMoved, dateExpected, quantity }).then(res => {
-            console.log(res);
-            navigate(-1);
+        axios.post('http://localhost:8081/moveItem', { id, location, custodian, unit, dateMoved, dateExpected, quantity }).then(res => {
+            //alert(res);
+            navigate(0);
         }).catch(err => console.log(err));
     }
 
@@ -114,6 +127,15 @@ function ManageSupply() {
         axios.post('http://localhost:8081/reportDamage', { unit, quantity}).then(res => {
             console.log(res);
             navigate(-1);
+        }).catch(err => console.log(err));
+    }
+
+    function handleReorderStatus(event){
+        event.preventDefault();
+        const stat = !reorder;
+        axios.put('http://localhost:8081/updateReorderStatus/' + id, { stat }).then(res => {
+            alert('Reorder Status Was Changed Successfully')
+            window.location.reload()
         }).catch(err => console.log(err));
     }
 
@@ -187,10 +209,9 @@ function ManageSupply() {
 
 
     return (
-        <div className='d-flex vh-100  justify-content-center align-items-center'>
-            <div className='w-100 bg-white rounded p-3'>
-
-                <h2>Manage <b>{product}</b></h2>
+        <Container>
+        <h2>Manage <b>{product}</b></h2>
+            <div  style={{  maxHeight: '280px', overflow: 'auto' }}>
                 <Table striped bordered hover style={{ fontSize: '12px', marginBottom: '20px' }}>
 
                     <thead>
@@ -227,6 +248,7 @@ function ManageSupply() {
 
                     </tbody>
                 </Table>
+                </div>
                 <div className='row'>
                     <div className='mb-2 col-2'>
                         <h6>Inventory</h6>
@@ -249,7 +271,7 @@ function ManageSupply() {
                             </tbody>
                         </Table>
                     </div>
-                    <div className='mb-2 col-10'>
+                    <div className='mb-2 col-10'style={{  height: '170px', overflow: 'auto' }}>
                         <h6>Custodian/location</h6>
                         <Table bordered striped style={{ fontSize: '12px', marginBottom: '20px' }}>
                             <thead>
@@ -273,7 +295,9 @@ function ManageSupply() {
                                             <td>{data.tunit}</td>
                                             <td>{data.date_moved}</td>
                                             <td>{data.date_expected}</td>
-                                            <td><button className='btn btn-sm secondary' type="button" onClick={handleShow2}>Change</button></td>
+                                            <td><button className='btn btn-sm secondary' 
+                                            style={{'--bs-btn-padding-y': '.25rem', '--bs-btn-padding-x': '.5rem', '--bs-btn-font-size': '.70rem'}}
+                                            type="button" onClick={handleShow2}>Change</button></td>
                                         </tr>
                                     ))
                                 }
@@ -288,11 +312,11 @@ function ManageSupply() {
                     <button className='btn success' onClick={handleShowModalDamage}>Report Damage</button>
                     <button className='btn btn-light' type="button" onClick={handleShow}>Move Item</button>
                     <button className='btn secondary' onClick={handleGoBack}>Exit Item</button>
-                    <button className='btn success' onClick={handleGoBack}>Add to Reorder List</button>
+                    <button className='btn success' onClick={handleReorderStatus}>{reorder ? 'Remove from Reorder' : 'Add to Reorder'}</button>
 
                 </ButtonGroup>
 
-            </div>
+            
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Move {product}</Modal.Title>
@@ -323,7 +347,8 @@ function ManageSupply() {
                             <label htmlFor=''>Date Moved</label>
                             <input type='date'
                                 placeholder='Enter Date Moved'
-                                value={currentDate}
+                                //value={currentDate}
+                                required
                                 className='form-control'
                                 onChange={e => setDateMoved(e.target.value)}
                             />
@@ -494,7 +519,8 @@ function ManageSupply() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+            
+        </Container>
 
     )
 }

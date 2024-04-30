@@ -535,14 +535,15 @@ app.get("/getProductSupplied/:id", (req, res) => {
 //### Inventory moveItem
 
 app.post('/moveItem', (req, res) => {
-    const sql = "INSERT INTO inventory (`product_id`,`location_id`,`custodian_id`,`date_moved`,`date_expected`,`unit_id`,`quantity`) VALUES (?)";
+    const sql = "INSERT INTO transfer (`product_id`,`location_id`,`custodian_id`,`date_moved`,`date_expected`,`user_id`,`unit_id`,`quantity`) VALUES (?)";
     const values = [
-        req.body.product, 
+        req.body.id, 
         req.body.location, 
         req.body.custodian, 
-        req.body.date_moved, 
-        req.body.date_expected, 
-        req.body.unit_id,
+        req.body.dateMoved, 
+        req.body.dateExpected, 
+        req.body.unit,
+        req.body.unit,
         req.body.quantity
     ]
     db.query(sql, [values], (err, data) => {
@@ -660,13 +661,28 @@ app.get("/inventory", (req, res) => {
 
 //### STOCK LEVELS ################################/
 app.get("/stock_level", (req, res) => {
-    const sql = "SELECT * from stock_level where above<5";
+    const sql = "SELECT * from stock_level where quantity<=threshold or reorder_status=1";
     db.query(sql, (err, data) => {
         if(err) return res.json("Error");
         return res.json(data);
     })
 })
 //##########################
+
+//REORDER updateReorderStatus
+
+app.put('/updateReorderStatus/:id', (req, res) => {
+    const sql = "UPDATE product set `reorder_status` = ? where id = ?";
+    const values = [
+        req.body.stat, 
+    ]
+    const id = req.params.id;
+    db.query(sql, [...values, id], (err, data) => {
+        if(err) return res.json("Error");
+        return res.json(data);
+    })
+})
+//########################
 
 //### EXPIRATION STATUS ################################/
 app.get("/expiration_status", (req, res) => {
