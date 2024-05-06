@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ButtonGroup } from 'react-bootstrap';
+import { ButtonGroup, Container } from 'react-bootstrap';
+import Barcode from 'react-barcode';
+import BarcodeScanner from '../components/BarcodeScanner';
 
 import Select from 'react-select';
 import '../App.css';
@@ -19,6 +21,7 @@ function UpdateProduct() {
     const [barcode, setBarcode] = useState('');
     const [subject, setSubject] = useState('');
     const [pub_brand, setPubBrand] = useState('');
+    const [reorder_url, setUrl] = useState('');
     const {id} = useParams();
     const navigate = useNavigate();
 
@@ -45,7 +48,8 @@ function UpdateProduct() {
                     setIsbn(userData[0].isbn);
                     setBarcode(userData[0].barcode);
                     setSubject(userData[0].subject);
-                    setSubject(userData[0].pub_brand);
+                    setPubBrand(userData[0].pub_brand);
+                    setUrl(userData[0].reorder_url);
                
             })
             .catch(err => console.log(err));
@@ -58,7 +62,7 @@ function UpdateProduct() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand }).then(res => {
+        axios.put(`http://localhost:8081/updateProduct/${id}`, { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand, reorder_url }).then(res => {
             console.log(res);
             navigate('/product');
         }).catch(err => console.log(err));
@@ -74,146 +78,183 @@ function UpdateProduct() {
     };
     //##############################
     return (
-        <div className='d-flex vh-100  justify-content-center align-items-center'>
-            <div className='w-50 bg-white rounded p-3'>
-                <form onSubmit={handleSubmit} >
-                    <h2>Add Item to Inventory</h2>
-                    <div className='row'>
-                        <div className='mb-2 col-6'>
-                            <label htmlFor=''>Item Name</label>
-                            <input type='text' 
-                                placeholder='Enter Item Name' 
-                                required
-                                className='form-control'
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                            />
+        <div className='main-content'>
+        <Container>
+            <form onSubmit={handleSubmit} >
+                <h2>Update Item</h2>
 
-                        </div>
-                        <div className='mb-2 col-6'>
-                            <label htmlFor='category'>Category</label>
-                            <Select
-                                        options={categoryOptions}
-                                        value={categoryOptions.find((option) => option.value === category)}
-                                        onChange={handleCategoryChange}
-                                    />
+                <div className='row'>
+                    <div className='mb-2 col-6'>
+                        <label htmlFor=''>Item Name</label>
+                        <input type='text'
+                            placeholder='Enter Item Name'
+                            required
+                            value={name}
+                            className='form-control'
+                            onChange={e => setName(e.target.value)}
+                        />
+
+                    </div>
+                    <div className='mb-2 col-6'>
+                        <div className='row'>
+                            <div className='mb-2 col-12'>
+
+                                <label htmlFor='category'>Category</label>
+                                <Select
+                                    options={categoryOptions}
+                                    value={categoryOptions.find((option) => option.value === category)}
+                                    onChange={handleCategoryChange}
+                                />
+                            </div>
+                           
+
+
                         </div>
                     </div>
 
-                    
+                </div>
 
-                    <div className='row'>
-                        <div className='col-6'>
+
+                <div className='row'>
+                    <div className='col-6'>
+
                         <div className='mb-2'>
                             <label>
-                                <input type='checkbox' className='mr-2' 
-                                checked={consumable}
-                                onChange={() => setConsumable(!consumable)} />
-                                Consumable
+                                <input
+                                    type='checkbox'
+                                    className='mr-2'
+                                    checked={consumable === 1} 
+                                    onChange={(e) => setConsumable(e.target.checked ? 1 : 0)}
+                                />
+                                {'  '}Consumable
                             </label>
-                            </div>
-                            <div className='mb-2'>
-                            <label>
-                                <input type='checkbox' className='mr-2' 
-                                checked={traceable}
-                                onChange={() => setTraceable(!traceable)} />
-                                Traceable
-                            </label>
-                            </div>
                         </div>
-                        <div className='mb-2 col-6'>
-                            <label htmlFor=''>Description</label>
-                            <textarea
-                                placeholder='Enter Description'
-                                className='form-control'
-                                value={description}
-                                onChange={e => setDescription(e.target.value)}
-                            />
+
+                        <div className='mb-2'>
+                            <label>
+                                <input
+                                    type='checkbox'
+                                    className='mr-2'
+                                    checked={traceable=== 1}
+                                    onChange={(e) => setTraceable(e.target.checked ? 1 : 0)}
+                                />
+                                {'  '}Traceable
+                            </label>
+                        </div>
+                        <div className='mb-2'>
+                            <label>
+                                <input type='checkbox'
+                                    className='mr-2'
+                                    checked={expiration === 1}
+                                    onChange={(e) => setExpiration(e.target.checked ? 1 : 0)} />
+                                {'  '}Can Expire
+                            </label>
                         </div>
                     </div>
 
+                    <div className='mb-2 col-6'>
+                        <label htmlFor=''>Description</label>
+                        <textarea
+                            placeholder='Enter Description'
+                            className='form-control'
+                            value={description}
+                            onChange={e => setDescription(e.target.value)}
+                        />
+                    </div>
+                </div>
 
-                    <div className='row'>
-                        <div className='mb-2 col-6'>
-                            <label>
-                                <br></br>
-                                <input type='checkbox' className='mr-2'
-                                checked={expiration} 
-                                onChange={() => setExpiration(!expiration)} />
-                                Can Expire
-                            </label>
-                        </div>
-                        <div className='mb-2 col-6'>
-                            <label htmlFor=''>Threshold</label>
-                            <input type='number' placeholder='Enter Threshold' 
-                                className='form-control'
-                                value={threshold}
-                                onChange={e => setThreshold(e.target.value)}
-                            />
-                        </div>
+
+
+                <div className='row'>
+
+                    <div className='mb-2 col-6'>
+                        <label htmlFor=''>Threshold</label>
+                        <input type='number' placeholder='Enter Threshold' className='form-control'
+                        value={threshold}
+                            onChange={e => setThreshold(e.target.value)}
+                        />
                     </div>
 
-                    <div className='row'>
-                        <div className='mb-2 col-6'>
-                            <label htmlFor=''>Serial Number</label>
-                            <input type='text' 
-                                placeholder='Enter Serial Number' 
-                                value={serial_number}
-                                className='form-control'
-                                onChange={e => setSerialNumber(e.target.value)}
-                            />
-                        </div>
-                        <div className='mb-2 col-6'>
+                    <div className='mb-2 col-6'>
+                        <label htmlFor=''>Serial Number</label>
+                        <input type='text'
+                            placeholder='Enter Serial Number'
+                            value={serial_number}
+                            className='form-control'
+                            onChange={e => setSerialNumber(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='mb-2 col-6'>
                         <label htmlFor=''>ISBN</label>
-                        <input type='text' placeholder='Enter ISBN' 
+                        <input type='text' placeholder='Enter ISBN'
                             value={isbn}
                             className='form-control'
                             onChange={e => setIsbn(e.target.value)}
                         />
                     </div>
-                    </div>
-                    <div className='row'>
                     <div className='mb-2 col-6'>
-                            <label htmlFor=''>Subject</label>
-                            <input type='text' 
-                                placeholder='Enter Subject' 
-                                value={subject}
-                                className='form-control'
-                                onChange={e => setSubject(e.target.value)}
-                            />
-                        </div>
-                        <div className='mb-2 col-6'>
-                            <label htmlFor=''>Publisher/Brand</label>
-                            <input type='text' 
-                                placeholder='Enter Publisher/Brand' 
-                                value={pub_brand}
-                                className='form-control'
-                                onChange={e => setPubBrand(e.target.value)}
-                            />
-                        </div>
+                        <label htmlFor=''>Subject</label>
+                        <input type='text'
+                            placeholder='Enter Subject'
+                            value={subject}
+                            className='form-control'
+                            onChange={e => setSubject(e.target.value)}
+                        />
                     </div>
-
-                    <div className='row'>
+                </div>
+                <div className='row'>
                     <div className='mb-2 col-6'>
-                            <label htmlFor=''>Barcode</label>
-                            <input type='text' 
-                                placeholder='Enter Barcode' 
-                                value={barcode}
-                                className='form-control'
-                                onChange={e => setBarcode(e.target.value)}
-                            />
-                        </div>
-                        
+                        <label htmlFor=''>Publisher/Brand</label>
+                        <input type='text'
+                            placeholder='Enter Publisher or Brand'
+                            value={pub_brand}
+                            className='form-control'
+                            onChange={e => setPubBrand(e.target.value)}
+                        />
+                        <label htmlFor=''>Reorder URL</label>
+                        <input type='text'
+                            placeholder='Enter Reorder URL'
+                            value={reorder_url}
+                            className='form-control'
+                            onChange={e => setUrl(e.target.value)}
+                        />
                     </div>
 
+                    <div className='mb-2 col-3' style={{ height: '50px' }}>
+                        <Barcode value={barcode} />
+                    </div>
 
-                    <ButtonGroup>
-                        <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
-                        <button className='btn success'>Update</button>
-                    </ButtonGroup>
-                </form>
-            </div>
-        </div>
+                    <div className='mb-2 col-3'>
+                        <input
+                            type='text'
+                            placeholder='Enter Barcode'
+                            value={barcode}
+                            className='form-control'
+                            onChange={e => setBarcode(e.target.value)}
+                        />
+                        <br></br>
+                        <BarcodeScanner />
+                    </div>
+
+                </div>
+                <div className='row'>
+
+                    <div className='mb-2 col-6'>
+                        <ButtonGroup>
+                            <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                            <button className='btn success'>Update</button>
+                        </ButtonGroup>
+
+                    </div>
+                </div>
+
+
+
+            </form>
+        </Container>
+    </div>
     )
 }
 

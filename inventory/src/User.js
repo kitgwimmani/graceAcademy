@@ -37,7 +37,7 @@ function User() {
     <div className='main-content'>
       <Container>
       <h5 className='mt-4'>User List</h5>
-      <Link to='/createUser' className='btn success'>Add +</Link>
+      <Link to='/user/createUser' className='btn success'>Add +</Link>
             <Form>
               <InputGroup className='my-3' style={{ width: '100%'}}>
                 <Form.Control onChange={(e) => setSearch(e.target.value)} placeholder='Search User' />

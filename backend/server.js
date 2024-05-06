@@ -10,7 +10,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "grace_academy_db"
+    database: "my_db"
 }) 
 
 /*const db = mysql.createConnection({
@@ -326,7 +326,7 @@ app.get("/getProduct/:id", (req, res) => {
 });
 
 app.post('/createProduct', (req, res) => {
-    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`barcode`,`subject`, `pub_brand`, `url`) VALUES (?)";
+    const sql = "INSERT INTO product (`name`,`category`,`consumable`,`traceable`,`description`,`expiration`,`threshold`,`serial_number`,`isbn`,`barcode`,`subject`, `pub_brand`, `reorder_url`) VALUES (?)";
     const values = [
         req.body.name, 
         req.body.category,
@@ -340,7 +340,7 @@ app.post('/createProduct', (req, res) => {
         req.body.barcode,
         req.body.subject,
         req.body.pub_brand,
-        req.body.url
+        req.body.reorder_url
     ]
     db.query(sql, [values], (err, data) => {
         if(err) return res.json("Error");
@@ -349,22 +349,21 @@ app.post('/createProduct', (req, res) => {
 })
 
 app.put('/updateProduct/:id', (req, res) => {
-    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`barcode`= ?,`subject`= ?,`pub_brand`= ?, `url`= ? where id = ?";
+    const sql = "UPDATE product set `name` = ?,`category`= ?,`consumable`= ?,`traceable`= ?,`description`= ?,`expiration`= ?,`threshold`= ?,`serial_number`= ?,`isbn`= ?,`barcode`= ?,`subject`= ?,`pub_brand`= ?, `reorder_url`= ? where id = ?";
     const values = [
         req.body.name, 
-        req.body.category, 
-        req.body.consumable, 
-        req.body.traceable, 
+        req.body.category,
+        req.body.consumable,
+        req.body.traceable,
         req.body.description,
-        req.body.expiration,  
+        req.body.expiration,
         req.body.threshold,
         req.body.serial_number,
         req.body.isbn,
         req.body.barcode,
         req.body.subject,
         req.body.pub_brand,
-        req.body.url
-
+        req.body.reorder_url
     ]
     const id = req.params.id;
     db.query(sql, [...values, id], (err, data) => {

@@ -21,7 +21,7 @@ function CreateProduct() {
     const [barcode, setBarcode] = useState('');
     const [subject, setSubject] = useState('');
     const [pub_brand, setPubBrand] = useState('');
-    const [url, setUrl] = useState('');
+    const [reorder_url, setUrl] = useState('');
     const navigate = useNavigate();
 
     const [allCategories, setAllCategory] = useState([]);
@@ -48,7 +48,8 @@ function CreateProduct() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:8081/createProduct', { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand, url }).then(res => {
+        alert(consumable)
+        axios.post('http://localhost:8081/createProduct', { name, category, consumable, traceable, description, expiration, threshold, serial_number, isbn, barcode, subject, pub_brand, reorder_url }).then(res => {
             console.log(res);
             navigate(-1);
         }).catch(err => console.log(err));
@@ -56,7 +57,7 @@ function CreateProduct() {
     ////for searcheable category
     const categoryOptions = allCategories.map((category) => ({
         value: category.id,
-        label: category.name,
+        label: category.name
     }));
 
     const handleCategoryChange = (selectedOption) => {
@@ -108,20 +109,33 @@ function CreateProduct() {
 
                             <div className='mb-2'>
                                 <label>
-                                    <input type='checkbox' className='mr-2' onChange={() => setConsumable(!consumable)} />
+                                    <input
+                                        type='checkbox'
+                                        className='mr-2'
+                                        checked={consumable === 1} 
+                                        onChange={(e) => setConsumable(e.target.checked ? 1 : 0)}
+                                    />
                                     {'  '}Consumable
                                 </label>
                             </div>
 
                             <div className='mb-2'>
                                 <label>
-                                    <input type='checkbox' className='mr-2' onChange={() => setTraceable(!traceable)} />
+                                    <input
+                                        type='checkbox'
+                                        className='mr-2'
+                                        checked={traceable=== 1}
+                                        onChange={(e) => setTraceable(e.target.checked ? 1 : 0)}
+                                    />
                                     {'  '}Traceable
                                 </label>
                             </div>
                             <div className='mb-2'>
                                 <label>
-                                    <input type='checkbox' className='mr-2' onChange={() => setExpiration(!expiration)} />
+                                    <input type='checkbox'
+                                        className='mr-2'
+                                        checked={expiration === 1}
+                                        onChange={(e) => setExpiration(e.target.checked ? 1 : 0)} />
                                     {'  '}Can Expire
                                 </label>
                             </div>
@@ -190,18 +204,19 @@ function CreateProduct() {
                             <label htmlFor=''>Reorder URL</label>
                             <input type='text'
                                 placeholder='Enter Reorder URL'
-                                value={url}
+                                value={reorder_url}
                                 className='form-control'
                                 onChange={e => setUrl(e.target.value)}
                             />
                         </div>
 
                         <div className='mb-2 col-3' style={{ height: '50px' }}>
-                            <Barcode value='1234567'/>
+                            <Barcode value={barcode} />
                         </div>
 
                         <div className='mb-2 col-3'>
-                        <input type='text'
+                            <input
+                                type='text'
                                 placeholder='Enter Barcode'
                                 value={barcode}
                                 className='form-control'

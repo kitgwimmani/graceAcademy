@@ -67,8 +67,8 @@ function App() {
       <Routes>
       
         <Route path='/user' element={<User />}></Route>
-        <Route path='/createUser' element={<CreateUser />}></Route>
-        <Route path='/updateUser/:id' element={<UpdateUser />}></Route>
+        <Route path='user/createUser' element={<CreateUser />}></Route>
+        <Route path='user/updateUser/:id' element={<UpdateUser />}></Route>
 
         <Route path='/category' element={<Category />}></Route>
         <Route path='category/createCategory' element={<CreateCategory />}></Route>

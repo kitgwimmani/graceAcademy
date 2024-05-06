@@ -1,3 +1,13 @@
+#Expiration report
+create view expiration_status as SELECT p.id id, p.name product, u.name, supply.quantity, supply.expiry_date expiry_date
+from product p, unit u, supply
+where u.id = supply.unit and p.expiration < CURDATE() group by product
+
+#inventory report
+create view inventory as SELECT supply.id id, supply.product product_id, supply.supply_date date, p.name item, c.name category, s.name supplier, u.name unit, supply.quantity, supply.expiry_date expiry_date, p.serial_number, p.barcode, supply.remark
+from product p, supply, supplier s, unit u, category c
+where supply.product = p.id and supply.supplier = s.id and supply.unit = u.id and p.category = c.id
+
 #supply Report
 create view supply_report as SELECT supply.id, p.name item, s.name supplier, u.name unit, supply.quantity, supply.serial_number, supply.isbn, supply.barcode, supply.remark, supply.supply_date
 from product p, supply, supplier s, unit u
@@ -6,3 +16,8 @@ where supply.product = p.id and supply.supplier = s.id and supply.unit = u.id
 create view transfer_report as SELECT transfer.id, p.name product, p.serial_number, p.isbn, p.barcode, cat.name category, l.name location, c.name custodian, transfer.date_moved, transfer.date_expected, u.name unit, transfer.quantity quantity
 from product p, location l, transfer, custodian c, unit u, category cat
 where p.id = transfer.product_id and l.id = transfer.location_id and c.id = transfer.custodian_id and u.id = transfer.user_id and cat.id = p.category
+
+#stock level
+create view stock_level as SELECT i.item name, p.serial_number, p.isbn, p.threshold, i.quantity quantity, p.reorder_url, p.reorder_status
+from inventory i, product p
+where i.product_id = p.id group by name
