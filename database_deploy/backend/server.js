@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql")
@@ -5,6 +6,8 @@ const app = express();
 
 app.use(express.json())
 app.use(cors());
+
+const users = [{ email: 'test@example.com', password: '$2b$10$J.1kLxJ9OlJ9Kd.JnPfnVeHquZ3iZa2I.LYbxz9f9lbMnvZZyL0my', name: 'John Doe', role: 'Admin' }]; // Example user with hashed password
 
 /* const db = mysql.createConnection({
     host: "https://ghaacademy.com.ng/category",
@@ -31,20 +34,109 @@ app.get("/", (req, res) => {
     })
 });
 
-app.get("/login/:email", (req, res) => {
-    const sql = "SELECT * FROM user WHERE email = ? LIMIT 1";
-    const email = req.params.email; // Extract email from URL parameter
-    db.query(sql, [email], (err, data) => {
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+  
+    // Query the database to find the user by email
+    const query = 'SELECT * FROM user WHERE email = ?';
+    
+    db.query(query, [email], (err, results) => {
+      if (err) {
+        console.error('Error querying the database:', err);
+        return res.status(500).json({ success: false, message: 'Server error. Please try again later.' });
+      }
+  
+      if (results.length > 0) {
+        const user = results[0]; // Get the first user (assuming email is unique)
+        //console.log(user)
+  
+        // Compare the entered password with the stored hashed password
+       /* console.log(password)
+        bcrypt.hash(password, 10, (err, hashedPassword) => { // 10 is the number of salt rounds
+            if (err) {
+              console.error('Error hashing password:', err);
+            } else {
+              console.log('Hashed password:', hashedPassword); // Log the hashed password
+            }
+          }); */
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            console.error('Error comparing passwords:', err);
+            return res.status(500).json({ success: false, message: 'Server error. Please try again later.' });
+          }
+  
+          if (result) {
+            // If the password matches
+            res.json({
+              success: true,
+              user: {
+                name: user.name,
+                role: user.role
+              }
+            });
+          } else {
+            // Invalid password
+            res.json({ success: false, message: 'Invalid email or password.' });
+          }
+        });
+      } else {
+        // User not found
+        res.json({ success: false, message: 'User not found.' });
+      }
+    });
+  });
+
+
+
+
+app.put('/change_password', (req, res) => {
+    const { old_password, new_password, change_email } = req.body;
+
+    // Fetch the user from the database to verify the old password
+    const sql = "SELECT password FROM user WHERE email = ?";
+    
+    db.query(sql, [change_email], (err, result) => {
         if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal Server Error" });
+            return res.status(500).json({ message: 'Error fetching user data' });
         }
-        if (data.length === 0) {
-            return res.status(404).json({ message: "User not found" });
+
+        if (result.length === 0) {
+            return res.status(400).json({ message: 'User not found' });
         }
-        return res.json(data[0]); // Return the first record if found
+
+        const storedPassword = result[0].password;
+
+        // Compare the old password with the stored password
+        bcrypt.compare(old_password, storedPassword, (err, isMatch) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error comparing passwords' });
+            }
+
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Old password is incorrect' });
+            }
+
+            // Hash the new password before saving it to the database
+            bcrypt.hash(new_password, 10, (err, hashedPassword) => {
+                if (err) {
+                    return res.status(500).json({ message: 'Error hashing password' });
+                }
+
+                // Update the password in the database
+                const updateSql = "UPDATE user SET `password` = ? WHERE email = ?";
+                const values = [hashedPassword, change_email];
+
+                db.query(updateSql, values, (err, data) => {
+                    if (err) {
+                        return res.status(500).json({ message: 'Error updating password' });
+                    }
+                    return res.json({ message: 'Password updated successfully' });
+                });
+            });
+        });
     });
 });
+
 
 
 app.get("/getUser/:id", (req, res) => {

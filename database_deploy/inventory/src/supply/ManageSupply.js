@@ -14,7 +14,7 @@ function ManageSupply() {
     const [damage, setDamage] = useState('');
     const [remark, setRemark] = useState('');
     const [reorder, setReorderStatus] = useState('');
-    
+
 
     const [allProductsReorder, setAllProductsReorder] = useState([]);
     const [allProducts, setAllProducts] = useState([]);
@@ -22,6 +22,7 @@ function ManageSupply() {
     const [allProductCustodians, setProductCustodians] = useState([]);
     const [allCustodians, setAllCustodians] = useState([]);
     const [product, setProduct] = useState([]);
+    const [bar, setBar] = useState([]);
     const [damage_category, setDamageCategory] = useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
@@ -48,6 +49,7 @@ function ManageSupply() {
                 setAllProducts(res.data);
                 const userData = res.data;
                 setProduct(userData[0].item);
+                setBar(userData[0].barcode);
 
             })
             .catch(err => console.log(err));
@@ -127,7 +129,7 @@ function ManageSupply() {
 
     function handleSubmit2(event) {
         event.preventDefault();
-        axios.post(`http://localhost:8081/changeCustodian/${current_transfer_id}`, { location, custodian, dateMoved, dateExpected}).then(res => {
+        axios.post(`http://localhost:8081/changeCustodian/${current_transfer_id}`, { location, custodian, dateMoved, dateExpected }).then(res => {
             //console.log(res);
             navigate(0);
         }).catch(err => console.log(err));
@@ -135,13 +137,13 @@ function ManageSupply() {
 
     function handleSubmitDamage(event) {
         event.preventDefault();
-        axios.post(`http://localhost:8081/reportDamage/${id}`, {  unit, quantity, remark}).then(res => {
+        axios.post(`http://localhost:8081/reportDamage/${id}`, { unit, quantity, remark }).then(res => {
             console.log(res);
             navigate(-1);
         }).catch(err => console.log(err));
     }
 
-    function handleReorderStatus(event){
+    function handleReorderStatus(event) {
         event.preventDefault();
         const stat = !reorder;
         axios.put('http://localhost:8081/updateReorderStatus/' + id, { stat }).then(res => {
@@ -168,7 +170,7 @@ function ManageSupply() {
         value: unit.unit_id,
         label: unit.unit,
     }));
-    
+
 
     const handleUnitChange = (selectedOption) => {
         setUnit(selectedOption ? selectedOption.value : '');
@@ -225,8 +227,17 @@ function ManageSupply() {
 
     return (
         <Container>
-        <h2>Manage <b>{product}</b></h2>
-            <div  style={{  maxHeight: '280px', overflow: 'auto' }}>
+            <h2 className="manage-header">
+  <span className="product-name">Manage <b>{product}</b></span>
+  <button className="barcode-button tiny-button">
+    <img
+      src={`https://barcode.tec-it.com/barcode.ashx?data=${bar}&code=Code128&unit=Millimeter&dpi=72&moduleWidth=1&showLabel=false`}
+      alt="Barcode"
+    />
+  </button>
+</h2>
+
+            <div style={{ maxHeight: '280px', overflow: 'auto' }}>
                 <Table striped bordered hover style={{ fontSize: '12px', marginBottom: '20px' }}>
 
                     <thead>
@@ -255,7 +266,7 @@ function ManageSupply() {
                                     <td>{data.unit}</td>
                                     <td>{data.quantity}</td>
                                     <td>{data.expiry_date ? new Date(data.expiry_date).toLocaleDateString() : ''}</td>
-
+                                    
                                 </tr>
                             ))
 
@@ -263,77 +274,77 @@ function ManageSupply() {
 
                     </tbody>
                 </Table>
+            </div>
+            <div className='row'>
+                <div className='mb-2 col-2'>
+                    <h6>Inventory</h6>
+                    <Table bordered striped style={{ fontSize: '12px', marginBottom: '20px' }}>
+                        <thead>
+                            <tr>
+                                <th>Unit</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                unitSums.map((data, i) => (
+                                    <tr key={i}>
+                                        <td>{data.unit}</td>
+                                        <td>{data.quantity}</td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </Table>
                 </div>
-                <div className='row'>
-                    <div className='mb-2 col-2'>
-                        <h6>Inventory</h6>
-                        <Table bordered striped style={{ fontSize: '12px', marginBottom: '20px' }}>
-                            <thead>
-                                <tr>
-                                    <th>Unit</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    unitSums.map((data, i) => (
-                                        <tr key={i}>
-                                            <td>{data.unit}</td>
-                                            <td>{data.quantity}</td>
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                        </Table>
-                    </div>
-                    <div className='mb-2 col-10'style={{  height: '300px', overflow: 'auto' }}>
-                        <h6>Custodian/location</h6>
-                        <Table bordered striped style={{ fontSize: '12px', marginBottom: '20px' }}>
-                            <thead>
-                                <tr>
-                                    <th>Custodian</th>
-                                    <th>Location</th>
-                                    <th>Quantity</th>
-                                    <th>Unit</th>
-                                    <th>Date Moved</th>
-                                    <th>Date Expected</th>
-                                    <th>transfer ID</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    allProductCustodians.map((data, i) => (
-                                        <tr key={i}>
-                                            <td>{data.cname}</td>
-                                            <td>{data.lname}</td>
-                                            <td>{data.quantity}</td>
-                                            <td>{data.tunit}</td>
-                                            <td>{data.date_moved}</td>
-                                            <td>{data.date_expected}</td>
-                                            <td>{current_transfer_id=data.id}</td>
-                                            <td><button className='btn btn-sm secondary' 
-                                            style={{'--bs-btn-padding-y': '.25rem', '--bs-btn-padding-x': '.5rem', '--bs-btn-font-size': '.70rem'}}
+                <div className='mb-2 col-10' style={{ height: '300px', overflow: 'auto' }}>
+                    <h6>Custodian/location</h6>
+                    <Table bordered striped style={{ fontSize: '12px', marginBottom: '20px' }}>
+                        <thead>
+                            <tr>
+                                <th>Custodian</th>
+                                <th>Location</th>
+                                <th>Quantity</th>
+                                <th>Unit</th>
+                                <th>Date Moved</th>
+                                <th>Date Expected</th>
+                                <th>transfer ID</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                allProductCustodians.map((data, i) => (
+                                    <tr key={i}>
+                                        <td>{data.cname}</td>
+                                        <td>{data.lname}</td>
+                                        <td>{data.quantity}</td>
+                                        <td>{data.tunit}</td>
+                                        <td>{data.date_moved}</td>
+                                        <td>{data.date_expected}</td>
+                                        <td>{current_transfer_id = data.id}</td>
+                                        <td><button className='btn btn-sm secondary'
+                                            style={{ '--bs-btn-padding-y': '.25rem', '--bs-btn-padding-x': '.5rem', '--bs-btn-font-size': '.70rem' }}
                                             type="button" onClick={handleShow2}>Change</button></td>
-                                        </tr>
-                                    ))
-                                }
-                            </tbody>
-                        </Table>
-                    </div>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </Table>
                 </div>
+            </div>
 
 
-                <ButtonGroup>
-                    <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
-                    <button className='btn success' onClick={handleShowModalDamage}>Report Damage</button>
-                    <button className='btn btn-light' type="button" onClick={handleShow}>Move Item/Change custodian</button>
-                    <button className='btn secondary' onClick={handleGoBack}>Exit Item</button>
-                    <button className='btn success' onClick={handleReorderStatus}>{reorder ? 'Remove from Reorder' : 'Add to Reorder'}</button>
+            <ButtonGroup>
+                <button className='btn secondary' onClick={handleGoBack}>Go Back</button>
+                <button className='btn success' onClick={handleShowModalDamage}>Report Damage</button>
+                <button className='btn btn-light' type="button" onClick={handleShow}>Move Item/Change custodian</button>
+                <button className='btn secondary' onClick={handleGoBack}>Exit Item</button>
+                <button className='btn success' onClick={handleReorderStatus}>{reorder ? 'Remove from Reorder' : 'Add to Reorder'}</button>
 
-                </ButtonGroup>
+            </ButtonGroup>
 
-            
+
             <Modal show={showModal} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Move {product} / Change custodian</Modal.Title>
@@ -417,7 +428,7 @@ function ManageSupply() {
                 </Modal.Header>
                 <Modal.Body>
                     <div className='row'>
-                    <div className='col-12'>
+                        <div className='col-12'>
                             <label htmlFor='location'>TO: (Location)</label>
                             <Select
                                 options={locationOptions}
@@ -471,7 +482,7 @@ function ManageSupply() {
                 </Modal.Header>
                 <Modal.Body>
                     <div className='row'>
-                   
+
 
                         <div className='col-12'>
                             <label htmlFor='unit'>Unit</label>
@@ -482,7 +493,7 @@ function ManageSupply() {
                                 required
                             />
                         </div>
-                     
+
                         <div className='col-12'>
                             <label htmlFor=''>Quantity</label>
                             <input type='number'
@@ -504,7 +515,7 @@ function ManageSupply() {
                         </div>
 
 
-                       
+
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -516,7 +527,7 @@ function ManageSupply() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            
+
         </Container>
 
     )
