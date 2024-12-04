@@ -185,7 +185,7 @@ function Product() {
         </div>
         <Modal show={showModal} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Print Barcode</Modal.Title>
+            <Modal.Title>Barcode</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>

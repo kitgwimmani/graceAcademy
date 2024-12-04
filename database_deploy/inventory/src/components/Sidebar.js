@@ -13,17 +13,32 @@ import Tooltip from 'react-bootstrap/Tooltip';
 
 const SidebarMenuItemWithTooltip = ({ to, icon, children, tooltipText, onClick }) => (
   <OverlayTrigger
-    key="bottom"
+    key={to}
     placement="right"
     overlay={<Tooltip id={`tooltip-${to}`}>{tooltipText}</Tooltip>}
   >
     {onClick ? (
-      <button onClick={onClick} className="sidebar-logout-button">
-        <CDBSidebarMenuItem icon={icon} style={{ margin: '2px 0' }}>{children}</CDBSidebarMenuItem>
+      <button
+        onClick={onClick}
+        className="sidebar-logout-button"
+        style={{
+          background: 'none',
+          border: 'none',
+          color: 'inherit',
+          padding: 0,
+          width: '100%',
+          textAlign: 'left',
+        }}
+      >
+        <CDBSidebarMenuItem icon={icon} style={{ margin: '2px 0' }}>
+          {children}
+        </CDBSidebarMenuItem>
       </button>
     ) : (
-      <NavLink exact to={to} activeClassName="activeClicked">
-        <CDBSidebarMenuItem icon={icon} style={{ margin: '2px 0' }}>{children}</CDBSidebarMenuItem>
+      <NavLink to={to} activeClassName="activeClicked">
+        <CDBSidebarMenuItem icon={icon} style={{ margin: '2px 0' }}>
+          {children}
+        </CDBSidebarMenuItem>
       </NavLink>
     )}
   </OverlayTrigger>
@@ -38,6 +53,7 @@ const Sidebar = ({ isActive, handleLogout }) => {
         overflow: 'scroll initial',
         pointerEvents: isActive ? 'auto' : 'none',
         opacity: isActive ? 1 : 0.5,
+        transition: 'opacity 0.3s',
       }}
       className="sidebar"
     >
@@ -45,9 +61,14 @@ const Sidebar = ({ isActive, handleLogout }) => {
         <CDBSidebarHeader
           prefix={<i className="fa fa-bars fa-large"></i>}
           className="text-center"
-          style={{ position: 'sticky', top: 0, zIndex: 1, backgroundColor: '#53958f' }}
+          style={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            backgroundColor: '#53958f',
+          }}
         >
-          <NavLink exact to="/" className="text-decoration-none" style={{ color: 'inherit' }}>
+          <NavLink to="/" className="text-decoration-none" style={{ color: 'inherit' }}>
             <h5 style={{ margin: 0 }}>GHAA Inventory</h5>
           </NavLink>
         </CDBSidebarHeader>
@@ -57,69 +78,52 @@ const Sidebar = ({ isActive, handleLogout }) => {
             <SidebarMenuItemWithTooltip to="/dashboard" icon="columns" tooltipText="Dashboard">
               Dashboard
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/user" icon="user" tooltipText="Manage Users">
               Manage Users
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/location" icon="landmark" tooltipText="Locations">
               Locations
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/custodian" icon="handshake" tooltipText="Custodian">
               Custodian
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/unit" icon="calculator" tooltipText="Units">
               Units
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/category" icon="clipboard-list" tooltipText="Category">
               Category
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/product" icon="shopping-bag" tooltipText="Item">
               Item
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/supplier" icon="box-open" tooltipText="Supplier">
               Supplier
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/receiver" icon="user-clock" tooltipText="Receiver">
               Receiver
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/supply" icon="warehouse" tooltipText="Inventory">
               Inventory
             </SidebarMenuItemWithTooltip>
-
             <SidebarMenuItemWithTooltip to="/inventory" icon="table" tooltipText="Report">
               Report
             </SidebarMenuItemWithTooltip>
-
-            {/* Logout Button */}
-            <OverlayTrigger
-              key="bottom"
-              placement="right"
-              overlay={<Tooltip id="tooltip-logout">Logout</Tooltip>}
+            <SidebarMenuItemWithTooltip
+              icon="sign-out-alt"
+              tooltipText="Logout"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLogout();
+              }}
             >
-              <div
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleLogout();
-                }}
-                style={{ cursor: 'pointer', margin: '2px 0' }}
-              >
-                <CDBSidebarMenuItem icon="sign-out-alt">Logout</CDBSidebarMenuItem>
-              </div>
-            </OverlayTrigger>
+              Logout
+            </SidebarMenuItemWithTooltip>
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
         <CDBSidebarFooter style={{ textAlign: 'center' }}>
           <div style={{ padding: '10px 2px' }}>
-            {/* Footer content can go here */}
+            {/* Add footer content here */}
           </div>
         </CDBSidebarFooter>
       </CDBSidebar>
