@@ -6,6 +6,7 @@ import { Form, Container, InputGroup, Table } from 'react-bootstrap';
 
 function Category() {
   const [category, setCategory] = useState([]);
+  const [stored_user, setStoredUser] = useState(null);
   const [search, setSearch] = useState('');
   useEffect(()=>{
     axios.get('https://ghaacademy.com.ng/category').then(res => setCategory(res.data))
@@ -28,9 +29,20 @@ function Category() {
     const isConfirmed = window.confirm('Are you sure you want to delete?');
     return isConfirmed
   }
-
+useEffect(() => {
+     const storedUser = sessionStorage.getItem('user');
+     if (storedUser) {
+       try {
+         const parsedUser = JSON.parse(storedUser);
+         setStoredUser(parsedUser);
+       } catch (error) {
+         console.error('Error parsing user data from sessionStorage:', error);
+       }
+     }
+   }, []);
   return (
     <div className='main-content'>
+    {stored_user && stored_user.role !== "User" && (
     <Container>
    <h5 className='mt-4'>Categories List</h5>
       
@@ -87,7 +99,7 @@ function Category() {
           </Table>
         </div>
       </Container>
-
+    )|| (<p>Sorry, current user has no access to this page</p>)}
     </div>
   )
 }

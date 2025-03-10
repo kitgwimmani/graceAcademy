@@ -7,6 +7,7 @@ import './App.css';
 
 function Custodian() {
   const [custodian, setCustodian] = useState([])
+  const [stored_user, setStoredUser] = useState(null);
   const [search, setSearch] = useState('');
   useEffect(()=>{
     axios.get('https://ghaacademy.com.ng/custodian').then(res => setCustodian(res.data))
@@ -29,10 +30,21 @@ function Custodian() {
     return isConfirmed
   }
 
- 
+ useEffect(() => {
+      const storedUser = sessionStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setStoredUser(parsedUser);
+        } catch (error) {
+          console.error('Error parsing user data from sessionStorage:', error);
+        }
+      }
+    }, []);
 
   return (
     <div className='main-content'>
+    {stored_user && stored_user.role !== "User" && (
       <Container>
       <h5 className='mt-4'>Custodians List</h5>
       <Link to='/custodian/createCustodian' className='btn success'>Add +</Link>
@@ -88,6 +100,7 @@ function Custodian() {
           </Table>
           </div>
         </Container>
+    )|| (<p>Sorry, current user has no access to this page</p>)}
       </div>
 
   )

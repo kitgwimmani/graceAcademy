@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   CDBSidebar,
   CDBSidebarContent,
@@ -10,6 +11,9 @@ import {
 import { NavLink } from 'react-router-dom';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+
+
+
 
 const SidebarMenuItemWithTooltip = ({ to, icon, children, tooltipText, onClick }) => (
   <OverlayTrigger
@@ -44,7 +48,12 @@ const SidebarMenuItemWithTooltip = ({ to, icon, children, tooltipText, onClick }
   </OverlayTrigger>
 );
 
+
+
 const Sidebar = ({ isActive, handleLogout }) => {
+  
+
+ 
   return (
     <div
       style={{
@@ -56,7 +65,7 @@ const Sidebar = ({ isActive, handleLogout }) => {
         transition: 'opacity 0.3s',
       }}
       className="sidebar"
-    >
+    > 
       <CDBSidebar textColor="#fff" backgroundColor="#53958f">
         <CDBSidebarHeader
           prefix={<i className="fa fa-bars fa-large"></i>}
@@ -78,9 +87,11 @@ const Sidebar = ({ isActive, handleLogout }) => {
             <SidebarMenuItemWithTooltip to="/dashboard" icon="columns" tooltipText="Dashboard">
               Dashboard
             </SidebarMenuItemWithTooltip>
+            
             <SidebarMenuItemWithTooltip to="/user" icon="user" tooltipText="Manage Users">
               Manage Users
             </SidebarMenuItemWithTooltip>
+            
             <SidebarMenuItemWithTooltip to="/location" icon="landmark" tooltipText="Locations">
               Locations
             </SidebarMenuItemWithTooltip>

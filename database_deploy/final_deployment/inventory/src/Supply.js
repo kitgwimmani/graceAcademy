@@ -8,6 +8,7 @@ import './App.css';
 
 function Supply() {
   const [search, setSearch] = useState('');
+  const [stored_user, setStoredUser] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
   const [product, setProduct] = useState([]);
@@ -64,9 +65,21 @@ function Supply() {
     return 0;
   });
 
+  useEffect(() => {
+       const storedUser = sessionStorage.getItem('user');
+       if (storedUser) {
+         try {
+           const parsedUser = JSON.parse(storedUser);
+           setStoredUser(parsedUser);
+         } catch (error) {
+           console.error('Error parsing user data from sessionStorage:', error);
+         }
+       }
+     }, []);
   
   return (
     <div className='main-content'>
+    {stored_user && stored_user.role !== "User" && (
     <Container>
     <h5 className='mt-4'>Inventory</h5>
     <div className='row'>
@@ -149,6 +162,7 @@ function Supply() {
       </div>
       
     </Container>
+    )|| (<p>Sorry, current user has no access to this page</p>)}
     </div>
   )
 }

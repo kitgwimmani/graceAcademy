@@ -7,6 +7,7 @@ import './App.css';
 
 function Receiver() {
   const [receiver, setReceiver] = useState([]);
+  const [stored_user, setStoredUser] = useState(null);
   const [search, setSearch] = useState('');
   useEffect(()=>{
     axios.get('https://ghaacademy.com.ng/receiver').then(res => setReceiver(res.data))
@@ -29,9 +30,21 @@ function Receiver() {
     return isConfirmed
   }
  
+  useEffect(() => {
+       const storedUser = sessionStorage.getItem('user');
+       if (storedUser) {
+         try {
+           const parsedUser = JSON.parse(storedUser);
+           setStoredUser(parsedUser);
+         } catch (error) {
+           console.error('Error parsing user data from sessionStorage:', error);
+         }
+       }
+     }, []);
 
   return (
     <div className='main-content'>
+    {stored_user && stored_user.role !== "User" && (
     <Container>
    <h5 className='mt-4'>Receivers List</h5>
           <Link to='/receiver/createReceiver' className='btn success'>Add +</Link>
@@ -90,7 +103,7 @@ function Receiver() {
           </div>
         
       </Container>
-
+    )|| (<p>Sorry, current user has no access to this page</p>)}
     </div>
   )
 }

@@ -8,6 +8,7 @@ import './App.css';
 
 function Supplier() {
   const [supplier, setSupplier] = useState([]);
+  const [stored_user, setStoredUser] = useState(null);
   const [search, setSearch] = useState('');
   useEffect(()=>{
     axios.get('https://ghaacademy.com.ng/supplier').then(res => setSupplier(res.data))
@@ -29,10 +30,21 @@ function Supplier() {
     const isConfirmed = window.confirm('Are you sure you want to delete?');
     return isConfirmed
   }
- 
+  useEffect(() => {
+      const storedUser = sessionStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setStoredUser(parsedUser);
+        } catch (error) {
+          console.error('Error parsing user data from sessionStorage:', error);
+        }
+      }
+    }, []);
 
   return (
     <div className='main-content'>
+    {stored_user && stored_user.role !== "User" && (
     <Container>
    <h5 className='mt-4'>Suppliers List</h5>
           <Link to='/supplier/createSupplier' className='btn success'>Add +</Link>
@@ -91,7 +103,7 @@ function Supplier() {
           </div>
         
       </Container>
-
+    )|| (<p>Sorry, current user has no access to this page</p>)}
     </div>
   )
 }
