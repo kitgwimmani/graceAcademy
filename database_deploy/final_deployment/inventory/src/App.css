@@ -1,0 +1,63 @@
+.app-container {
+    display: flex;
+    /* Full height of the viewport */
+  }
+  
+  .sidebar {
+    flex: 0 0 auto; /* Adjust the width as needed */
+    background-color: #f1f1f1; /* Set a background color for the sidebar */
+  }
+  
+  .main-content {
+    flex-grow: 1; /* Allow the main content to grow and fill the remaining space */
+    background-color: #f1f1f1;
+  }
+  
+  .prefill{
+    background-color: rgb(234, 255, 248);
+  }
+
+  .success{
+    background-color: #96dddc !important;
+    color: #ffffff;
+  }
+  .secondary{
+    background-color: #53958f !important;
+    color: #ffffff;
+  }
+  .required{
+    color: red;
+  }
+
+  .barcode-button.tiny-button {
+    width: 120px; /* Set the button width */
+    height: 50px; /* Match height for a square button */
+    padding: 0; /* Remove padding to fit the size exactly */
+    border: none; /* Optional: Remove border */
+    background: none; /* Optional: Remove background */
+    display: inline-flex; /* Ensure content stays aligned */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+  }
+  
+  .barcode-button.tiny-button img {
+    width: 120px; /* Set the image width */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  .barcode-button.tiny-button img:hover{
+    width: 130px;
+  }
+  .manage-header {
+    display: flex; /* Use Flexbox for alignment */
+    align-items: center; /* Vertically align items */
+    gap: 8px; /* Add space between the product name and button */
+     /* Optional: Adjust font size for readability */
+  }
+  
+  .product-name {
+    flex-grow: 1; /* Allow the product name to take up available space */
+  }
+  
+  /* Add any other styling as needed */
+  
