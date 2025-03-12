@@ -52,12 +52,12 @@ function UpdateCustodian() {
                 </div>
 
                 <div className='mb-2'>
-                    <label htmlFor=''><label className='required'>* </label>Email</label>
+                    <label htmlFor=''>Email</label>
                     <input type='email' 
                     placeholder='Enter Email' 
                     className='form-control'
                     value={email}
-                    required
+                    
                     onChange={e => setEmail(e.target.value)}
                     />
                 </div>

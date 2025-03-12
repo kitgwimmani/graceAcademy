@@ -7,6 +7,7 @@ import '../App.css';
 function ManageSupply() {
     const [location, setLocation] = useState('');
     const [unit, setUnit] = useState('');
+    const [availableQuantity, setAvailableQuantity] = useState('');
     const [custodian, setCustodian] = useState('');
     const [dateMoved, setDateMoved] = useState('');
     const [dateExpected, setDateExpected] = useState('');
@@ -167,7 +168,7 @@ function ManageSupply() {
         event.preventDefault();
         const stat = !reorder;
         axios.put('https://ghaacademy.com.ng/updateReorderStatus/' + id, { stat }).then(res => {
-            alert('Reorder Status Was Changed Successfully')
+            //alert('Reorder Status Was Changed Successfully')
             window.location.reload()
         }).catch(err => console.log(err));
     }
@@ -192,6 +193,7 @@ function ManageSupply() {
 
     //##############################
 
+
     ////for searcheable location
     const locationOptions = allLocations.map((location) => ({
         value: location.id,
@@ -212,9 +214,20 @@ function ManageSupply() {
 
     const handleUnitChange = (selectedOption) => {
         setUnit(selectedOption ? selectedOption.value : '');
+        checkItemVailability(selectedOption)
         //alert(selectedOption.value)
     };
     //##############################
+    //########### verify availability
+    function checkItemVailability(selected_unit) {
+        //alert(selected_unit.value)
+        let currentSum = (unitSums.filter(unitSums => unitSums.unit_id === selected_unit.value))
+        //alert(currentSum[0].quantity)
+        setAvailableQuantity(currentSum[0].quantity)
+
+
+    }
+    //############
 
     ////for searcheable damage category
     const damageOptions = damage_category.map((damage) => ({
@@ -456,11 +469,15 @@ function ManageSupply() {
                         </div>
 
                         <div className='col-12'>
-                            <label htmlFor=''>Quantity</label>
+                            <label htmlFor=''>
+                                Quantity <span style={{ color: '#008080' }}>[{availableQuantity}]</span>
+                            </label>
                             <input type='number'
                                 placeholder='Enter Quantity'
                                 required
                                 className='form-control'
+                                min={1}
+                                max={availableQuantity}
                                 onChange={e => setQuantity(e.target.value)}
                             />
                         </div>
@@ -549,11 +566,12 @@ function ManageSupply() {
                         </div>
 
                         <div className='col-12'>
-                            <label htmlFor=''>Quantity</label>
+                            <label htmlFor=''>Quantity <span style={{ color: '#008080' }}>[{availableQuantity}]</span></label>
                             <input type='number'
                                 placeholder='Enter Quantity'
                                 required
-                                maxLength={1}
+                                min={1}
+                                max={availableQuantity}
                                 className='form-control'
                                 onChange={e => setQuantity(e.target.value)}
                             />
@@ -573,7 +591,7 @@ function ManageSupply() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="btn secondary me-auto" onClick={openDamagePage}>
+                    <Button variant="btn secondary me-auto" onClick={openDamagePage}>
                         Manage/Edit Record
                     </Button>
                     <Button variant="secondary" onClick={handleCloseModalDamage}>
@@ -602,11 +620,12 @@ function ManageSupply() {
                         </div>
 
                         <div className='col-12'>
-                            <label htmlFor=''>Quantity</label>
+                            <label htmlFor=''>Quantity <span style={{ color: '#008080' }}>[{availableQuantity}]</span></label>
                             <input type='number'
                                 placeholder='Enter Quantity'
                                 required
-                                maxLength={1}
+                                min={1}
+                                max={availableQuantity}
                                 className='form-control'
                                 onChange={e => setQuantity(e.target.value)}
                             />
@@ -636,7 +655,7 @@ function ManageSupply() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="btn secondary me-auto" onClick={openExitPage}>
+                    <Button variant="btn secondary me-auto" onClick={openExitPage}>
                         Manage/Edit Record
                     </Button>
                     <Button variant="secondary" onClick={handleCloseModalExitItem}>

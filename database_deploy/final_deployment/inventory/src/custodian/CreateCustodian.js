@@ -39,7 +39,7 @@ function CreateCustodian() {
                     </div>
 
                     <div className='mb-2'>
-                        <label htmlFor=''><label className='required'>* </label>Email</label>
+                        <label htmlFor=''>Email</label>
                         <input type='email' 
                             placeholder='Enter Email' 
                             

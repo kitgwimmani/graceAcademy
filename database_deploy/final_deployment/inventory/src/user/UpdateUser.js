@@ -75,7 +75,7 @@ function UpdateUser() {
                     <div className='mb-2'>
                         <label htmlFor=''><label className='required'>* </label>Email</label>
                         <input
-                            type='email'
+                            type='text'
                             placeholder='Enter Email'
                             className='form-control'
                             value={email}

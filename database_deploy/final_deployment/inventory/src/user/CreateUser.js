@@ -53,7 +53,7 @@ function CreateUser() {
 
                     <div className='mb-2'>
                         <label htmlFor=''><label className='required'>* </label>Email</label>
-                        <input type='email'
+                        <input type='text'
                             placeholder='Enter Email'
                             required
                             className='form-control'
